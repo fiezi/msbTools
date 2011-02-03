@@ -1,0 +1,80 @@
+#include "loaderManager.h"
+
+loaderManager::loaderManager()
+{
+    //ctor
+}
+
+loaderManager::~loaderManager()
+{
+    //dtor
+}
+
+void loaderManager::setup( int vidW, int vidH)
+{
+    //imageLoader.allocate(vidW,vidH);
+}
+
+void loaderManager::loadSession( string filename )
+{
+
+    string absPath = ofToDataPath(filename,true);
+
+    // clear current session
+    rManager->reset();
+
+    // load images
+    dirLister.setExtensionToLookFor("tga");
+    dirLister.setPath(absPath);
+    int nFiles = dirLister.getNumberOfFiles();
+    cout << "num tga files " << nFiles << endl;
+
+    // load bones
+    int total = nFiles / 2;
+    for( int i = 0; i < total; i++)
+    {
+        ofImage myImageL, myImageR;
+        string imageFile = filename + "/L_" + ofToString(i) + ".tga";
+        myImageL.loadImage(imageFile);
+
+        imageFile = filename + "/R_" + ofToString(i) + ".tga";
+        myImageR.loadImage(imageFile);
+
+        cout << imageFile << endl;
+        rManager->addFrame(imageL.getPixels(),imageR.getPixels());
+        rManager->gui.addFrame();
+        
+        myImage
+    }
+
+    // load on / off frames + session data
+    cout <<  "filename " << filename << endl;
+
+    ofxXmlSettings xml;
+    xml.loadFile(filename+"/sessionData.xml");
+
+    xml.pushTag("activeFrames");
+    int nFrames = xml.getNumTags("on");
+
+    for( int i = 0; i < nFrames; i++)
+    {
+        bool bOn = xml.getValue("on",true,i);
+        rManager->gui.toggleTimeLineButton(i,bOn);
+
+    }
+
+    xml.popTag();
+
+
+    int r = xml.getValue("chroma:color:r",0);
+    int g = xml.getValue("chroma:color:g",0);
+    int b = xml.getValue("chroma:color:b",0);
+    rManager->cKeyer.setFromRGB(r,g,b);
+
+    rManager->cKeyer.setHThreshold(xml.getValue("chroma:range:hue",10));
+    rManager->cKeyer.setSThreshold(xml.getValue("chroma:range:sat",10));
+
+    rManager->fpsRec = 1.0 / xml.getValue("recordFPS",12);
+    rManager->fpsPlay = 1.0 / xml.getValue("playbackFPS",6);
+
+}

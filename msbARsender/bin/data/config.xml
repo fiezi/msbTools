@@ -1,0 +1,22 @@
+<config>
+
+<input>
+	<type>camera</type>
+</input>
+
+<camera>
+	<id>0</id>
+	<w>640</w>
+	<h>480</h>
+</camera>
+
+<video>
+	<file>finger.mov</file>
+</video>
+
+<osc>
+	<host>127.0.0.1</host>
+	<port>31841</port>
+</osc>
+
+</config>

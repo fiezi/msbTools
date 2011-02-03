@@ -1,0 +1,12 @@
+
+<camera>
+	<width>720</width>
+	<height>540</height>
+	<id_left>0</id_left>
+	<id_right>1</id_right>
+</camera>
+
+<osc>
+	<port>31841</port>
+	<host>192.168.1.74</host>
+</osc>
