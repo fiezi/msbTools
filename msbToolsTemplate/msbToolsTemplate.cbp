@@ -104,9 +104,7 @@
 			<Add option="-ldsound" />
 			<Add option="-lwinmm" />
 			<Add option="-ldxguid" />
-			<Add option="-lstrmbase" />
 			<Add option="-lstrmiids" />
-			<Add option="-lz" />
 			<Add option="-luuid" />
 			<Add option="-lole32" />
 			<Add option="-loleaut32" />
