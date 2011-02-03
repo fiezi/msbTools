@@ -4,8 +4,8 @@
 	<File name="src\main.cpp" open="0" top="0" tabpos="6">
 		<Cursor position="204" topLine="0" />
 	</File>
-	<File name="src\msbOFCore\actor.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="39550" topLine="262" />
+	<File name="src\msbOFCore\actor.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="39550" topLine="174" />
 	</File>
 	<File name="src\msbOFCore\actor.h" open="0" top="0" tabpos="0">
 		<Cursor position="11303" topLine="239" />
@@ -16,8 +16,8 @@
 	<File name="src\msbOFCore\basicButton.h" open="0" top="0" tabpos="0">
 		<Cursor position="256" topLine="0" />
 	</File>
-	<File name="src\msbOFCore\content.cpp" open="1" top="1" tabpos="3">
-		<Cursor position="608" topLine="0" />
+	<File name="src\msbOFCore\content.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="895" topLine="0" />
 	</File>
 	<File name="src\msbOFCore\content.h" open="0" top="0" tabpos="0">
 		<Cursor position="216" topLine="0" />
@@ -46,14 +46,14 @@
 	<File name="src\msbOFCore\node.h" open="0" top="0" tabpos="0">
 		<Cursor position="1227" topLine="0" />
 	</File>
-	<File name="src\msbOFCore\renderer.cpp" open="1" top="0" tabpos="4">
+	<File name="src\msbOFCore\renderer.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="22729" topLine="99" />
 	</File>
-	<File name="src\msbOFCore\renderer.h" open="1" top="0" tabpos="5">
-		<Cursor position="1497" topLine="18" />
+	<File name="src\msbOFCore\renderer.h" open="0" top="0" tabpos="5">
+		<Cursor position="1497" topLine="0" />
 	</File>
-	<File name="src\testApp.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="693" topLine="0" />
+	<File name="src\testApp.cpp" open="1" top="1" tabpos="0">
+		<Cursor position="610" topLine="0" />
 	</File>
 	<File name="src\testApp.h" open="0" top="0" tabpos="2">
 		<Cursor position="1018" topLine="0" />

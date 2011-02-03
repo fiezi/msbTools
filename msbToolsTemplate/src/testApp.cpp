@@ -22,6 +22,7 @@ renderer->actorList.push_back(renderer->camActor);
 void testApp::update(){
 
     renderer->update();
+    renderer->draw();
 
 }
 
