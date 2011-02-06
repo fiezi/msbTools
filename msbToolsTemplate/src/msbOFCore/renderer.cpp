@@ -1,6 +1,8 @@
 #include "input.h"
 
 //loaders and the like
+#include "spriteMeshLoader.h"
+#include "colladaLoader.h"
 
 //actors
 #include "msbLight.h"
@@ -277,6 +279,8 @@ void Renderer::loadPreferences(){
 #endif
 
     input=Input::getInstance();
+    colladaLoader=new ColladaLoader();
+    spriteMeshLoader=new SpriteMeshLoader();
 
     //open config xml file
     //configure renderer
@@ -837,6 +841,7 @@ void Renderer::draw(){
     }
     */
 
+
 	drawSceneTexture();
 
 	/////////////////////////////////////////////////////
@@ -873,7 +878,6 @@ void Renderer::draw(){
         drawButton(layerList[i]);
     }
 
-
     /*
     *   DisplayDebug
     */
@@ -889,7 +893,6 @@ void Renderer::draw(){
 
     glUseProgram(0);
 
-//    glutSwapBuffers();
     frames++;
     deltaTime=glutGet(GLUT_ELAPSED_TIME)-currentTime;
     currentTime=glutGet(GLUT_ELAPSED_TIME);
@@ -980,8 +983,8 @@ void Renderer::drawSceneTexture(){
 
     glDrawBuffers(4,drawBuffers);
 
-//    glClearColor( -1.0f, -1.0f, -1.0f, -1.0f );
-    glClearColor( backgroundColor.r,backgroundColor.g,backgroundColor.b,backgroundColor.a );
+    glClearColor( -1.0f, -1.0f, -1.0f, -1.0f );
+//    glClearColor( backgroundColor.r,backgroundColor.g,backgroundColor.b,backgroundColor.a );
 
 
     for (int i=0;i<(int)layerList.size();i++){
@@ -998,8 +1001,10 @@ void Renderer::drawSceneTexture(){
 
         glActiveTexture(GL_TEXTURE0);
 
+
 		 //drawbuffers are set up here!
         draw3D(layerList[i]);
+
 
         //color blitting
 
@@ -1292,18 +1297,6 @@ void Renderer::draw3D(Layer* currentLayer){
         }
     }
 
-
-    //draw non-pickable actors afterwards!
-    //used for drawings while drawing, so they're visible
-    for (int i=0;i<(int)currentLayer->actorList.size(); i++){
-        if (!currentLayer->actorList[i]->bPickable){
-            glDrawBuffers(2, drawBuffers);
-            drawActor(currentLayer->actorList[i]);
-            glDrawBuffers(4, drawBuffers);
-        }
-    }
-
-
     //reset texture Matrix transform
     glMatrixMode(GL_TEXTURE);
     glLoadIdentity();
@@ -1312,6 +1305,8 @@ void Renderer::draw3D(Layer* currentLayer){
 
     //this for xyz axis
 
+    //throws openGL error!
+/*
 
         //glDepthMask(GL_FALSE);
         setupShading("color");
@@ -1319,7 +1314,7 @@ void Renderer::draw3D(Layer* currentLayer){
             drawOrientation(currentLayer->actorList[i]);
         }
 
-
+*/
 
 }
 
@@ -1417,6 +1412,7 @@ void Renderer::drawActor(Actor* a){
         else if (a->drawType==DRAW_CUBE)        drawCube(a->scale.x, a->scale.x);                 //Mesh
         else if (a->drawType==DRAW_TEA)         a->drawTeapot();
         else if (a->drawType==DRAW_SPECIAL)     a->draw();
+        else if (a->drawType==DRAW_POINTPATCH)  drawPatch(a->scale.x,a->scale.y,a->particleScale);
 
 
     if (!a->bZTest)  glEnable(GL_DEPTH_TEST);
@@ -1644,6 +1640,52 @@ void Renderer::drawPlane(float x1,float  y1,float  x2,float  y2, Vector4f color,
 
 }
 
+void Renderer::drawPatch(float width, float height, float resolution){
+
+    //create a vertex array for a quad patch with "resolution" amount of vertices per side
+    //lets do points for now...
+
+    vector<Vector4f> vertices;
+    vector<GLfloat> texCoords;
+
+    for (int h=0;h<resolution;h++){
+
+        //for every line...
+        for (int l=0;l<resolution;l++){
+            Vector4f myVertex;
+            myVertex.x=float(l) * width/(resolution-1.0) - width/2.0f;            //x-coord
+            myVertex.y=float(h) * height/(resolution-1.0) - height/2.0f;
+            myVertex.z=0.0f;
+            myVertex.w=1.0f;
+
+            vertices.push_back(myVertex);
+
+
+            //texCoords.push_back( float(l) /(resolution-1.0) );        //x-texCoord
+            //texCoords.push_back( float(h) /(resolution-1.0) );        //y-texCoord
+            texCoords.push_back( float(l));        //x-texCoord
+            texCoords.push_back( float(h));        //y-texCoord
+
+        }
+    }
+
+    // activate and specify pointer to vertex array
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+    GLfloat *verts=&vertices[0].x;
+
+    glVertexPointer(4, GL_FLOAT, 0, verts);
+    glTexCoordPointer(2, GL_FLOAT, 0, &texCoords[0]);
+
+    // draw the patch as points
+    glDrawArrays(GL_POINTS, 0, resolution* resolution );
+
+    // deactivate vertex arrays after drawing
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+}
+
 void Renderer::drawLine(Vector3f start, Vector3f end, Vector4f startColor, Vector4f endColor){
 
     glLineWidth(4.0);
@@ -1819,7 +1861,10 @@ void Renderer::setupShading(string shaderName){
 
 void Renderer::setupTexturing(string texName, Actor* a){
 
-  glBindTexture(GL_TEXTURE_2D, textureList[texName]->texture);
+    //glBindTexture(GL_TEXTURE_2D, textureList[texName]->texture);
+    glEnable(a->myTexture.texData.textureTarget);
+    glEnable (GL_ARB_texture_rectangle);
+    glBindTexture(a->myTexture.texData.textureTarget, a->myTexture.texData.textureID);
 
     if (!a)
         return;

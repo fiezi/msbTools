@@ -71,6 +71,8 @@ blendModeTwo=GL_ONE_MINUS_SRC_ALPHA;
 vboMeshID="NULL";
 textureID="NULL";
 
+ofTexturePtr=NULL;
+
 registerProperties();
 
 //Actor Menu

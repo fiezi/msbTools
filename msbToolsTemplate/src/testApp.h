@@ -41,6 +41,8 @@ class testApp : public ofBaseApp{
         ofxThread thread;
         ofx3DModelLoader modelLoader;
 
+		ofVideoGrabber 		vidGrabber;
+
         Input*      input;
         Renderer*   renderer;
 

@@ -19,6 +19,8 @@ using namespace std;
 
 class Input;
 class MeshData;
+class ColladaLoader;
+class SpriteMeshLoader;
 
 class Renderer{
 
@@ -61,7 +63,9 @@ public:
         //*****************************************
         template <typename myType>
         void addButton (myType *b){
-            Actor *ac;
+            Actor *ac;       ColladaLoader* colladaLoader;       //helper object for loading meshes and animations
+       SpriteMeshLoader* spriteMeshLoader; //helper Object for loading sprite meshes from Base64
+
             ac = new myType;
             BasicButton *basePtr;
             basePtr = dynamic_cast<BasicButton*>(ac);
@@ -118,10 +122,10 @@ public:
        int currentLayer;                    //currently selected renderLayer
 
        //lists
-       vector <Actor*> actorList;          //all created actors go here
-       vector <Actor*> helperList;         //brush and grid go here
-       vector <MsbLight*> lightList;         //brush and grid go here
-       vector <Node*> nodeList;         //brush and grid go here
+       vector <Actor*> actorList;           //all created actors go here
+       vector <Actor*> helperList;          //brush and grid go here
+       vector <MsbLight*> lightList;        //lights go here
+       vector <Node*> nodeList;             //nodes go here
 
        vector <BasicButton*> buttonList;        //all created buttons go here
        vector <BasicButton*> saveableButtonList;    //all saveable Buttons go here
@@ -174,6 +178,8 @@ public:
        Vector3f ambient;                   //ambient Light
 
        Content *content;                   //the list of things we create at program start
+       ColladaLoader* colladaLoader;       //helper object for loading meshes and animations from collada
+       SpriteMeshLoader* spriteMeshLoader; //helper Object for loading sprite meshes from Base64
 
         //picking
         GLuint pickTexture;
@@ -285,6 +291,7 @@ public:
        virtual void drawBone(float width, float height, float depth);
        virtual void drawCube(float scale, float cubeSize);
        virtual void drawPlane(float x1,float  y1,float  x2,float  y2, Vector4f color = Vector4f(1.0,1.0,1.0,1.0), bool bCentered = false);
+       virtual void drawPatch(float width, float height, float resolution);
        virtual void drawLine(Vector3f start,Vector3f end, Vector4f startColor=Vector4f(0,0,0,1), Vector4f endColor=Vector4f(0,0,0,1));
        virtual void drawOrientation(Actor* a);
        virtual void drawSprite();

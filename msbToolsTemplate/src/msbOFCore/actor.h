@@ -11,6 +11,7 @@
 #define DRAW_SPRITE         7
 #define DRAW_VBOMESH        8
 #define DRAW_SPECIAL        9
+#define DRAW_POINTPATCH     10
 
 #define DRAW_NULL           100
 
@@ -140,6 +141,8 @@ public:
        std::string vboMeshID;                       //new COLLADA mesh identifier
        std::string textureID;                         //texture identifier for texture instancing
 
+       ofTexture*  ofTexturePtr;                    //pointer to ofTexture;
+
        int drawType;                                //which way to draw this actor: e.g. DRAW_CUBE, DRAW_MESH, DRAW_SPRITE, etc...
 
        double elapsedTime;                          //time since scene started
@@ -189,6 +192,9 @@ public:
 
         //for actor picking
         float objectID;
+
+        //of specific
+        ofTexture      myTexture;
 
 
         /***********************************************************************************

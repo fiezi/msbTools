@@ -7,7 +7,7 @@ MsbLight::MsbLight(){
 
 bLight=true;
 name="Light";
-bCastShadows=true;
+bCastShadows=false;
 drawType=DRAW_CUBE;
 scale=Vector3f(0.25,0.25,0.25);
 shadow_fb=0;
