@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="debug" />
-	<File name="bin\shaders\particleHeightField.frag" open="0" top="0" tabpos="6">
-		<Cursor position="367" topLine="0" />
-	</File>
-	<File name="bin\shaders\particleHeightField.vert" open="0" top="0" tabpos="4">
-		<Cursor position="832" topLine="0" />
-	</File>
+	<ActiveTarget name="release" />
 	<File name="src\main.cpp" open="0" top="0" tabpos="6">
 		<Cursor position="204" topLine="0" />
 	</File>
 	<File name="src\msbOFCore\actor.cpp" open="0" top="0" tabpos="2">
 		<Cursor position="39550" topLine="174" />
 	</File>
-	<File name="src\msbOFCore\actor.h" open="1" top="0" tabpos="4">
-		<Cursor position="7810" topLine="76" />
+	<File name="src\msbOFCore\actor.h" open="0" top="0" tabpos="4">
+		<Cursor position="7810" topLine="19" />
 	</File>
 	<File name="src\msbOFCore\basicButton.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="46" topLine="0" />
@@ -28,20 +22,14 @@
 	<File name="src\msbOFCore\boneActor.h" open="0" top="0" tabpos="0">
 		<Cursor position="91" topLine="0" />
 	</File>
-	<File name="src\msbOFCore\content.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="254" topLine="0" />
+	<File name="src\msbOFCore\includes.h" open="0" top="0" tabpos="7">
+		<Cursor position="126" topLine="0" />
 	</File>
-	<File name="src\msbOFCore\content.h" open="0" top="0" tabpos="0">
-		<Cursor position="216" topLine="0" />
-	</File>
-	<File name="src\msbOFCore\includes.h" open="0" top="0" tabpos="0">
-		<Cursor position="142" topLine="0" />
-	</File>
-	<File name="src\msbOFCore\input.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="10056" topLine="87" />
+	<File name="src\msbOFCore\input.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="33089" topLine="132" />
 	</File>
 	<File name="src\msbOFCore\input.h" open="0" top="0" tabpos="0">
-		<Cursor position="2494" topLine="58" />
+		<Cursor position="2494" topLine="0" />
 	</File>
 	<File name="src\msbOFCore\msbButtons\moveButton.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="476" topLine="0" />
@@ -61,11 +49,11 @@
 	<File name="src\msbOFCore\node.h" open="0" top="0" tabpos="0">
 		<Cursor position="1227" topLine="0" />
 	</File>
-	<File name="src\msbOFCore\renderer.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="54653" topLine="151" />
+	<File name="src\msbOFCore\renderer.cpp" open="1" top="1" tabpos="3">
+		<Cursor position="6410" topLine="91" />
 	</File>
-	<File name="src\msbOFCore\renderer.h" open="0" top="0" tabpos="4">
-		<Cursor position="6734" topLine="170" />
+	<File name="src\msbOFCore\renderer.h" open="0" top="0" tabpos="6">
+		<Cursor position="6734" topLine="0" />
 	</File>
 	<File name="src\msbOFCore\skeletalActor.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="5623" topLine="120" />
@@ -79,8 +67,8 @@
 	<File name="src\msbOFCore\spriteMeshLoader.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="99" topLine="0" />
 	</File>
-	<File name="src\testApp.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="2033" topLine="54" />
+	<File name="src\testApp.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="2033" topLine="4" />
 	</File>
 	<File name="src\testApp.h" open="1" top="0" tabpos="2">
 		<Cursor position="709" topLine="0" />

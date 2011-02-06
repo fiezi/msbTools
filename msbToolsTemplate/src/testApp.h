@@ -5,7 +5,6 @@
 #include "ofMain.h"
 #include "ofxOpenCv.h"
 #include "ofxDirList.h"
-#include "ofxVectorMath.h"
 #include "ofxOsc.h"
 #include "ofxThread.h"
 #include "ofx3DModelLoader.h"
@@ -36,7 +35,6 @@ class testApp : public ofBaseApp{
 
         ofxCvGrayscaleImage cvGray;
         ofxDirList dirList;
-        ofxVec2f p;
         ofxOscSender osc_sender;
         ofxThread thread;
         ofx3DModelLoader modelLoader;

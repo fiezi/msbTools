@@ -260,7 +260,7 @@ void Renderer::reDrawScreen(int w, int h){
 void Renderer::loadPreferences(){
 
 
-#ifdef TARGET_MACOSX
+#ifndef TARGET_WIN32
 	//switch to working directory!!
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     CFURLRef resourcesURL = CFBundleCopyBundleURL(mainBundle);
@@ -273,9 +273,16 @@ void Renderer::loadPreferences(){
 
 	string myPath=path;
 	//get rid of Moviesandbox.app at the end!
-	myPath.erase(myPath.end()-16, myPath.end() );
+	myPath.erase(myPath.end()-24, myPath.end() );
 
-	chdir(myPath.c_str());
+	cout << myPath << endl;
+	chdir( ( ofToDataPath("").c_str() ) );
+#else
+
+    //god, this took forever to figure out...
+    WCHAR* dataDir=L"data/";
+    SetCurrentDirectoryW(dataDir);
+
 #endif
 
     input=Input::getInstance();
@@ -377,18 +384,6 @@ void Renderer::loadPreferences(){
         element=element->NextSiblingElement("Library");
     }
 
-    //check for myLibrary and create if not exists
-
-    TiXmlDocument myLib( "resources/my.library" );
-
-    if (!myLib.LoadFile()){
-
-        TiXmlDeclaration * decl = new TiXmlDeclaration( "1.0", "", "" );
-        myLib.LinkEndChild( decl );
-        TiXmlElement * root = new TiXmlElement( "Moviesandbox" );
-        myLib.LinkEndChild( root );
-        myLib.SaveFile( "resources/my.library");
-    }
 
 }
 
@@ -417,12 +412,6 @@ void Renderer::setup(){
     input->setup();          //controller gets created here!
 
 
-    //setting up menu
-    cout << "setting up menu" << endl;
-    content= new Content;
-    content->setup();               //everything menu gets set up here!
-
-
     //this is setting up the menu - I don't want to make this xml based now, it's too complicated
     for (int i=0;i<(int)library.size();i++){
         input->loadTextures(library[i]);
@@ -432,11 +421,12 @@ void Renderer::setup(){
 
     //background Color
 
+#ifdef TARGET_WIN32
 	if (!GLEE_EXT_framebuffer_multisample){
 		bMultisample=false;
 		cout << "Multisampling not supported for FBOs, switching them off..." << endl;
 	}
-
+#endif
 
     //picking!
 
@@ -2003,55 +1993,6 @@ void Renderer::pick(int x, int y){
 
 //generates a texture from a RAW file - needs implementation of textureList!
 GLuint Renderer::LoadTextureRAW( const char * filename,int size, int wrap ){
-
-    GLuint texture;
-    int width, height;
-    BYTE * data;
-    FILE * file;
-
-    // open texture data
-    file = fopen( filename, "rb" );
-    if ( file == NULL ) return 0;
-
-    // allocate buffer
-    width = size;
-    height = size;
-    data = (BYTE*) malloc( width * height * 3 );
-
-    // read texture data
-    fread( data, width * height * 3, 1, file );
-    fclose( file );
-
-    //allocate texture List
-    glGenTextures( 1, &texture );
-
-    // select our current texture
-    glBindTexture( GL_TEXTURE_2D, texture );
-
-    // select modulate to mix texture with color for shading
-    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-
-    // when texture area is small, bilinear filter the closest mipmap
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                     GL_LINEAR_MIPMAP_NEAREST );
-    // when texture area is large, bilinear filter the first mipmap
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-
-    // if wrap is true, the texture wraps over at the edges (repeat)
-    //       ... false, the texture ends at the edges (clamp)
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                     wrap ? GL_REPEAT : GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
-                     wrap ? GL_REPEAT : GL_CLAMP );
-
-    // build our texture mipmaps
-    gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height,
-                       GL_RGB, GL_UNSIGNED_BYTE, data );
-
-    // free buffer
-    free( data );
-
-    return texture;
 }
 
 bool Renderer::LoadTextureTGA( string filename, bool wrap, bool bAlpha, string texID ){

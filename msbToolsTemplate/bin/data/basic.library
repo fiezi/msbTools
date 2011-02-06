@@ -2,8 +2,8 @@
 <Moviesandbox>
 
  <!-- Textures -->
-    <Texture textureID="NULL" filename="data/icons/error.tga" bAlpha="1" bWrap="1" />
-    <Texture textureID="icon_base" filename="data/icons/icon_base.tga" bAlpha="1" bWrap="1" />
+    <Texture textureID="NULL" filename="icons/error.tga" bAlpha="1" bWrap="1" />
+    <Texture textureID="icon_base" filename="icons/icon_base.tga" bAlpha="1" bWrap="1" />
 
  <!-- Shaders -->
 

@@ -2447,11 +2447,10 @@
 	"testApp.h"
 	"ofAppGlutWindow.h"
 
-1296710360 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\testapp.h
+1297026884 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\testapp.h
 	"ofMain.h"
 	"ofxOpenCv.h"
 	"ofxDirList.h"
-	"ofxVectorMath.h"
 	"ofxOsc.h"
 	"ofxThread.h"
 	"ofx3DModelLoader.h"
@@ -2489,18 +2488,17 @@
 	"ofMain.h"
 	"model3DS.h"
 
-1296710360 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\renderer.h
+1297028122 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\renderer.h
 	"includes.h"
-	"content.h"
 	"layer.h"
 	"basicButton.h"
 	"textfile.h"
 	"msbLight.h"
 	"node.h"
 
-1296710360 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\includes.h
+1297030892 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\includes.h
 	"shlobj.h"
-	<windows.h>
+	"windows.h"
 	"ofMain.h"
 	"vmath.h"
 	<typeinfo>
@@ -2517,7 +2515,7 @@
 1296710359 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\basicbutton.h
 	"actor.h"
 
-1296710359 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\actor.h
+1297023800 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\actor.h
 	"includes.h"
 	"tinyxml.h"
 
@@ -2559,7 +2557,7 @@
 	"actor.h"
 	"renderer.h"
 
-1296710359 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\actor.cpp
+1297023800 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\actor.cpp
 	<sstream>
 	"actor.h"
 	"input.h"
@@ -2587,7 +2585,7 @@
 1296710360 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\msbbuttons\assignbutton.h
 	<basicButton.h>
 
-1296710360 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\input.cpp
+1297031151 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\input.cpp
 	"input.h"
 	"basicButton.h"
 	"listButton.h"
@@ -2651,7 +2649,7 @@
 	"renderer.h"
 	"input.h"
 
-1296710360 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\msblight.cpp
+1297023800 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\msblight.cpp
 	"msbLight.h"
 	"renderer.h"
 
@@ -2663,8 +2661,10 @@
 	"nodeIO.h"
 	"input.h"
 
-1296710360 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\renderer.cpp
+1297031579 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\renderer.cpp
 	"input.h"
+	"spriteMeshLoader.h"
+	"colladaLoader.h"
 	"msbLight.h"
 	"listButton.h"
 	"sliderButton.h"
@@ -2712,9 +2712,11 @@
 	"tinyxml.h"
 	<windows.h>
 
-1296710360 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\testapp.cpp
+1297023801 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\testapp.cpp
 	"testApp.h"
 	"actor.h"
+	"assignButton.h"
+	"msbLight.h"
 
 1296710360 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\vmath\vmath.cpp
 	"vmath.h"
@@ -2784,5 +2786,70 @@
 	"base64Encode.h"
 
 1293667240 c:\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\base64encode.h
+	"includes.h"
+
+1297023800 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\boneactor.cpp
+	"skeletalDrawing.h"
+	"boneActor.h"
+	"renderer.h"
+	"input.h"
+	"meshData.h"
+
+1297023801 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\skeletaldrawing.h
+	"particleSystem.h"
+	"boneActor.h"
+
+1297023800 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\particlesystem.h
+	"includes.h"
+	"actor.h"
+	"textfile.h"
+
+1297023800 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\boneactor.h
+	"actor.h"
+	"particleSystem.h"
+
+1297023800 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\colladaloader.cpp
+	"colladaLoader.h"
+
+1297023800 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\colladaloader.h
+	"includes.h"
+	"renderer.h"
+	"meshData.h"
+
+1297025288 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\particlesystem.cpp
+	"particleSystem.h"
+	"input.h"
+	"meshData.h"
+
+1297023801 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\spritemeshloader.h
+	"includes.h"
+	"skeletalDrawing.h"
+	"meshData.h"
+
+1297023800 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\skeletalactor.cpp
+	"skeletalActor.h"
+	"renderer.h"
+	"input.h"
+	"boneActor.h"
+	"meshData.h"
+
+1297023800 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\skeletalactor.h
+	"skeletalDrawing.h"
+
+1297025367 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\skeletaldrawing.cpp
+	"skeletalDrawing.h"
+	"renderer.h"
+	"boneActor.h"
+	"skeletalActor.h"
+	"spriteMeshLoader.h"
+	"input.h"
+
+1297023801 source:e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\spritemeshloader.cpp
+	"spriteMeshLoader.h"
+	"renderer.h"
+	"input.h"
+	"base64Encode.h"
+
+1297023800 e:\users\fiezi\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\base64encode.h
 	"includes.h"
 

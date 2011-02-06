@@ -1,5 +1,4 @@
 #include "particleSystem.h"
-#include "control.h"
 #include "input.h"
 #include "meshData.h"
 

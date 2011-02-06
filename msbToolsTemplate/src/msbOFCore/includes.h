@@ -3,10 +3,10 @@
 
 using namespace std;
 
-//#ifdef TARGET_WIN32
+#ifdef TARGET_WIN32
     #include "shlobj.h"
-    #include <windows.h>
-//#endif
+    #include "windows.h"
+#endif
 
 
 #include "ofMain.h"

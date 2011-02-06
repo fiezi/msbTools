@@ -2,7 +2,6 @@
 
 #include "skeletalDrawing.h"
 #include "renderer.h"
-#include "control.h"
 #include "boneActor.h"
 #include "skeletalActor.h"
 #include "spriteMeshLoader.h"

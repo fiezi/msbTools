@@ -6,7 +6,7 @@
 		<Option makefile="makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="src\;src\msbOF\actors\;src\msbOF\fileIO\;src\msbOF\buttons\;src\msbOF\;src\msbOF\tinyXml\;src\msbOF\vMath\;src\msbOF\shaders\;addons\ofxDirList\src\;addons\ofxOpenCv\src\;addons\ofxOsc\src\;addons\ofxThread\src\;addons\ofxVectorGraphics\libs\;addons\ofxVectorGraphics\src\;addons\ofxVectorMath\src\;" />
+		<Option virtualFolders="msbOF\;src\;msbOF\actors\;msbOF\fileIO\;msbOF\buttons\;msbOF\tinyXml\;msbOF\vMath\;addons\ofxDirList\src\;addons\ofxOpenCv\src\;addons\ofxOsc\src\;addons\ofxThread\src\;addons\ofxVectorGraphics\libs\;addons\ofxVectorGraphics\src\;addons\ofxVectorMath\src\;" />
 		<Build>
 			<Target title="release">
 				<Option output="bin\$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
@@ -113,6 +113,10 @@
 			<Add option="-lws2_32" />
 			<Add option="-lIphlpapi" />
 			<Add library="..\..\..\addons\ofxOsc\libs\oscpack\lib\win_cb\oscpack.a" />
+			<Add library="winmm" />
+			<Add library="gdi32" />
+			<Add library="wsock32" />
+			<Add library="ws2_32" />
 		</Linker>
 		<ExtraCommands>
 			<Add after='xcopy /e /i /y &quot;$(PROJECT_DIR)..\..\..\export\win_cb\*.dll&quot;  &quot;$(PROJECT_DIR)bin&quot;' />
@@ -275,221 +279,164 @@
 		<Unit filename="..\..\..\addons\ofxVectorMath\src\ofxVectorMath.h">
 			<Option virtualFolder="addons\ofxVectorMath\src" />
 		</Unit>
-		<Unit filename="bin\shaders\color.frag">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\color.vert">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\drawing.frag">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\drawing.vert">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\font.frag">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\font.vert">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\particleHeightField.frag">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\particleHeightField.vert">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\post\deferredLight.frag">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\post\post.frag">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\post\post.vert">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\skeletal.frag">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\skeletal.vert">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\skinning.frag">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\skinning.vert">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\texture.frag">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
-		<Unit filename="bin\shaders\texture.vert">
-			<Option virtualFolder="src\msbOF\shaders\" />
-		</Unit>
 		<Unit filename="src\main.cpp">
 			<Option virtualFolder="src\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\actor.cpp">
-			<Option virtualFolder="src\msbOF\actors\" />
+			<Option virtualFolder="msbOF\actors\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\actor.h">
-			<Option virtualFolder="src\msbOF\actors\" />
+			<Option virtualFolder="msbOF\actors\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\base64Encode.h">
-			<Option virtualFolder="src\msbOF\fileIO\" />
+			<Option virtualFolder="msbOF\fileIO\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\basicButton.cpp">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\basicButton.h">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\boneActor.cpp">
-			<Option virtualFolder="src\msbOF\actors\" />
+			<Option virtualFolder="msbOF\actors\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\boneActor.h">
-			<Option virtualFolder="src\msbOF\actors\" />
+			<Option virtualFolder="msbOF\actors\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\colladaLoader.cpp">
-			<Option virtualFolder="src\msbOF\fileIO\" />
+			<Option virtualFolder="msbOF\fileIO\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\colladaLoader.h">
-			<Option virtualFolder="src\msbOF\fileIO\" />
-		</Unit>
-		<Unit filename="src\msbOFCore\content.cpp">
-			<Option virtualFolder="src\msbOF\" />
-		</Unit>
-		<Unit filename="src\msbOFCore\content.h">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\fileIO\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\includes.h">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\input.cpp">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\input.h">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\layer.cpp">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\layer.h">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\meshData.cpp">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\meshData.h">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\assignButton.cpp">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\assignButton.h">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\listButton.cpp">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\listButton.h">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\moveButton.cpp">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\moveButton.h">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\rotateButton.cpp">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\rotateButton.h">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\sliderButton.cpp">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\sliderButton.h">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\textInputButton.cpp">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\textInputButton.h">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\userPopUp.cpp">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbButtons\userPopUp.h">
-			<Option virtualFolder="src\msbOF\buttons\" />
+			<Option virtualFolder="msbOF\buttons\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbLight.cpp">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\msbLight.h">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\node.cpp">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\node.h">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\nodeIO.cpp">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\nodeIO.h">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\particleSystem.cpp">
-			<Option virtualFolder="src\msbOF\actors\" />
+			<Option virtualFolder="msbOF\actors\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\particleSystem.h">
-			<Option virtualFolder="src\msbOF\actors\" />
+			<Option virtualFolder="msbOF\actors\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\renderer.cpp">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\renderer.h">
-			<Option virtualFolder="src\msbOF\" />
+			<Option virtualFolder="msbOF\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\skeletalActor.cpp">
-			<Option virtualFolder="src\msbOF\actors\" />
+			<Option virtualFolder="msbOF\actors\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\skeletalActor.h">
-			<Option virtualFolder="src\msbOF\actors\" />
+			<Option virtualFolder="msbOF\actors\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\skeletalDrawing.cpp">
-			<Option virtualFolder="src\msbOF\actors\" />
+			<Option virtualFolder="msbOF\actors\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\skeletalDrawing.h">
-			<Option virtualFolder="src\msbOF\actors\" />
+			<Option virtualFolder="msbOF\actors\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\spriteMeshLoader.cpp">
-			<Option virtualFolder="src\msbOF\fileIO\" />
+			<Option virtualFolder="msbOF\fileIO\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\spriteMeshLoader.h">
-			<Option virtualFolder="src\msbOF\fileIO\" />
+			<Option virtualFolder="msbOF\fileIO\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\textfile.cpp">
-			<Option virtualFolder="src\msbOF\fileIO\" />
+			<Option virtualFolder="msbOF\fileIO\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\textfile.h">
-			<Option virtualFolder="src\msbOF\fileIO\" />
+			<Option virtualFolder="msbOF\fileIO\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\tinyxml\tinyxml.cpp">
-			<Option virtualFolder="src\msbOF\tinyXml\" />
+			<Option virtualFolder="msbOF\tinyXml\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\tinyxml\tinyxml.h">
-			<Option virtualFolder="src\msbOF\tinyXml\" />
+			<Option virtualFolder="msbOF\tinyXml\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\tinyxml\tinyxmlerror.cpp">
-			<Option virtualFolder="src\msbOF\tinyXml\" />
+			<Option virtualFolder="msbOF\tinyXml\" />
 		</Unit>
 		<Unit filename="src\msbOFCore\tinyxml\tinyxmlparser.cpp">
-			<Option virtualFolder="src\msbOF\tinyXml\" />
+			<Option virtualFolder="msbOF\tinyXml\" />
 		</Unit>
 		<Unit filename="src\testApp.cpp">
 			<Option virtualFolder="src\" />
@@ -498,10 +445,10 @@
 			<Option virtualFolder="src\" />
 		</Unit>
 		<Unit filename="src\vMath\vmath.cpp">
-			<Option virtualFolder="src\msbOF\vMath\" />
+			<Option virtualFolder="msbOF\vMath\" />
 		</Unit>
 		<Unit filename="src\vMath\vmath.h">
-			<Option virtualFolder="src\msbOF\vMath\" />
+			<Option virtualFolder="msbOF\vMath\" />
 		</Unit>
 		<Extensions>
 			<code_completion />

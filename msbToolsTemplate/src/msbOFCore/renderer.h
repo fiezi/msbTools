@@ -3,7 +3,6 @@
 
 #include "includes.h"
 
-#include "content.h"
 #include "layer.h"
 #include "basicButton.h"
 #include "textfile.h"
@@ -177,7 +176,6 @@ public:
        Vector3f lightLoc;                  //light Location
        Vector3f ambient;                   //ambient Light
 
-       Content *content;                   //the list of things we create at program start
        ColladaLoader* colladaLoader;       //helper object for loading meshes and animations from collada
        SpriteMeshLoader* spriteMeshLoader; //helper Object for loading sprite meshes from Base64
 
