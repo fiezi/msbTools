@@ -193,9 +193,6 @@ public:
         //for actor picking
         float objectID;
 
-        //of specific
-        ofTexture      myTexture;
-
 
         /***********************************************************************************
 

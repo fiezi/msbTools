@@ -1188,7 +1188,7 @@
 1293667239 c:\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\basicbutton.h
 	"actor.h"
 
-1296962240 c:\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\actor.h
+1297021466 c:\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\actor.h
 	"includes.h"
 	"tinyxml.h"
 
@@ -1244,7 +1244,7 @@
 1293666312 c:\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\nodeio.h
 	"basicButton.h"
 
-1296963250 source:c:\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\content.cpp
+1297021767 source:c:\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\content.cpp
 	"content.h"
 	"input.h"
 	"assignButton.h"
@@ -1322,7 +1322,7 @@
 	"nodeIO.h"
 	"input.h"
 
-1296705980 source:c:\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\input.cpp
+1297022555 source:c:\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\input.cpp
 	"input.h"
 	"basicButton.h"
 	"listButton.h"
@@ -1362,14 +1362,16 @@
 	"tinyxml.h"
 	<windows.h>
 
-1297021192 source:c:\openframeworks\apps\msbtools\msbtoolstemplate\src\testapp.cpp
+1297022747 source:c:\openframeworks\apps\msbtools\msbtoolstemplate\src\testapp.cpp
 	"testApp.h"
 	"actor.h"
+	"assignButton.h"
+	"msbLight.h"
 
 1293667204 source:c:\openframeworks\apps\msbtools\msbtoolstemplate\src\vmath\vmath.cpp
 	"vmath.h"
 
-1297020997 source:c:\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\renderer.cpp
+1297021615 source:c:\openframeworks\apps\msbtools\msbtoolstemplate\src\msbofcore\renderer.cpp
 	"input.h"
 	"spriteMeshLoader.h"
 	"colladaLoader.h"

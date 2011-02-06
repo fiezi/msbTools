@@ -1,9 +1,12 @@
 #include "testApp.h"
 #include "actor.h"
+#include "assignButton.h"
+#include "msbLight.h"
 
 //--------------------------------------------------------------
 void testApp::setup(){
 
+    //MSB setup
     renderer=Renderer::getInstance();
     input=Input::getInstance();
 
@@ -15,8 +18,65 @@ void testApp::setup(){
     renderer->camActor->setLocation(Vector3f(0,0,-5));
     renderer->camActor->postLoad();
 
+    //Adding MSB content
+    BasicButton *but;
 
-	vidGrabber.setVerbose(true);
+    but= new AssignButton;
+    but->location.x=100;
+    but->location.y=100;
+    but->name="hello_world";
+    but->bDrawName=true;
+    but->tooltip="hello_world";
+    but->setLocation(but->location);
+    but->textureID="icon_base";
+    but->color=COLOR_RED;
+    but->setup();
+    but->parent=NULL;
+    renderer->buttonList.push_back(but);
+
+
+    //heightfield based on videoTexture from OF
+    Actor* myActor = new Actor;
+    myActor->setLocation(Vector3f(-1,-0.5,-5));
+    myActor->postLoad();
+    myActor->color=Vector4f(1,1,1,1);
+    myActor->drawType=DRAW_POINTPATCH;
+    myActor->particleScale=250;
+    myActor->scale=Vector3f(2,-1.5,1);
+    myActor->bTextured=true;
+    myActor->textureID="NULL";
+    myActor->sceneShaderID="heightfield";
+
+    renderer->actorList.push_back(myActor);
+    renderer->layerList[0]->actorList.push_back(myActor);
+
+    //teapot with MSB texture
+    myActor = new Actor;
+    myActor->setLocation(Vector3f(1,-0.5,-4));
+    myActor->postLoad();
+    myActor->color=Vector4f(1,1,1,1);
+    myActor->drawType=DRAW_TEA;
+    myActor->particleScale=1;
+    myActor->bTextured=true;
+    myActor->textureID="icon_base";
+    myActor->sceneShaderID="texture";
+
+    renderer->actorList.push_back(myActor);
+    renderer->layerList[0]->actorList.push_back(myActor);
+
+    //MSB light
+    myActor = new MsbLight;
+    myActor->setLocation(Vector3f(1,-0.5,-4));
+    myActor->postLoad();
+    myActor->color=Vector4f(1,1,0,1);
+    myActor->particleScale=1;
+    renderer->actorList.push_back(myActor);
+    renderer->lightList.push_back((MsbLight*)myActor);
+    renderer->layerList[0]->actorList.push_back(myActor);
+
+    //OF stuff
+
+    vidGrabber.setVerbose(true);
 	vidGrabber.setUseTexture(true);
 	vidGrabber.initGrabber(640,480);
 
@@ -25,9 +85,6 @@ void testApp::setup(){
 
     ofBackground(128, 128, 164);
 
-    cout << "allocating texture... " << endl;
-    renderer->actorList[0]->myTexture.allocate(640,480,GL_RGB,true);
-    renderer->checkOpenGLError();
 
 }
 
@@ -35,56 +92,37 @@ void testApp::setup(){
 void testApp::update(){
 
 
-    Actor* myActor= renderer->actorList[0];
-    //myActor->addRotation(0.5,Vector3f(0.3,1.0,0.0));
+    //rotate the actor
+    Actor* patchActor= renderer->actorList[0];
+    patchActor->addRotation(0.5,Vector3f(0.3,1.0,0.0));
+
+    Actor* teaActor= renderer->actorList[1];
+    teaActor->addRotation(2.7,Vector3f(0.3,0.5,0.0));
+
+    Actor* lightActor= renderer->actorList[2];
+    lightActor->setLocation(Vector3f(sin(ofGetElapsedTimef()) * 1.0f, 0.0f, -7.0f + cos(ofGetElapsedTimef()) * 4.0f));
+
 
     renderer->update();
-
-    myActor->myTexture.loadData(vidGrabber.getPixels(),640,480,GL_RGB);
-
     vidGrabber.grabFrame();
 
+    patchActor->ofTexturePtr=&vidGrabber.getTextureReference();
+
+
     return;
-
-    GLuint texture;
-
-    //allocate texture List
-    glGenTextures( 1, &texture );
-
-    // select our current texture
-    glBindTexture( GL_TEXTURE_2D, texture );
-
-    // when texture area is small, bilinear filter the closest mipmap
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR );
-    // when texture area is large, bilinear filter the first mipmap
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-
-    // if wrap is true, the texture wraps over at the edges (repeat)
-    //       ... false, the texture ends at the edges (clamp)
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0 ? GL_REPEAT : GL_CLAMP );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0 ? GL_REPEAT : GL_CLAMP );
-
-    // build our texture and mipmaps
-    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, 640, 480, 0, GL_BGR, GL_UNSIGNED_BYTE, vidGrabber.getPixels() );
-
-    //renderer->textureList[renderer->actorList[0]->textureID]->texture=texture;
-    glBindTexture( GL_TEXTURE_2D, 0);
-
-
-    //glBindTexture( GL_TEXTURE_2D,  vidGrabber.getTextureReference().texData.textureID);
-
-
 }
 
 
 //--------------------------------------------------------------
 void testApp::draw(){
 
+    glPushMatrix();
+    glScalef(0.5,0.5,1.0);
+	vidGrabber.draw(400,100);
+	glPopMatrix();
+
     renderer->draw();
 
-
-    glScalef(0.5,0.5,1.0);
-	renderer->actorList[0]->myTexture.draw(100,100);
 }
 
 //--------------------------------------------------------------

@@ -1861,10 +1861,13 @@ void Renderer::setupShading(string shaderName){
 
 void Renderer::setupTexturing(string texName, Actor* a){
 
-    //glBindTexture(GL_TEXTURE_2D, textureList[texName]->texture);
-    glEnable(a->myTexture.texData.textureTarget);
-    glEnable (GL_ARB_texture_rectangle);
-    glBindTexture(a->myTexture.texData.textureTarget, a->myTexture.texData.textureID);
+    if (!a->ofTexturePtr){
+        glBindTexture(GL_TEXTURE_2D, textureList[texName]->texture);
+    }else{
+        glEnable(a->ofTexturePtr->texData.textureTarget);
+        glEnable (GL_ARB_texture_rectangle);
+        glBindTexture(a->ofTexturePtr->texData.textureTarget, a->ofTexturePtr->texData.textureID);
+    }
 
     if (!a)
         return;

@@ -432,6 +432,36 @@ void Input::keyUp(unsigned char key,int x,int y){
                loadShaders("data/basic.library");
 
 
+        if (key==GLUT_KEY_LEFT && keyVector.x==-1)
+               keyVector.x=0;
+        if (key==GLUT_KEY_RIGHT && keyVector.x==1)
+               keyVector.x=0;
+
+        if (key==GLUT_KEY_PAGE_UP)
+               keyVector.y=0;
+        if (key==GLUT_KEY_PAGE_DOWN)
+               keyVector.y=0;
+
+
+        if (key==GLUT_KEY_UP)
+               Input::keyVector.z=0;
+        if (key==GLUT_KEY_DOWN)
+               keyVector.z=0;
+
+        if (key==GLUT_KEY_F2){
+            renderer->bDrawNodes=!renderer->bDrawNodes;
+            return;
+        }
+
+        if (key==GLUT_KEY_F3){
+            renderer->bDrawLighting=!renderer->bDrawLighting;
+            return;
+        }
+
+            bShiftDown=((GetKeyState( VK_SHIFT ) & 0x80) > 0);
+            bCtrlDown=((GetKeyState( VK_CONTROL ) & 0x80) > 0);
+            bAltDown=((GetKeyState( VK_MENU ) & 0x80) > 0);
+
 
     ///debug:
 
@@ -448,35 +478,6 @@ void Input::keyUp(unsigned char key,int x,int y){
 
 void Input::specialKeyUp (int key,int x, int y){
 
-    if (key==GLUT_KEY_LEFT && keyVector.x==-1)
-           keyVector.x=0;
-    if (key==GLUT_KEY_RIGHT && keyVector.x==1)
-           keyVector.x=0;
-
-    if (key==GLUT_KEY_PAGE_UP)
-           keyVector.y=0;
-    if (key==GLUT_KEY_PAGE_DOWN)
-           keyVector.y=0;
-
-
-    if (key==GLUT_KEY_UP)
-           Input::keyVector.z=0;
-    if (key==GLUT_KEY_DOWN)
-           keyVector.z=0;
-
-    if (key==GLUT_KEY_F2){
-        renderer->bDrawNodes=!renderer->bDrawNodes;
-        return;
-    }
-
-    if (key==GLUT_KEY_F3){
-        renderer->bDrawLighting=!renderer->bDrawLighting;
-        return;
-    }
-
-        bShiftDown=((GetKeyState( VK_SHIFT ) & 0x80) > 0);
-        bCtrlDown=((GetKeyState( VK_CONTROL ) & 0x80) > 0);
-        bAltDown=((GetKeyState( VK_MENU ) & 0x80) > 0);
 
 }
 
