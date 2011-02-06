@@ -90,7 +90,11 @@ void Input::setup(){
 
 	glutIgnoreKeyRepeat(1);
 
-	verdana.loadFont("verdana.ttf",8);
+    #ifdef TARGET_WIN32
+        verdana.loadFont("../verdana.ttf",8);
+	#else
+        verdana.loadFont("verdana.ttf",8);
+	#endif
 	verdana.setLineHeight(20.0f);
 
 	for (int i=0;i<FPSBUFFERSIZE;i++){
