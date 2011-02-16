@@ -118,7 +118,10 @@ void testApp::draw(){
 
     glPushMatrix();
     glScalef(0.5,0.5,1.0);
+    glDisable(GL_LIGHTING);
 	vidGrabber.draw(400,100);
+    glEnable(GL_LIGHTING);
+
 	glPopMatrix();
 
     renderer->draw();

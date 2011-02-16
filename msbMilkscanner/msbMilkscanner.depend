@@ -2,10 +2,10 @@
 1294650726 source:c:\openframeworks\apps\msbtools\msbmilkscanner\src\testapp.cpp
 	"testApp.h"
 
-1283077374 c:\openframeworks\apps\msbtools\msbmilkscanner\src\testapp.h
-	"tinyxml.h"
+1297820469 c:\openframeworks\apps\msbtools\msbmilkscanner\src\testapp.h
 	"ofMain.h"
 	<sstream>
+	"msbOFCore.h"
 
 1196879346 c:\openframeworks\apps\msbtools\msbmilkscanner\src\tinyxml\tinyxml.h
 	<ctype.h>
@@ -746,4 +746,74 @@
 1215315303 source:c:\openframeworks\apps\msbtools\msbmilkscanner\src\main.cpp
 	"ofMain.h"
 	"testApp.h"
+
+1297816716 c:\openframeworks\addons\msbofcore\msbofcore.h
+	"renderer.h"
+	"input.h"
+
+1297032075 c:\openframeworks\addons\msbofcore\renderer.h
+	"includes.h"
+	"layer.h"
+	"basicButton.h"
+	"textfile.h"
+	"msbLight.h"
+	"node.h"
+
+1297820658 c:\openframeworks\addons\msbofcore\includes.h
+	"shlobj.h"
+	"windows.h"
+	"ofMain.h"
+	"vmath.h"
+	<typeinfo>
+
+1293666322 c:\openframeworks\addons\msbofcore\vmath\vmath.h
+	<cmath>
+	<cstring>
+	<iostream>
+	<cassert>
+
+1293667240 c:\openframeworks\addons\msbofcore\layer.h
+	"basicButton.h"
+
+1293667239 c:\openframeworks\addons\msbofcore\basicbutton.h
+	"actor.h"
+
+1297820616 c:\openframeworks\addons\msbofcore\actor.h
+	"includes.h"
+	"tinyxml.h"
+
+1293666312 c:\openframeworks\addons\msbofcore\textfile.h
+
+1293667238 c:\openframeworks\addons\msbofcore\msblight.h
+	"actor.h"
+
+1297820552 c:\openframeworks\addons\msbofcore\node.h
+	"listButton.h"
+	"nodeIO.h"
+
+1297820546 c:\openframeworks\addons\msbofcore\msbbuttons\listbutton.h
+	"basicButton.h"
+	"sliderButton.h"
+
+1293666312 c:\openframeworks\addons\msbofcore\msbbuttons\sliderbutton.h
+	"basicButton.h"
+
+1293666312 c:\openframeworks\addons\msbofcore\nodeio.h
+	"basicButton.h"
+
+1296704723 c:\openframeworks\addons\msbofcore\input.h
+	"includes.h"
+	"actor.h"
+	"renderer.h"
+
+1196879346 c:\openframeworks\addons\msbofcore\tinyxml\tinyxml.h
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<string>
+	<iostream>
+	<sstream>
+	"tinystr.h"
 

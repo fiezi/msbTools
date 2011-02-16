@@ -8,10 +8,8 @@
 #include "ofxOsc.h"
 #include "ofxThread.h"
 #include "ofx3DModelLoader.h"
+#include "msbOFCore.h"
 
-
-#include "renderer.h"
-#include "input.h"
 
 class testApp : public ofBaseApp{
 

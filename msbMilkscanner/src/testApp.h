@@ -2,10 +2,9 @@
 #define _TEST_APP
 
 
-#include "tinyxml.h"
 #include "ofMain.h"
 #include <sstream>
-
+#include "msbOFCore.h"
 
 class testApp : public ofSimpleApp{
 
