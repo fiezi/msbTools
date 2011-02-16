@@ -1,4 +1,8 @@
 #include "testApp.h"
+#include "actor.h"
+#include "assignButton.h"
+#include "msbLight.h"
+
 
 
 
@@ -22,12 +26,6 @@ void testApp::setup(){
 
     vidGrabber.listDevices();
 
-    ofVideoGrabber bla;
-
-    bla.setVerbose(true);
-    bla.setDeviceID(0);
-    bla.initGrabber(camWidth,camHeight);
-
 	videoInverted 	= new unsigned char[camWidth*camHeight*3];
 	videoTexture.allocate(camWidth,camHeight, GL_RGB);
 
@@ -37,7 +35,7 @@ void testApp::setup(){
 
     inkScanTexture.allocate(camWidth,camHeight, GL_RGB);
 
-    threshhold=255;
+    threshhold=100;
     //threshhold=255;
     fileRevision=0;
     ofBackground(0, 0, 0);
@@ -51,8 +49,57 @@ void testApp::setup(){
     bIsInterval=false;
     bFrontToBack=false;
 
+    msbSetup();
+
 }
 
+
+void testApp::msbSetup(){
+
+    renderer=Renderer::getInstance();
+    input=Input::getInstance();
+
+    renderer->loadPreferences();
+
+    renderer->setup();
+
+    renderer->camActor=new Actor;
+    renderer->camActor->setLocation(Vector3f(0,0,-5));
+    renderer->camActor->postLoad();
+
+    //Adding MSB content
+    BasicButton *but;
+
+    but= new AssignButton;
+    but->location.x=100;
+    but->location.y=100;
+    but->name="hello_world";
+    but->bDrawName=true;
+    but->tooltip="hello_world";
+    but->setLocation(but->location);
+    but->textureID="icon_base";
+    but->color=COLOR_RED;
+    but->setup();
+    but->parent=NULL;
+    renderer->buttonList.push_back(but);
+
+
+    //heightfield based on videoTexture from OF
+    patchActor = new Actor;
+    patchActor->setLocation(Vector3f(-1,-0.5,-5));
+    patchActor->postLoad();
+    patchActor->color=Vector4f(1,1,1,1);
+    patchActor->drawType=DRAW_POINTPATCH;
+    patchActor->particleScale=250;
+    patchActor->scale=Vector3f(2,-1.5,1);
+    patchActor->bTextured=true;
+    patchActor->textureID="NULL";
+    patchActor->sceneShaderID="heightfield";
+
+    renderer->actorList.push_back(patchActor);
+    renderer->layerList[0]->actorList.push_back(patchActor);
+
+}
 
 //--------------------------------------------------------------
 void testApp::update(){
@@ -123,11 +170,17 @@ void testApp::update(){
         }
 
     bJustStepped=false;
+
+
+    //MSBStuff
+    renderer->update();
+    patchActor->addRotation(0.5,Vector3f(0.3,1.0,0.0));
+    patchActor->ofTexturePtr=&inkScanTexture;
+
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	ofSetColor(0xffffff);
 	vidGrabber.draw(10,10);
 	videoTexture.draw(30+camWidth,10,320,240);
     inkScanTexture.draw(30+camWidth,260,320,240);
@@ -154,6 +207,11 @@ void testApp::draw(){
 	    else
             currentStep++;
 	  }
+
+    //MSBStuff
+    renderer->draw();
+
+
 }
 
 

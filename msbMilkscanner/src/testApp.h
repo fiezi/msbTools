@@ -11,6 +11,7 @@ class testApp : public ofSimpleApp{
 	public:
 
 		void setup();
+		void msbSetup();
 		void update();
 		void draw();
 
@@ -65,6 +66,13 @@ class testApp : public ofSimpleApp{
 		ofTrueTypeFont	    verdana;
 
 		ofImage             endImage;
+
+		//MSBStuff
+        Input*              input;
+        Renderer*           renderer;
+        Actor*              patchActor;
+
+
 };
 
 #endif
