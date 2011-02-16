@@ -116,6 +116,8 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 
+    renderer->draw();
+
     glPushMatrix();
     glScalef(0.5,0.5,1.0);
     glDisable(GL_LIGHTING);
@@ -124,7 +126,6 @@ void testApp::draw(){
 
 	glPopMatrix();
 
-    renderer->draw();
 
 }
 

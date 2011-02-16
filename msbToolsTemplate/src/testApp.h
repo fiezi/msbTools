@@ -42,10 +42,6 @@ class testApp : public ofBaseApp{
         Input*      input;
         Renderer*   renderer;
 
-        Matrix4f projectionMatrix;
-        Matrix4f cameraMatrix;
-
-
 };
 
 #endif
