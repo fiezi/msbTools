@@ -86,7 +86,7 @@ void testApp::msbSetup(){
 
     //heightfield based on videoTexture from OF
     patchActor = new Actor;
-    patchActor->setLocation(Vector3f(-1,-0.5,-5));
+    patchActor->setLocation(Vector3f(-1.5,-0.5,-5));
     patchActor->postLoad();
     patchActor->color=Vector4f(1,1,1,1);
     patchActor->drawType=DRAW_POINTPATCH;
@@ -181,11 +181,18 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+
+    //MSBStuff
+    renderer->draw();
+
+    ofSetColor(255,255,255);
+    glScalef(0.5,0.5,1.0);
 	vidGrabber.draw(10,10);
-	videoTexture.draw(30+camWidth,10,320,240);
-    inkScanTexture.draw(30+camWidth,260,320,240);
+	glScalef(2.0,2.0,1.0);
+	videoTexture.draw(20+camWidth/2.0f,10,320,240);
+    inkScanTexture.draw(40+camWidth,10,320,240);
 
-
+    glTranslatef(350,0,0);
 	deltaTime=glutGet(GLUT_ELAPSED_TIME)-currentTime;
     currentTime=glutGet(GLUT_ELAPSED_TIME);
 
@@ -193,11 +200,11 @@ void testApp::draw(){
 
     char threshString [255];
     sprintf(threshString,"current Threshhold is: %i (change with '+/-'),\n also, we're scanning with %s (change with 't') \n and stepping is set to %i (change with 'n')",threshhold, fluid.c_str(),bStepping);
-    verdana.drawString(threshString,400,550);
+    verdana.drawString(threshString,350,550);
 
 	char timeString [255];
     sprintf(timeString,"time passed: %f  currentStep: %i", currentTime/1000.0f, currentStep);
-	verdana.drawString(timeString, 400,700);
+	verdana.drawString(timeString, 350,700);
 	if (bIsRecording)
 	  {
 	  verdana.drawString("RECORDING...", 100,750);
@@ -207,10 +214,6 @@ void testApp::draw(){
 	    else
             currentStep++;
 	  }
-
-    //MSBStuff
-    renderer->draw();
-
 
 }
 

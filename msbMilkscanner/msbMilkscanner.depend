@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1297822696 source:c:\openframeworks\apps\msbtools\msbmilkscanner\src\testapp.cpp
+1297823858 source:c:\openframeworks\apps\msbtools\msbmilkscanner\src\testapp.cpp
 	"testApp.h"
 	"actor.h"
 	"assignButton.h"
@@ -960,7 +960,7 @@
 	"input.h"
 	"meshData.h"
 
-1297811495 source:c:\openframeworks\addons\msbofcore\renderer.cpp
+1297824004 source:c:\openframeworks\addons\msbofcore\renderer.cpp
 	"input.h"
 	"spriteMeshLoader.h"
 	"colladaLoader.h"
