@@ -58,7 +58,7 @@ void testApp::setup(){
     myActor->drawType=DRAW_TEA;
     myActor->particleScale=1;
     myActor->bTextured=true;
-    myActor->textureID="icon_base";
+    myActor->textureID="grid_solid";
     myActor->sceneShaderID="texture";
 
     renderer->actorList.push_back(myActor);
