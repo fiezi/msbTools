@@ -43,7 +43,7 @@ void testApp::setup()
     {
       _tprintf(TEXT("Could not create file mapping object (%d).\n"),
              GetLastError());
-      OF_EXIT_APP(1);
+      //OF_EXIT_APP(1);
     }
     pBuf = (LPTSTR) MapViewOfFile(hMapFile,   // handle to map object
                         FILE_MAP_ALL_ACCESS, // read/write permission
@@ -59,8 +59,10 @@ void testApp::setup()
 
        CloseHandle(hMapFile);
 
-      OF_EXIT_APP(0);
+      //OF_EXIT_APP(0);
    }
+
+    myPic= new unsigned char[320*240];
 
     bShareMemory=true;
 }
@@ -70,23 +72,23 @@ int testApp::shareMemory(){
 
 
     if (kinect.getDepthPixels()){
-
-       unsigned char* myPic= new unsigned char[320*240];
-
+/*
         for (int col=0;col<240;col++){
             for (int row=0;row<320;row++){
                 myPic[320*col+row]=kinect.getDepthPixels()[640*col*2 + 2*row];
             }
         }
+*/
 /*
         for (int i=0;i<320*240;i++)
             myPic[i]=kinect.getDepthPixels()[i*4];
 */
        cout << "sending depth info..." << endl;
-       CopyMemory((PVOID)pBuf, myPic, (320*240 * sizeof(unsigned char)));
-       //CopyMemory((PVOID)pBuf, kinect.getDepthPixels(), (320*240 * 8));
+       //CopyMemory((PVOID)pBuf, myPic, (320*240 * sizeof(unsigned char)));
+       CopyMemory((PVOID)pBuf, kinect.getDepthPixels(), (320*240 * 8));
     }
    // _getch();
+
 
 
 }
@@ -144,17 +146,17 @@ void testApp::draw()
 	ofSetColor(255, 255, 255);
 
 	kinect.drawDepth(10, 10, 400, 300);
-//	kinect.draw(420, 10, 400, 300);
+	kinect.draw(420, 10, 400, 300);
 
 //	grayImage.draw(10, 320, 400, 300);
 //	contourFinder.draw(10, 320, 400, 300);
-/*
+
 	ofPushMatrix();
 	ofTranslate(420, 320);
 	// point cloud is commented out because we need a proper camera class to explore it effectively
 	drawPointCloud();
 	ofPopMatrix();
-*/
+
 	ofSetColor(255, 255, 255);
 	ofDrawBitmapString("accel is: " + ofToString(kinect.getMksAccel().x, 2) + " / "
 									+ ofToString(kinect.getMksAccel().y, 2) + " / "

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1293753635 source:c:\openframeworks\addons\ofxkinect\ofxkinect.cpp
+1298587796 source:c:\openframeworks\addons\ofxkinect\ofxkinect.cpp
 	"ofxKinect.h"
 	"ofMain.h"
 
@@ -1014,7 +1014,7 @@
 	"testApp.h"
 	"ofAppGlutWindow.h"
 
-1293745581 c:\openframeworks\apps\msbtools\msbkinect\src\testapp.h
+1298751987 c:\openframeworks\apps\msbtools\msbkinect\src\testapp.h
 	"ofMain.h"
 	"ofxOpenCv.h"
 	"ofxKinect.h"
@@ -1028,7 +1028,7 @@
 	"ofxCvShortImage.h"
 	"ofxCvContourFinder.h"
 
-1293752165 source:c:\openframeworks\apps\msbtools\msbkinect\src\testapp.cpp
+1298751869 source:c:\openframeworks\apps\msbtools\msbkinect\src\testapp.cpp
 	"testApp.h"
 	<windows.h>
 	<stdio.h>

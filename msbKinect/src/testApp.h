@@ -49,6 +49,9 @@ class testApp : public ofBaseApp
 		int					farThreshold;
 
 		int					angle;
+
+        unsigned char*      myPic;
+
 };
 
 #endif
