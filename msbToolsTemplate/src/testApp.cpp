@@ -133,12 +133,16 @@ void testApp::draw(){
 void testApp::keyPressed  (int key){
 
     input->normalKeyDown(key,mouseX,mouseY);
+    input->specialKeyDown(key,mouseX,mouseY);
+
 }
 
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
 
     input->keyUp(key,mouseX,mouseY);
+    input->specialKeyUp(key,mouseX,mouseY);
+
 }
 
 //--------------------------------------------------------------
