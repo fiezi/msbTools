@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1298587796 source:c:\openframeworks\addons\ofxkinect\ofxkinect.cpp
+1298761902 source:c:\openframeworks\addons\ofxkinect\ofxkinect.cpp
 	"ofxKinect.h"
 	"ofMain.h"
 
@@ -1009,15 +1009,16 @@
 	"ofxQuaternion.h"
 	"ofxMatrix4x4.h"
 
-1293642751 source:c:\openframeworks\apps\msbtools\msbkinect\src\main.cpp
+1298767402 source:c:\openframeworks\apps\msbtools\msbkinect\src\main.cpp
 	"ofMain.h"
 	"testApp.h"
 	"ofAppGlutWindow.h"
 
-1298751987 c:\openframeworks\apps\msbtools\msbkinect\src\testapp.h
+1298769216 c:\openframeworks\apps\msbtools\msbkinect\src\testapp.h
 	"ofMain.h"
 	"ofxOpenCv.h"
 	"ofxKinect.h"
+	"msbOFCore.h"
 
 1293640899 c:\openframeworks\addons\ofxopencv\src\ofxopencv.h
 	"ofxCvConstants.h"
@@ -1028,10 +1029,295 @@
 	"ofxCvShortImage.h"
 	"ofxCvContourFinder.h"
 
-1298751869 source:c:\openframeworks\apps\msbtools\msbkinect\src\testapp.cpp
+1298769026 source:c:\openframeworks\apps\msbtools\msbkinect\src\testapp.cpp
 	"testApp.h"
 	<windows.h>
 	<stdio.h>
 	<conio.h>
 	<tchar.h>
+	"actor.h"
+	"assignButton.h"
+	"msbLight.h"
+
+1296958607 source:c:\openframeworks\addons\msbofcore\actor.cpp
+	<sstream>
+	"actor.h"
+	"input.h"
+	"interpolationHelper.h"
+	"renderer.h"
+	"node.h"
+	"meshData.h"
+
+1298766524 c:\openframeworks\addons\msbofcore\actor.h
+	"includes.h"
+	"tinyxml.h"
+
+1298766528 c:\openframeworks\addons\msbofcore\includes.h
+	"shlobj.h"
+	"windows.h"
+	"ofMain.h"
+	"vmath.h"
+	<typeinfo>
+
+1293666322 c:\openframeworks\addons\msbofcore\vmath\vmath.h
+	<cmath>
+	<cstring>
+	<iostream>
+	<cassert>
+
+1196879346 c:\openframeworks\addons\msbofcore\tinyxml\tinyxml.h
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<string>
+	<iostream>
+	<sstream>
+	"tinystr.h"
+
+1296704723 c:\openframeworks\addons\msbofcore\input.h
+	"includes.h"
+	"actor.h"
+	"renderer.h"
+
+1297032075 c:\openframeworks\addons\msbofcore\renderer.h
+	"includes.h"
+	"layer.h"
+	"basicButton.h"
+	"textfile.h"
+	"msbLight.h"
+	"node.h"
+
+1293667240 c:\openframeworks\addons\msbofcore\layer.h
+	"basicButton.h"
+
+1293667239 c:\openframeworks\addons\msbofcore\basicbutton.h
+	"actor.h"
+
+1293666312 c:\openframeworks\addons\msbofcore\textfile.h
+
+1293667238 c:\openframeworks\addons\msbofcore\msblight.h
+	"actor.h"
+
+1297820552 c:\openframeworks\addons\msbofcore\node.h
+	"listButton.h"
+	"nodeIO.h"
+
+1297820546 c:\openframeworks\addons\msbofcore\msbbuttons\listbutton.h
+	"basicButton.h"
+	"sliderButton.h"
+
+1293666312 c:\openframeworks\addons\msbofcore\msbbuttons\sliderbutton.h
+	"basicButton.h"
+
+1293666312 c:\openframeworks\addons\msbofcore\nodeio.h
+	"basicButton.h"
+
+1296698712 c:\openframeworks\addons\msbofcore\interpolationhelper.h
+	"actor.h"
+
+1293667239 c:\openframeworks\addons\msbofcore\meshdata.h
+	"actor.h"
+	"renderer.h"
+
+1296699500 source:c:\openframeworks\addons\msbofcore\basicbutton.cpp
+	"basicButton.h"
+	"input.h"
+
+1296843310 source:c:\openframeworks\addons\msbofcore\boneactor.cpp
+	"skeletalDrawing.h"
+	"boneActor.h"
+	"renderer.h"
+	"input.h"
+	"meshData.h"
+
+1293667239 c:\openframeworks\addons\msbofcore\skeletaldrawing.h
+	"particleSystem.h"
+	"boneActor.h"
+
+1293666312 c:\openframeworks\addons\msbofcore\particlesystem.h
+	"includes.h"
+	"actor.h"
+	"textfile.h"
+
+1296843259 c:\openframeworks\addons\msbofcore\boneactor.h
+	"actor.h"
+	"particleSystem.h"
+
+1293667240 source:c:\openframeworks\addons\msbofcore\colladaloader.cpp
+	"colladaLoader.h"
+
+1293667238 c:\openframeworks\addons\msbofcore\colladaloader.h
+	"includes.h"
+	"renderer.h"
+	"meshData.h"
+
+1297822510 source:c:\openframeworks\addons\msbofcore\input.cpp
+	"input.h"
+	"basicButton.h"
+	"listButton.h"
+	"interpolationHelper.h"
+	"textInputButton.h"
+	"assignButton.h"
+	"userPopUp.h"
+
+1293666312 c:\openframeworks\addons\msbofcore\msbbuttons\textinputbutton.h
+	"basicButton.h"
+
+1293666311 c:\openframeworks\addons\msbofcore\msbbuttons\assignbutton.h
+	<basicButton.h>
+
+1293667240 c:\openframeworks\addons\msbofcore\msbbuttons\userpopup.h
+	"textInputButton.h"
+
+1293666311 source:c:\openframeworks\addons\msbofcore\interpolationhelper.cpp
+	"interpolationHelper.h"
+	"skeletalActor.h"
+	"renderer.h"
+
+1293667240 c:\openframeworks\addons\msbofcore\skeletalactor.h
+	"skeletalDrawing.h"
+
+1293667239 source:c:\openframeworks\addons\msbofcore\layer.cpp
+	"layer.h"
+	"renderer.h"
+	"input.h"
+	"msbLight.h"
+
+1293667239 source:c:\openframeworks\addons\msbofcore\meshdata.cpp
+	"meshData.h"
+	"renderer.h"
+
+1293666311 source:c:\openframeworks\addons\msbofcore\msbbuttons\assignbutton.cpp
+	"assignButton.h"
+	"renderer.h"
+	"input.h"
+
+1293666311 source:c:\openframeworks\addons\msbofcore\msbbuttons\listbutton.cpp
+	"listButton.h"
+	"renderer.h"
+	"input.h"
+
+1296706046 source:c:\openframeworks\addons\msbofcore\msbbuttons\movebutton.cpp
+	"moveButton.h"
+	"input.h"
+
+1293666311 c:\openframeworks\addons\msbofcore\msbbuttons\movebutton.h
+	"rotateButton.h"
+
+1293666312 c:\openframeworks\addons\msbofcore\msbbuttons\rotatebutton.h
+	"basicButton.h"
+
+1296706061 source:c:\openframeworks\addons\msbofcore\msbbuttons\rotatebutton.cpp
+	"rotateButton.h"
+	"input.h"
+
+1293666312 source:c:\openframeworks\addons\msbofcore\msbbuttons\sliderbutton.cpp
+	"sliderButton.h"
+	"renderer.h"
+	"input.h"
+
+1296700150 source:c:\openframeworks\addons\msbofcore\msbbuttons\textinputbutton.cpp
+	"textInputButton.h"
+	"renderer.h"
+	"input.h"
+
+1293667240 source:c:\openframeworks\addons\msbofcore\msbbuttons\userpopup.cpp
+	"userPopUp.h"
+	"renderer.h"
+	"input.h"
+
+1296749775 source:c:\openframeworks\addons\msbofcore\msblight.cpp
+	"msbLight.h"
+	"renderer.h"
+
+1296700421 source:c:\openframeworks\addons\msbofcore\node.cpp
+	"node.h"
+	"input.h"
+
+1293666312 source:c:\openframeworks\addons\msbofcore\nodeio.cpp
+	"nodeIO.h"
+	"input.h"
+
+1297032075 source:c:\openframeworks\addons\msbofcore\particlesystem.cpp
+	"particleSystem.h"
+	"input.h"
+	"meshData.h"
+
+1298769514 source:c:\openframeworks\addons\msbofcore\renderer.cpp
+	"input.h"
+	"spriteMeshLoader.h"
+	"colladaLoader.h"
+	"msbLight.h"
+	"listButton.h"
+	"sliderButton.h"
+	"userPopUp.h"
+	"assignButton.h"
+	"textInputButton.h"
+	"moveButton.h"
+	"rotateButton.h"
+	"node.h"
+	"layer.h"
+	"meshData.h"
+	<Commdlg.h>
+	<stdio.h>
+	<conio.h>
+	<tchar.h>
+
+1293667240 c:\openframeworks\addons\msbofcore\spritemeshloader.h
+	"includes.h"
+	"skeletalDrawing.h"
+	"meshData.h"
+
+1296843411 source:c:\openframeworks\addons\msbofcore\skeletalactor.cpp
+	"skeletalActor.h"
+	"renderer.h"
+	"input.h"
+	"boneActor.h"
+	"meshData.h"
+
+1297032075 source:c:\openframeworks\addons\msbofcore\skeletaldrawing.cpp
+	"skeletalDrawing.h"
+	"renderer.h"
+	"boneActor.h"
+	"skeletalActor.h"
+	"spriteMeshLoader.h"
+	"input.h"
+
+1293667240 source:c:\openframeworks\addons\msbofcore\spritemeshloader.cpp
+	"spriteMeshLoader.h"
+	"renderer.h"
+	"input.h"
+	"base64Encode.h"
+
+1293667240 c:\openframeworks\addons\msbofcore\base64encode.h
+	"includes.h"
+
+1293666312 source:c:\openframeworks\addons\msbofcore\textfile.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1201628442 source:c:\openframeworks\addons\msbofcore\tinyxml\tinyxml.cpp
+	<ctype.h>
+	<sstream>
+	<iostream>
+	"tinyxml.h"
+
+1178476884 source:c:\openframeworks\addons\msbofcore\tinyxml\tinyxmlerror.cpp
+	"tinyxml.h"
+
+1178476884 source:c:\openframeworks\addons\msbofcore\tinyxml\tinyxmlparser.cpp
+	<ctype.h>
+	<stddef.h>
+	"tinyxml.h"
+	<windows.h>
+
+1293667204 source:c:\openframeworks\addons\msbofcore\vmath\vmath.cpp
+	"vmath.h"
+
+1297816716 c:\openframeworks\addons\msbofcore\msbofcore.h
+	"renderer.h"
+	"input.h"
 

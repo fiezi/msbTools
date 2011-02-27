@@ -5,13 +5,88 @@
 #include <conio.h>
 #include <tchar.h>
 
-#define BUF_SIZE 640*480*8
+#include "actor.h"
+#include "assignButton.h"
+#include "msbLight.h"
+
+#define BUF_SIZE 640*480*32
 TCHAR szName[]=TEXT("Global\\MyFileMappingObject");
 
 
 //--------------------------------------------------------------
 void testApp::setup()
 {
+    //MSB setup
+    renderer=Renderer::getInstance();
+    input=Input::getInstance();
+
+    renderer->loadPreferences();
+
+    renderer->setup();
+
+    renderer->camActor=new Actor;
+    renderer->camActor->setLocation(Vector3f(0,0,-5));
+    renderer->camActor->postLoad();
+
+    //Adding MSB content
+    BasicButton *but;
+
+    but= new AssignButton;
+    but->location.x=100;
+    but->location.y=100;
+    but->name="hello_world";
+    but->bDrawName=true;
+    but->tooltip="hello_world";
+    but->setLocation(but->location);
+    but->textureID="icon_base";
+    but->color=COLOR_RED;
+    but->setup();
+    but->parent=NULL;
+    renderer->buttonList.push_back(but);
+
+
+    //heightfield based on videoTexture from OF
+    Actor* myActor = new Actor;
+    myActor->setLocation(Vector3f(-1,-0.5,-5));
+    myActor->postLoad();
+    myActor->color=Vector4f(1,1,1,1);
+    myActor->drawType=DRAW_POINTPATCH;
+    myActor->particleScale=250;
+    myActor->scale=Vector3f(2,-1.5,1);
+    myActor->bTextured=true;
+    myActor->textureID="NULL";
+    myActor->sceneShaderID="heightfield";
+
+    renderer->actorList.push_back(myActor);
+    renderer->layerList[0]->actorList.push_back(myActor);
+
+    //teapot with MSB texture
+    myActor = new Actor;
+    myActor->setLocation(Vector3f(1,-0.5,-4));
+    myActor->postLoad();
+    myActor->color=Vector4f(1,1,1,1);
+    myActor->drawType=DRAW_TEA;
+    myActor->particleScale=1;
+    myActor->bTextured=true;
+    myActor->textureID="grid_solid";
+    myActor->sceneShaderID="texture";
+
+    renderer->actorList.push_back(myActor);
+    renderer->layerList[0]->actorList.push_back(myActor);
+
+
+    //MSB light
+    myActor = new MsbLight;
+    myActor->setLocation(Vector3f(1,-0.5,-4));
+    myActor->postLoad();
+    myActor->color=Vector4f(1,1,0,1);
+    myActor->particleScale=1;
+    renderer->actorList.push_back(myActor);
+    renderer->lightList.push_back((MsbLight*)myActor);
+    renderer->layerList[0]->actorList.push_back(myActor);
+
+    //OF_STUFF
+
 	//kinect.init(true);  //shows infrared image
 	kinect.init();
 	kinect.setVerbose(true);
@@ -29,7 +104,6 @@ void testApp::setup()
 	ofSetFrameRate(60);
 
 	angle = 0;
-//	kinect.setCameraTiltAngle(angle);
 
    hMapFile = CreateFileMapping(
                  INVALID_HANDLE_VALUE,    // use paging file
@@ -62,7 +136,7 @@ void testApp::setup()
       //OF_EXIT_APP(0);
    }
 
-    myPic= new unsigned char[320*240];
+    myPic= new float[640*480];
 
     bShareMemory=true;
 }
@@ -71,21 +145,25 @@ void testApp::setup()
 int testApp::shareMemory(){
 
 
+    //store xyz values in rgb pixels, soon.
     if (kinect.getDepthPixels()){
-/*
+
+    /*
         for (int col=0;col<240;col++){
             for (int row=0;row<320;row++){
-                myPic[320*col+row]=kinect.getDepthPixels()[640*col*2 + 2*row];
+                myPic[320*col+row]=(kinect.getDepthPixels()[640*col*2 + 2*row]);
             }
         }
-*/
-/*
-        for (int i=0;i<320*240;i++)
-            myPic[i]=kinect.getDepthPixels()[i*4];
-*/
-       cout << "sending depth info..." << endl;
-       //CopyMemory((PVOID)pBuf, myPic, (320*240 * sizeof(unsigned char)));
-       CopyMemory((PVOID)pBuf, kinect.getDepthPixels(), (320*240 * 8));
+
+    */
+
+        for (int i=0;i<640*480;i++){
+            myPic[i]=(float)kinect.getDistancePixels()[i];
+            myPic[i]=myPic[i]/4192.0f;
+
+        }
+       //CopyMemory((PVOID)pBuf, myPic, (320*240 * sizeof(float)));
+       CopyMemory((PVOID)pBuf, myPic, (640*480 * sizeof(float)));
     }
    // _getch();
 
@@ -102,70 +180,32 @@ void testApp::update()
     if (bShareMemory)
         shareMemory();
 
+    Actor* patchActor= renderer->actorList[0];
+    patchActor->addRotation(0.5,Vector3f(0.3,1.0,0.0));
 
-/*
-	grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+    Actor* teaActor= renderer->actorList[1];
+    teaActor->addRotation(2.7,Vector3f(0.3,0.5,0.0));
 
-	//we do two thresholds - one for the far plane and one for the near plane
-	//we then do a cvAnd to get the pixels which are a union of the two thresholds.
-	if( bThreshWithOpenCV ){
-		grayThreshFar = grayImage;
-		grayThresh = grayImage;
-		grayThreshFar.threshold(farThreshold, true);
-		grayThresh.threshold(nearThreshold);
-		cvAnd(grayThresh.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
-	}else{
+    Actor* lightActor= renderer->actorList[2];
+    lightActor->setLocation(Vector3f(sin(ofGetElapsedTimef()) * 1.0f, 0.0f, -7.0f + cos(ofGetElapsedTimef()) * 4.0f));
 
-		//or we do it ourselves - show people how they can work with the pixels
 
-		unsigned char * pix = grayImage.getPixels();
-		int numPixels = grayImage.getWidth() * grayImage.getHeight();
+    renderer->update();
 
-		for(int i = 0; i < numPixels; i++){
-			if( pix[i] > nearThreshold && pix[i] < farThreshold ){
-				pix[i] = 255;
-			}else{
-				pix[i] = 0;
-			}
-		}
-	}
-
-	//update the cv image
-	grayImage.flagImageChanged();
-
-    // find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
-    // also, find holes is set to true so we will get interior contours as well....
-    contourFinder.findContours(grayImage, 10, (kinect.width*kinect.height)/2, 20, false);
-    */
+    patchActor->ofTexturePtr=&kinect.getDepthTextureReference();
 }
 
 //--------------------------------------------------------------
 void testApp::draw()
 {
+    glEnable(GL_LIGHTING);
+    renderer->draw();
+    glDisable(GL_LIGHTING);
 
 	ofSetColor(255, 255, 255);
 
 	kinect.drawDepth(10, 10, 400, 300);
 	kinect.draw(420, 10, 400, 300);
-
-//	grayImage.draw(10, 320, 400, 300);
-//	contourFinder.draw(10, 320, 400, 300);
-
-	ofPushMatrix();
-	ofTranslate(420, 320);
-	// point cloud is commented out because we need a proper camera class to explore it effectively
-	drawPointCloud();
-	ofPopMatrix();
-
-	ofSetColor(255, 255, 255);
-	ofDrawBitmapString("accel is: " + ofToString(kinect.getMksAccel().x, 2) + " / "
-									+ ofToString(kinect.getMksAccel().y, 2) + " / "
-									+ ofToString(kinect.getMksAccel().z, 2), 20, 658 );
-
-	char reportStr[1024];
-	sprintf(reportStr, "using opencv threshold = %i (press spacebar)\nset near threshold %i (press: + -)\nset far threshold %i (press: < >) num blobs found %i, fps: %f",bThreshWithOpenCV, nearThreshold, farThreshold, contourFinder.nBlobs, ofGetFrameRate());
-	ofDrawBitmapString(reportStr, 20, 690);
-	ofDrawBitmapString("tilt angle: " + ofToString(angle),20,670);
 
 }
 
@@ -191,11 +231,10 @@ void testApp::drawPointCloud() {
 void testApp::exit(){
 
     UnmapViewOfFile((void*)pBuf);
-
+    CloseHandle(hMapFile);
 
     cout << "woohoo!" << endl;
 
-    CloseHandle(hMapFile);
 
 }
 
@@ -203,69 +242,42 @@ void testApp::exit(){
 void testApp::keyPressed (int key)
 {
 
-//OpenNI does not support the motor yet, so these don't work...
+    input->normalKeyDown(key,mouseX,mouseY);
+    input->specialKeyDown(key,mouseX,mouseY);
 
-    switch (key)
-    {
-        case ' ':
-            bShareMemory = !bShareMemory;
-            break;
+}
 
-        case '>':
-        case '.':
-            farThreshold ++;
-            if (farThreshold > 255) farThreshold = 255;
-            break;
+void testApp::keyReleased(int key){
 
-        case '<':
-        case ',':
-            farThreshold --;
-            if (farThreshold < 0) farThreshold = 0;
-            break;
+    input->keyUp(key,mouseX,mouseY);
+    input->specialKeyUp(key,mouseX,mouseY);
 
-        case '+':
-        case '=':
-            nearThreshold ++;
-            if (nearThreshold > 255) nearThreshold = 255;
-            break;
-
-        case '-':
-            nearThreshold --;
-            if (nearThreshold < 0) nearThreshold = 0;
-            break;
-            case 'w':
-            kinect.enableDepthNearValueWhite(!kinect.isDepthNearValueWhite());
-            break;
-
-        case OF_KEY_UP:
-            angle++;
-            if(angle>30) angle=30;
-            kinect.setCameraTiltAngle(angle);
-            break;
-
-        case OF_KEY_DOWN:
-            angle--;
-            if(angle<-30) angle=-30;
-            kinect.setCameraTiltAngle(angle);
-            break;
-    }
 }
 
 //--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y)
-{}
+void testApp::mouseMoved(int x, int y){
+
+    input->moveMouse(x,y);
+
+}
 
 //--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button)
-{}
+void testApp::mouseDragged(int x, int y, int button){
+
+    input->dragMouse(x,y);
+}
 
 //--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button)
-{}
+void testApp::mousePressed(int x, int y, int button){
+
+    input->pressedMouse(button,0,x,y);
+}
 
 //--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button)
-{}
+void testApp::mouseReleased(int x, int y, int button){
+
+    input->pressedMouse(button,1,x,y);
+}
 
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h)
