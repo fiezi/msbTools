@@ -1,9 +1,9 @@
 # depslib dependency file v1.0
-1298761902 source:c:\openframeworks\addons\ofxkinect\ofxkinect.cpp
+1298850421 source:c:\openframeworks\addons\ofxkinect\ofxkinect.cpp
 	"ofxKinect.h"
 	"ofMain.h"
 
-1293751364 c:\openframeworks\addons\ofxkinect\ofxkinect.h
+1298848094 c:\openframeworks\addons\ofxkinect\ofxkinect.h
 	"ofConstants.h"
 	"ofTexture.h"
 	"ofGraphics.h"
@@ -1009,16 +1009,17 @@
 	"ofxQuaternion.h"
 	"ofxMatrix4x4.h"
 
-1298767402 source:c:\openframeworks\apps\msbtools\msbkinect\src\main.cpp
+1298843487 source:c:\openframeworks\apps\msbtools\msbkinect\src\main.cpp
 	"ofMain.h"
 	"testApp.h"
 	"ofAppGlutWindow.h"
 
-1298769216 c:\openframeworks\apps\msbtools\msbkinect\src\testapp.h
+1298847504 c:\openframeworks\apps\msbtools\msbkinect\src\testapp.h
 	"ofMain.h"
 	"ofxOpenCv.h"
 	"ofxKinect.h"
 	"msbOFCore.h"
+	"actor.h"
 
 1293640899 c:\openframeworks\addons\ofxopencv\src\ofxopencv.h
 	"ofxCvConstants.h"
@@ -1029,13 +1030,15 @@
 	"ofxCvShortImage.h"
 	"ofxCvContourFinder.h"
 
-1298769026 source:c:\openframeworks\apps\msbtools\msbkinect\src\testapp.cpp
+1298851465 source:c:\openframeworks\apps\msbtools\msbkinect\src\testapp.cpp
 	"testApp.h"
 	<windows.h>
 	<stdio.h>
 	<conio.h>
 	<tchar.h>
 	"actor.h"
+	"sliderButton.h"
+	"textInputButton.h"
 	"assignButton.h"
 	"msbLight.h"
 
@@ -1048,11 +1051,11 @@
 	"node.h"
 	"meshData.h"
 
-1298766524 c:\openframeworks\addons\msbofcore\actor.h
+1298847368 c:\openframeworks\addons\msbofcore\actor.h
 	"includes.h"
 	"tinyxml.h"
 
-1298766528 c:\openframeworks\addons\msbofcore\includes.h
+1298847322 c:\openframeworks\addons\msbofcore\includes.h
 	"shlobj.h"
 	"windows.h"
 	"ofMain.h"
@@ -1153,7 +1156,7 @@
 	"renderer.h"
 	"meshData.h"
 
-1297822510 source:c:\openframeworks\addons\msbofcore\input.cpp
+1298772678 source:c:\openframeworks\addons\msbofcore\input.cpp
 	"input.h"
 	"basicButton.h"
 	"listButton.h"
@@ -1245,7 +1248,7 @@
 	"input.h"
 	"meshData.h"
 
-1298769514 source:c:\openframeworks\addons\msbofcore\renderer.cpp
+1298844089 source:c:\openframeworks\addons\msbofcore\renderer.cpp
 	"input.h"
 	"spriteMeshLoader.h"
 	"colladaLoader.h"
@@ -1317,7 +1320,7 @@
 1293667204 source:c:\openframeworks\addons\msbofcore\vmath\vmath.cpp
 	"vmath.h"
 
-1297816716 c:\openframeworks\addons\msbofcore\msbofcore.h
+1298846963 c:\openframeworks\addons\msbofcore\msbofcore.h
 	"renderer.h"
 	"input.h"
 

@@ -6,6 +6,8 @@
 #include <tchar.h>
 
 #include "actor.h"
+#include "sliderButton.h"
+#include "textInputButton.h"
 #include "assignButton.h"
 #include "msbLight.h"
 
@@ -28,62 +30,64 @@ void testApp::setup()
     renderer->camActor->setLocation(Vector3f(0,0,-5));
     renderer->camActor->postLoad();
 
+    cutOffDepth=4096;
+    registerProperties();
+
+
     //Adding MSB content
-    BasicButton *but;
-
-    but= new AssignButton;
-    but->location.x=100;
-    but->location.y=100;
-    but->name="hello_world";
-    but->bDrawName=true;
-    but->tooltip="hello_world";
-    but->setLocation(but->location);
-    but->textureID="icon_base";
-    but->color=COLOR_RED;
-    but->setup();
-    but->parent=NULL;
-    renderer->buttonList.push_back(but);
-
-
     //heightfield based on videoTexture from OF
     Actor* myActor = new Actor;
-    myActor->setLocation(Vector3f(-1,-0.5,-5));
-    myActor->postLoad();
+    myActor->setLocation(Vector3f(-0.5,-1.0,-5));
+    myActor->setRotation(Vector3f(0,180,0));
     myActor->color=Vector4f(1,1,1,1);
     myActor->drawType=DRAW_POINTPATCH;
     myActor->particleScale=250;
-    myActor->scale=Vector3f(2,-1.5,1);
+    myActor->scale=Vector3f(1,-1,1);
     myActor->bTextured=true;
     myActor->textureID="NULL";
     myActor->sceneShaderID="heightfield";
+    myActor->setup();
 
     renderer->actorList.push_back(myActor);
     renderer->layerList[0]->actorList.push_back(myActor);
+    patchActor=myActor;
 
-    //teapot with MSB texture
-    myActor = new Actor;
-    myActor->setLocation(Vector3f(1,-0.5,-4));
-    myActor->postLoad();
-    myActor->color=Vector4f(1,1,1,1);
-    myActor->drawType=DRAW_TEA;
-    myActor->particleScale=1;
-    myActor->bTextured=true;
-    myActor->textureID="grid_solid";
-    myActor->sceneShaderID="texture";
+    SliderButton *but;
 
-    renderer->actorList.push_back(myActor);
-    renderer->layerList[0]->actorList.push_back(myActor);
+    but= new SliderButton;
+    but->location.x=10;
+    but->location.y=740;
+    but->scale.x=1000;
+    but->color=Vector4f(0.3,0.3,0.3,1.0);
+    but->scale.y=10;
+    but->name="RotateViewX";
+    but->tooltip="drag to Change";
+    but->setLocation(but->location);
+    but->textureID="icon_flat";
+    but->setup();
+    but->bDrawName=true;
+    but->parent=this;
+    but->bVertical=false;
+    but->sliderValue=0.5;
+    renderer->buttonList.push_back(but);
 
+    TextInputButton *tiBut;
 
-    //MSB light
-    myActor = new MsbLight;
-    myActor->setLocation(Vector3f(1,-0.5,-4));
-    myActor->postLoad();
-    myActor->color=Vector4f(1,1,0,1);
-    myActor->particleScale=1;
-    renderer->actorList.push_back(myActor);
-    renderer->lightList.push_back((MsbLight*)myActor);
-    renderer->layerList[0]->actorList.push_back(myActor);
+    tiBut= new TextInputButton;
+    tiBut->location.x=10;
+    tiBut->location.y=550;
+    tiBut->scale.x=100;
+    tiBut->scale.y=12;
+    tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+    tiBut->textureID="icon_flat";
+    tiBut->name="cutOffDepth";
+    tiBut->bDrawName=true;
+    tiBut->setLocation(tiBut->location);
+    tiBut->parent=this;
+    tiBut->buttonProperty="CUTOFFDEPTH";
+    renderer->buttonList.push_back(tiBut);
+    tiBut->bPermanent=true;
+    tiBut->setup();
 
     //OF_STUFF
 
@@ -142,6 +146,11 @@ void testApp::setup()
 }
 
 
+void testApp::registerProperties(){
+
+   createMemberID("CUTOFFDEPTH",&cutOffDepth,this);
+}
+
 int testApp::shareMemory(){
 
 
@@ -157,9 +166,13 @@ int testApp::shareMemory(){
 
     */
 
+        //reverse image
         for (int i=0;i<640*480;i++){
-            myPic[i]=(float)kinect.getDistancePixels()[i];
-            myPic[i]=myPic[i]/4192.0f;
+            myPic[i]=(float)kinect.getDistancePixels()[640*480-i];
+            if (myPic[i]>4192.0f)
+                myPic[i]=0.0f;
+            else
+                myPic[i]=myPic[i]/cutOffDepth;
 
         }
        //CopyMemory((PVOID)pBuf, myPic, (320*240 * sizeof(float)));
@@ -172,23 +185,13 @@ int testApp::shareMemory(){
 }
 
 //--------------------------------------------------------------
-void testApp::update()
-{
+void testApp::update(){
+
 	ofBackground(100, 100, 100);
 	kinect.update();
 
     if (bShareMemory)
         shareMemory();
-
-    Actor* patchActor= renderer->actorList[0];
-    patchActor->addRotation(0.5,Vector3f(0.3,1.0,0.0));
-
-    Actor* teaActor= renderer->actorList[1];
-    teaActor->addRotation(2.7,Vector3f(0.3,0.5,0.0));
-
-    Actor* lightActor= renderer->actorList[2];
-    lightActor->setLocation(Vector3f(sin(ofGetElapsedTimef()) * 1.0f, 0.0f, -7.0f + cos(ofGetElapsedTimef()) * 4.0f));
-
 
     renderer->update();
 
@@ -204,8 +207,9 @@ void testApp::draw()
 
 	ofSetColor(255, 255, 255);
 
-	kinect.drawDepth(10, 10, 400, 300);
-	kinect.draw(420, 10, 400, 300);
+	kinect.drawDepth(10, 50, 400, 300);
+	kinect.draw(420, 50, 400, 300);
+
 
 }
 
@@ -239,8 +243,7 @@ void testApp::exit(){
 }
 
 //--------------------------------------------------------------
-void testApp::keyPressed (int key)
-{
+void testApp::keyPressed (int key){
 
     input->normalKeyDown(key,mouseX,mouseY);
     input->specialKeyDown(key,mouseX,mouseY);
@@ -283,3 +286,13 @@ void testApp::mouseReleased(int x, int y, int button){
 void testApp::windowResized(int w, int h)
 {}
 
+void testApp::trigger(Actor* other){
+
+    if (other->name=="RotateViewX"){
+        float slValue= 0.0f;
+        slValue= ((SliderButton*)other)->sliderValue;
+        patchActor->setRotation(Vector3f(0,slValue * 360.0,0));
+    }
+    if (other->name=="cutOffDepth")
+        kinect.cutOffFar=cutOffDepth;
+}

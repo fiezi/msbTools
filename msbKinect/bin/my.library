@@ -1,4 +1,3 @@
 <?xml version="1.0" ?>
 <Moviesandbox>
-    <SpriteMesh meshID="couchKinect" meshFilename="resources/meshes/couchKinect.spriteMesh" />
 </Moviesandbox>

@@ -5,10 +5,13 @@
 
 #include "ofxOpenCv.h"
 #include "ofxKinect.h"
-
 #include "msbOFCore.h"
+#include "actor.h"
 
-class testApp : public ofBaseApp
+struct actorID;
+struct memberID;
+
+class testApp : public ofBaseApp, public Actor
 {
 
 	public:
@@ -29,6 +32,10 @@ class testApp : public ofBaseApp
 		void mousePressed(int x, int y, int button);
 		void mouseReleased(int x, int y, int button);
 		void windowResized(int w, int h);
+
+        //msbSpecific
+        void registerProperties();
+        void trigger(Actor* other);
 
         HANDLE hMapFile;
         LPCTSTR pBuf;
@@ -57,6 +64,9 @@ class testApp : public ofBaseApp
 
         Input*          input;
         Renderer*       renderer;
+        Actor*          patchActor;
+
+        float           cutOffDepth;
 
 };
 

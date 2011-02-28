@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="debug" />
+	<ActiveTarget name="msbDeploy" />
 	<File name="..\..\..\addons\msbOFCore\actor.h" open="0" top="0" tabpos="0">
-		<Cursor position="448" topLine="0" />
+		<Cursor position="2690" topLine="70" />
 	</File>
 	<File name="..\..\..\addons\msbOFCore\includes.h" open="0" top="0" tabpos="0">
-		<Cursor position="250" topLine="0" />
+		<Cursor position="400" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\msbOFCore\input.cpp" open="1" top="1" tabpos="5">
-		<Cursor position="1984" topLine="18" />
+	<File name="..\..\..\addons\msbOFCore\input.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="13367" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\msbOFCore\renderer.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="6242" topLine="71" />
+	<File name="..\..\..\addons\msbOFCore\msbButtons\sliderButton.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="823" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\ofxKinect\ofxKinect.cpp" open="0" top="0" tabpos="4">
-		<Cursor position="16958" topLine="104" />
+	<File name="..\..\..\addons\msbOFCore\msbOFCore.h" open="0" top="0" tabpos="0">
+		<Cursor position="43" topLine="0" />
+	</File>
+	<File name="..\..\..\addons\msbOFCore\renderer.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="9389" topLine="81" />
+	</File>
+	<File name="..\..\..\addons\ofxKinect\ofxKinect.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="9145" topLine="132" />
 	</File>
 	<File name="..\..\..\addons\ofxKinect\ofxKinect.h" open="0" top="0" tabpos="0">
-		<Cursor position="761" topLine="7" />
+		<Cursor position="2467" topLine="61" />
 	</File>
 	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvImage.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="1662" topLine="15" />
 	</File>
-	<File name="src\main.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="417" topLine="0" />
+	<File name="bin\shaders\particleHeightFieldRect.vert" open="0" top="0" tabpos="0">
+		<Cursor position="1316" topLine="15" />
 	</File>
-	<File name="src\testApp.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="6451" topLine="19" />
+	<File name="src\main.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="399" topLine="0" />
+	</File>
+	<File name="src\testApp.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="682" topLine="16" />
 	</File>
 	<File name="src\testApp.h" open="1" top="0" tabpos="2">
-		<Cursor position="350" topLine="0" />
+		<Cursor position="231" topLine="3" />
 	</File>
 </CodeBlocks_layout_file>

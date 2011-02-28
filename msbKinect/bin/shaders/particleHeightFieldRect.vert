@@ -1,3 +1,5 @@
+#extension GL_ARB_texture_rectangle : enable
+
 uniform sampler2DRect tex;
 //uniform sampler2D displacementTex;
 //uniform sampler2D normalTex;
@@ -43,14 +45,17 @@ void main(){
 
     N =  gl_NormalMatrix * gl_Normal;
 
-    myVertex.z=texture2DRect(tex,gl_TexCoord[0].st).r;
+    myVertex.z=texture2DRect(tex,gl_TexCoord[0].st).r * 5.0;
     myVertex.xy*=myVertex.z;
 
     //myVertex.z=1.0;
 
     gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * myVertex;
 
-    //gl_PointSize= pointSize();
+    if (myVertex.z>0.0)
+        gl_PointSize= 1.0;
+    else
+        gl_PointSize= 0.0;
 
     picking =  cameraInverse * gl_ModelViewMatrix * myVertex ;
     picking.w = objectID;
