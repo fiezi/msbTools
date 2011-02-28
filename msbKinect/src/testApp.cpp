@@ -169,7 +169,7 @@ int testApp::shareMemory(){
         //reverse image
         for (int i=0;i<640*480;i++){
             myPic[i]=(float)kinect.getDistancePixels()[640*480-i];
-            if (myPic[i]>4192.0f)
+            if (myPic[i]>cutOffDepth)
                 myPic[i]=0.0f;
             else
                 myPic[i]=myPic[i]/cutOffDepth;

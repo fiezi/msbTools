@@ -20,7 +20,7 @@
 		<Cursor position="9389" topLine="81" />
 	</File>
 	<File name="..\..\..\addons\ofxKinect\ofxKinect.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="9145" topLine="132" />
+		<Cursor position="9145" topLine="104" />
 	</File>
 	<File name="..\..\..\addons\ofxKinect\ofxKinect.h" open="0" top="0" tabpos="0">
 		<Cursor position="2467" topLine="61" />
@@ -35,9 +35,9 @@
 		<Cursor position="399" topLine="0" />
 	</File>
 	<File name="src\testApp.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="682" topLine="16" />
+		<Cursor position="4536" topLine="16" />
 	</File>
 	<File name="src\testApp.h" open="1" top="0" tabpos="2">
-		<Cursor position="231" topLine="3" />
+		<Cursor position="231" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
