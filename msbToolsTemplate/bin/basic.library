@@ -4,6 +4,7 @@
  <!-- Textures -->
     <Texture textureID="NULL" filename="icons/error.tga" bAlpha="1" bWrap="1" />
     <Texture textureID="icon_base" filename="icons/icon_base.tga" bAlpha="1" bWrap="1" />
+    <Texture textureID="icon_flat" filename="icons/icon_flat.tga" bAlpha="1" bWrap="1" />
     <Texture textureID="grid_solid" filename="icons/grid_solid.tga" bAlpha="0" bWrap="1" />
     <Texture textureID="grid" filename="icons/grid.tga" bAlpha="1" bWrap="1" />
 
