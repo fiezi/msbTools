@@ -20,10 +20,10 @@
 		<Cursor position="9389" topLine="81" />
 	</File>
 	<File name="..\..\..\addons\ofxKinect\ofxKinect.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="9145" topLine="104" />
+		<Cursor position="763" topLine="56" />
 	</File>
-	<File name="..\..\..\addons\ofxKinect\ofxKinect.h" open="0" top="0" tabpos="0">
-		<Cursor position="2467" topLine="61" />
+	<File name="..\..\..\addons\ofxKinect\ofxKinect.h" open="1" top="0" tabpos="4">
+		<Cursor position="4933" topLine="7" />
 	</File>
 	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvImage.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="1662" topLine="15" />
@@ -35,7 +35,7 @@
 		<Cursor position="399" topLine="0" />
 	</File>
 	<File name="src\testApp.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="4536" topLine="16" />
+		<Cursor position="5856" topLine="22" />
 	</File>
 	<File name="src\testApp.h" open="1" top="0" tabpos="2">
 		<Cursor position="231" topLine="0" />

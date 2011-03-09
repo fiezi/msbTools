@@ -23,8 +23,6 @@ class testApp : public ofBaseApp, public Actor
 
         int shareMemory();
 
-		void drawPointCloud();
-
 		void keyPressed  (int key);
 		void keyReleased  (int key);
 		void mouseMoved(int x, int y );
@@ -42,21 +40,8 @@ class testApp : public ofBaseApp, public Actor
 
         ofxKinect           kinect;
 
-		ofxCvColorImage		colorImg;
-
-		ofxCvGrayscaleImage 	grayImage;
-		ofxCvGrayscaleImage 	grayThresh;
-		ofxCvGrayscaleImage 	grayThreshFar;
-
-		ofxCvContourFinder 	contourFinder;
-
 		bool                bShareMemory;
-		bool				bThreshWithOpenCV;
-
-		int 				nearThreshold;
-		int					farThreshold;
-
-		int					angle;
+        bool                bSetCutoffToZero;
 
         //msbTools specific
 

@@ -11,7 +11,7 @@
 #include "assignButton.h"
 #include "msbLight.h"
 
-#define BUF_SIZE 640*480*32
+#define BUF_SIZE 640*480*4*32
 TCHAR szName[]=TEXT("Global\\MyFileMappingObject");
 
 
@@ -89,25 +89,60 @@ void testApp::setup()
     tiBut->bPermanent=true;
     tiBut->setup();
 
+    tiBut= new TextInputButton;
+    tiBut->location.x=10;
+    tiBut->location.y=570;
+    tiBut->scale.x=100;
+    tiBut->scale.y=12;
+    tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+    tiBut->textureID="icon_flat";
+    tiBut->name="previewRes";
+    tiBut->bDrawName=true;
+    tiBut->setLocation(tiBut->location);
+    tiBut->parent=patchActor;
+    tiBut->buttonProperty="PARTICLESCALE";
+    renderer->buttonList.push_back(tiBut);
+    tiBut->bPermanent=true;
+    tiBut->setup();
+
+    tiBut= new TextInputButton;
+    tiBut->location.x=10;
+    tiBut->location.y=600;
+    tiBut->scale.x=100;
+    tiBut->scale.y=12;
+    tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+    tiBut->textureID="icon_flat";
+    tiBut->name="setCutoffZero";
+    tiBut->bDrawName=true;
+    tiBut->setLocation(tiBut->location);
+    tiBut->parent=this;
+    tiBut->buttonProperty="BSETCUTOFFTOZERO";
+    renderer->buttonList.push_back(tiBut);
+    tiBut->bPermanent=true;
+    tiBut->setup();
+
+    tiBut= new TextInputButton;
+    tiBut->location.x=10;
+    tiBut->location.y=620;
+    tiBut->scale.x=100;
+    tiBut->scale.y=12;
+    tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+    tiBut->textureID="icon_flat";
+    tiBut->name="send to MSB";
+    tiBut->bDrawName=true;
+    tiBut->setLocation(tiBut->location);
+    tiBut->parent=this;
+    tiBut->buttonProperty="BSHAREMEMORY";
+    renderer->buttonList.push_back(tiBut);
+    tiBut->bPermanent=true;
+    tiBut->setup();
+
     //OF_STUFF
 
 	//kinect.init(true);  //shows infrared image
 	kinect.init();
 	kinect.setVerbose(true);
 	kinect.open();
-
-	colorImg.allocate(kinect.width, kinect.height);
-	grayImage.allocate(kinect.width, kinect.height);
-	grayThresh.allocate(kinect.width, kinect.height);
-	grayThreshFar.allocate(kinect.width, kinect.height);
-
-	nearThreshold = 50;
-	farThreshold  = 180;
-	bThreshWithOpenCV = true;
-
-	ofSetFrameRate(60);
-
-	angle = 0;
 
    hMapFile = CreateFileMapping(
                  INVALID_HANDLE_VALUE,    // use paging file
@@ -140,15 +175,18 @@ void testApp::setup()
       //OF_EXIT_APP(0);
    }
 
-    myPic= new float[640*480];
+    myPic= new float[640*480*4];
 
-    bShareMemory=true;
+    bShareMemory=false;
+    bSetCutoffToZero=false;
 }
 
 
 void testApp::registerProperties(){
 
+   createMemberID("BSHAREMEMORY",&bShareMemory,this);
    createMemberID("CUTOFFDEPTH",&cutOffDepth,this);
+   createMemberID("BSETCUTOFFTOZERO",&bSetCutoffToZero,this);
 }
 
 int testApp::shareMemory(){
@@ -166,17 +204,32 @@ int testApp::shareMemory(){
 
     */
 
-        //reverse image
-        for (int i=0;i<640*480;i++){
-            myPic[i]=(float)kinect.getDistancePixels()[640*480-i];
-            if (myPic[i]>cutOffDepth)
-                myPic[i]=0.0f;
-            else
-                myPic[i]=myPic[i]/cutOffDepth;
+        //construct full color image
+        for (int i=0;i<640*480*4;i+=4){
+            myPic[i]=(float)kinect.getPixels()[640*480 * 3 - (i/4) *3] * 1.0f/255.0f;
+            myPic[i+1]=(float)kinect.getPixels()[640*480 * 3 - (i/4) *3 + 1] * 1.0f/255.0f;
+            myPic[i+2]=(float)kinect.getPixels()[640*480 * 3 - (i/4) *3 + 2] * 1.0f/255.0f;
+            //alpha from here
+            myPic[i+3]=(float)kinect.getDistancePixels()[640*480 - i/4];
+            if (myPic[i+3]>cutOffDepth){
+                if (bSetCutoffToZero)
+                    myPic[i+3]=0.0f;
+                else
+                    myPic[i+3]=1.0f;
+            }else{
+                myPic[i+3]=myPic[i+3]/cutOffDepth;
+                if (myPic[i+3]<=0){
+                    if (bSetCutoffToZero)
+                        myPic[i+3]=0.0f;
+                    else
+                        myPic[i+3]=1.0f;
+                }
+
+            }
 
         }
        //CopyMemory((PVOID)pBuf, myPic, (320*240 * sizeof(float)));
-       CopyMemory((PVOID)pBuf, myPic, (640*480 * sizeof(float)));
+       CopyMemory((PVOID)pBuf, myPic, (640*480 * 4* sizeof(float)));
     }
    // _getch();
 
@@ -211,24 +264,6 @@ void testApp::draw()
 	kinect.draw(420, 50, 400, 300);
 
 
-}
-
-void testApp::drawPointCloud() {
-
-	ofScale(400, 400, 400);
-	int w = 640;
-	int h = 480;
-	ofRotateY(mouseX);
-	float* distancePixels = kinect.getDistancePixels();
-	glBegin(GL_POINTS);
-	int step = 2;
-	for(int y = 0; y < h; y += step) {
-		for(int x = 0; x < w; x += step) {
-			ofPoint cur = kinect.getWorldCoordinateFor(x, y);
-			glVertex3f(cur.x, cur.y, cur.z);
-		}
-	}
-	glEnd();
 }
 
 //--------------------------------------------------------------

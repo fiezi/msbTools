@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1298850421 source:c:\openframeworks\addons\ofxkinect\ofxkinect.cpp
+1299707753 source:c:\openframeworks\addons\ofxkinect\ofxkinect.cpp
 	"ofxKinect.h"
 	"ofMain.h"
 
@@ -1014,7 +1014,7 @@
 	"testApp.h"
 	"ofAppGlutWindow.h"
 
-1298847504 c:\openframeworks\apps\msbtools\msbkinect\src\testapp.h
+1299612429 c:\openframeworks\apps\msbtools\msbkinect\src\testapp.h
 	"ofMain.h"
 	"ofxOpenCv.h"
 	"ofxKinect.h"
@@ -1030,7 +1030,7 @@
 	"ofxCvShortImage.h"
 	"ofxCvContourFinder.h"
 
-1298851465 source:c:\openframeworks\apps\msbtools\msbkinect\src\testapp.cpp
+1299707286 source:c:\openframeworks\apps\msbtools\msbkinect\src\testapp.cpp
 	"testApp.h"
 	<windows.h>
 	<stdio.h>
@@ -1248,7 +1248,7 @@
 	"input.h"
 	"meshData.h"
 
-1298844089 source:c:\openframeworks\addons\msbofcore\renderer.cpp
+1299193798 source:c:\openframeworks\addons\msbofcore\renderer.cpp
 	"input.h"
 	"spriteMeshLoader.h"
 	"colladaLoader.h"
