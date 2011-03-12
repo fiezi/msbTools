@@ -3,7 +3,6 @@
 
 #include "ofMain.h"
 
-#include "ofxOpenCv.h"
 #include "ofxKinect.h"
 #include "msbOFCore.h"
 #include "actor.h"
@@ -34,10 +33,16 @@ class testApp : public ofBaseApp, public Actor
         //msbSpecific
         void registerProperties();
         void trigger(Actor* other);
-
+#ifdef TARGET_WIN32
         HANDLE hMapFile;
         LPCTSTR pBuf;
+#else
+		void *sharedMemFile;
+		int fd, 
+			ret;
+		void *sourcebuffer;
 
+#endif
         ofxKinect           kinect;
 
 		bool                bShareMemory;

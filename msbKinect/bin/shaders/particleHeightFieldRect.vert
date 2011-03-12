@@ -53,7 +53,7 @@ void main(){
     gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * myVertex;
 
     if (myVertex.z>0.0)
-        gl_PointSize= 2.0;
+        gl_PointSize= 1.0;
     else
         gl_PointSize= 0.0;
 

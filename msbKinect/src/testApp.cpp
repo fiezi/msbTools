@@ -1,9 +1,18 @@
 #include "testApp.h"
 
-#include <windows.h>
-#include <stdio.h>
-#include <conio.h>
-#include <tchar.h>
+#ifdef TARGET_WIN32
+
+	#include <windows.h>
+	#include <stdio.h>
+	#include <conio.h>
+	#include <tchar.h>
+
+	TCHAR szName[]=TEXT("Global\\MyFileMappingObject");
+#else
+
+	#include <sys/mman.h>
+
+#endif
 
 #include "actor.h"
 #include "sliderButton.h"
@@ -12,7 +21,6 @@
 #include "msbLight.h"
 
 #define BUF_SIZE 640*480*4*32
-TCHAR szName[]=TEXT("Global\\MyFileMappingObject");
 
 
 //--------------------------------------------------------------
@@ -144,6 +152,8 @@ void testApp::setup()
 	kinect.setVerbose(true);
 	kinect.open();
 
+#ifdef TARGET_WIN32
+	
    hMapFile = CreateFileMapping(
                  INVALID_HANDLE_VALUE,    // use paging file
                  NULL,                    // default security
@@ -175,6 +185,38 @@ void testApp::setup()
       //OF_EXIT_APP(0);
    }
 
+#else
+	sourcebuffer=NULL;
+	//taken from: http://mike.kronenberg.org/?p=40
+	//all credit goes to Mike Kronenberg!
+	
+	// we need a dummy file, this gives us the possibility to
+	// access the shared memory over the filesystem
+	sharedMemFile = malloc(BUF_SIZE);
+	
+	// open trunkate/create read/write for everybody
+	fd = open("/tmp/msbRamFile", O_CREAT|O_RDWR, 0666);
+	if (fd == -1) {
+		cout <<"Could not open '/tmp/msbRamFile'"<<endl;
+	}
+	ret = write(fd, sharedMemFile, BUF_SIZE); // create the file
+	ret = close(fd);
+	free(sharedMemFile);
+	
+	//attach shared memory file
+	fd = open("/tmp/msbRamFile", O_RDWR);
+	if(!fd)
+		cout << "Could not open '/tmp/msbRamFile'"<<endl;
+	
+	// load the file into memory, shared, read & write access
+	sourcebuffer = mmap( 0, BUF_SIZE, PROT_READ|PROT_WRITE, MAP_FILE|MAP_SHARED, fd, 0);
+	if(!sourcebuffer)
+		cout << "Could not mmap '%s.vga'"<< endl;
+	
+	// once the file is mapped, we can dispose of the filehandle
+	close(fd);
+		
+#endif
     myPic= new float[640*480*4];
 
     bShareMemory=false;
@@ -195,14 +237,6 @@ int testApp::shareMemory(){
     //store xyz values in rgb pixels, soon.
     if (kinect.getDepthPixels()){
 
-    /*
-        for (int col=0;col<240;col++){
-            for (int row=0;row<320;row++){
-                myPic[320*col+row]=(kinect.getDepthPixels()[640*col*2 + 2*row]);
-            }
-        }
-
-    */
 
         //construct full color image
         for (int i=0;i<640*480*4;i+=4){
@@ -228,9 +262,12 @@ int testApp::shareMemory(){
             }
 
         }
-       //CopyMemory((PVOID)pBuf, myPic, (320*240 * sizeof(float)));
+#ifdef TARGET_WIN32
        CopyMemory((PVOID)pBuf, myPic, (640*480 * 4* sizeof(float)));
-    }
+#else
+		memcpy(sourcebuffer, myPic, (640*480 * 4* sizeof(float)));
+#endif
+	}
    // _getch();
 
 
@@ -269,10 +306,14 @@ void testApp::draw()
 //--------------------------------------------------------------
 void testApp::exit(){
 
+#ifdef TARGET_WIN32
     UnmapViewOfFile((void*)pBuf);
     CloseHandle(hMapFile);
-
-    cout << "woohoo!" << endl;
+#else
+	//... do something intresting with the shared memory, then unmap
+	if (sourcebuffer)
+		munmap(sourcebuffer, BUF_SIZE);
+#endif
 
 
 }
