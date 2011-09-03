@@ -10,7 +10,7 @@ void testApp::setup(){
 
     registerProperties();
 
-    oscPath="/pilot/vector3f";
+    oscPath="/pilot/float";
 
     channel=1;
     bSending=false;
@@ -65,6 +65,9 @@ void testApp::setup(){
     aBtn->setup();
     renderer->buttonList.push_back(aBtn);
 
+    //start sending right away!
+    trigger(aBtn);
+
 	ofBackground(255,255,255);
 
 	// 0 output channels,
@@ -103,12 +106,12 @@ void testApp::draw(){
     renderer->draw();
 
 	// draw the left:
-	ofSetHexColor(0xFFFFFF);
+	ofSetColor(255);
 	for (int i = 0; i < 256; i++){
 		ofLine(10+i,200,10+i,200+left[i]*512.0f);
 	}
 
-	ofSetHexColor(0x333333);
+	ofSetColor(64);
 	drawCounter++;
 	char reportString[255];
 	sprintf(reportString, "buffers received: %i\ndraw routines called: %i\n", bufferCounter,drawCounter);
@@ -130,16 +133,16 @@ void testApp::audioReceived 	(float * input, int bufferSize, int nChannels){
 	for (int i=0;i<256;i++)
         mouth+=abs(left[i]);
 
-        m.addFloatArg( 0.0f );
+//    m.addFloatArg( 0.0f );
 
-//    if (mouth/255.0f>0.1f){
-        m.addFloatArg( mouth/12.0f  - 0.8f);
-  //  }
-   // else{
-        m.addFloatArg( 0.0f );
-   // }
+//    if (mouth>0.02f){
+        m.addFloatArg( mouth/24.0f );
+//    }
+//    else{
+//        m.addFloatArg( 0.0f );
+//    }
 
-        m.addFloatArg( 0.0f );
+//    m.addFloatArg( 0.0f );
 
     if (sender && bSending)
         sender->sendMessage( m );

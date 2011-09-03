@@ -3,28 +3,21 @@
 
 
 #include "ofMain.h"
-
+#include "ofxOpenCv.h"
+#include "ofxDirList.h"
 #include "ofxOsc.h"
 #include "ofxThread.h"
 #include "ofx3DModelLoader.h"
 #include "msbOFCore.h"
-#include "actor.h"
 
-//#define HOST "192.168.3.105"
-#define HOST "127.0.0.1"
-#define PORT 31840
 
-class testApp : public ofBaseApp, public Actor{
+class testApp : public ofBaseApp{
 
 	public:
 
 		void setup();
 		void update();
 		void draw();
-
-        void audioReceived 	(float * input, int bufferSize, int nChannels);
-
-        void registerProperties();
 
 		void keyPressed  (int key);
 		void keyReleased(int key);
@@ -34,18 +27,17 @@ class testApp : public ofBaseApp, public Actor{
 		void mouseReleased(int x, int y, int button);
 		void resized(int w, int h);
 
-		void trigger(Actor* other);
+		// we don't actually use these
+        // just checking to see if they
+        // all work in the same place :)
 
-		bool    bSending;
-		float * left;
-		float * right;
-		int 	bufferCounter;
-		int 	drawCounter;
-		int     channel;
+        ofxCvGrayscaleImage cvGray;
+        ofxDirList dirList;
+        ofxOscSender osc_sender;
+        ofxThread thread;
+        ofx3DModelLoader modelLoader;
 
-		string  oscPath;
-
-        ofxOscSender* sender;
+		ofVideoGrabber 		vidGrabber;
 
         Input*      input;
         Renderer*   renderer;
