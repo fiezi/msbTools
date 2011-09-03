@@ -72,6 +72,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wno-multichar" />
+			<Add option="-DTARGET_WIN32" />
 			<Add directory="..\..\..\libs\glu\include" />
 			<Add directory="..\..\..\libs\freetype\include" />
 			<Add directory="..\..\..\libs\freetype\include\freetype2" />

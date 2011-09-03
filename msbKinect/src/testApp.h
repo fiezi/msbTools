@@ -1,6 +1,9 @@
 #ifndef _TEST_APP
 #define _TEST_APP
 
+
+
+
 #include "ofMain.h"
 
 #include "ofxKinect.h"
@@ -38,7 +41,7 @@ class testApp : public ofBaseApp, public Actor
         LPCTSTR pBuf;
 #else
 		void *sharedMemFile;
-		int fd, 
+		int fd,
 			ret;
 		void *sourcebuffer;
 
