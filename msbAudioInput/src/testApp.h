@@ -10,7 +10,8 @@
 #include "msbOFCore.h"
 #include "actor.h"
 
-#define HOST "localhost"
+//#define HOST "192.168.3.105"
+#define HOST "127.0.0.1"
 #define PORT 31840
 
 class testApp : public ofBaseApp, public Actor{
