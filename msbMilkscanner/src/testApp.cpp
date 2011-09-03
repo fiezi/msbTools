@@ -1,6 +1,7 @@
 #include "testApp.h"
 #include "actor.h"
 #include "assignButton.h"
+#include "textInputButton.h"
 #include "msbLight.h"
 
 
@@ -35,6 +36,12 @@ void testApp::setup(){
 
     inkScanTexture.allocate(camWidth,camHeight, GL_RGB);
 
+
+    keySource= new ofxCvColorImage;
+    keySource->allocate(camWidth,camHeight);
+
+    chromaKey=new ChromaKeyer;
+
     threshhold=100;
     //threshhold=255;
     fileRevision=0;
@@ -48,6 +55,14 @@ void testApp::setup(){
     bIsRecording=false;
     bIsInterval=false;
     bFrontToBack=false;
+    bLumaKey=true;
+
+    mouseButton=0;
+
+	//set background to black
+	ofBackground(128, 128, 128);
+
+    filename="scan.tga";
 
     msbSetup();
 
@@ -55,6 +70,8 @@ void testApp::setup(){
 
 
 void testApp::msbSetup(){
+
+    registerProperties();
 
     renderer=Renderer::getInstance();
     input=Input::getInstance();
@@ -71,16 +88,166 @@ void testApp::msbSetup(){
     BasicButton *but;
 
     but= new AssignButton;
-    but->location.x=100;
-    but->location.y=100;
-    but->name="hello_world";
+    but->location.x=500;
+    but->location.y=320;
+    but->scale.y=64;
+    but->scale.x=128;
+    but->name="scan";
     but->bDrawName=true;
-    but->tooltip="hello_world";
+    but->tooltip="start scanning";
     but->setLocation(but->location);
-    but->textureID="icon_base";
-    but->color=COLOR_RED;
+    but->textureID="icon_flat";
+    but->color=COLOR_WHITE;
     but->setup();
-    but->parent=NULL;
+    but->parent=this;
+    renderer->buttonList.push_back(but);
+    startButton=but;
+
+    but= new AssignButton;
+    but->location.x=636;
+    but->location.y=320;
+    but->scale.y=64;
+    but->scale.x=128;
+    but->name="reset";
+    but->bDrawName=true;
+    but->tooltip="reset scan buffers";
+    but->setLocation(but->location);
+    but->textureID="icon_flat";
+    but->color=COLOR_WHITE;
+    but->setup();
+    but->parent=this;
+    renderer->buttonList.push_back(but);
+
+
+    but= new AssignButton;
+    but->location.x=500;
+    but->location.y=392;
+    but->scale.x=128;
+    but->scale.y=32;
+    but->name="save";
+    but->bDrawName=true;
+    but->tooltip="save TGA file";
+    but->setLocation(but->location);
+    but->textureID="icon_flat";
+    but->color=Vector4f(0.7,0.7,0.7,1.0);
+    but->setup();
+    but->parent=this;
+    renderer->buttonList.push_back(but);
+
+
+    but= new TextInputButton;
+    but->location.x=500;
+    but->location.y=430;
+    but->scale.x=128;
+    but->scale.y=16;
+    but->name="save As...";
+    but->bDrawName=true;
+    but->buttonProperty="FILENAME";
+    but->tooltip="string scan.tga";
+    but->setLocation(but->location);
+    but->textureID="icon_flat";
+    but->color=Vector4f(0.7,0.7,0.7,1.0);
+    but->setup();
+    but->parent=this;
+    renderer->buttonList.push_back(but);
+
+
+    SliderButton* slBtn = new SliderButton;
+    slBtn->location.x=340;
+    slBtn->location.y=290;
+    slBtn->scale.x=640;
+    slBtn->scale.y=16;
+    slBtn->bVertical=false;
+    slBtn->name="threshhold";
+    slBtn->bDrawName=true;
+    slBtn->tooltip="slide to change";
+    slBtn->setLocation(slBtn->location);
+    slBtn->textureID="icon_flat";
+    slBtn->color=Vector4f(0.7,0.7,0.7,1.0);
+    slBtn->setup();
+    slBtn->parent=this;
+    renderer->buttonList.push_back(slBtn);
+    threshholdSlider=slBtn;
+
+    slBtn = new SliderButton;
+    slBtn->location.x=340;
+    slBtn->location.y=300;
+    slBtn->scale.x=640;
+    slBtn->scale.y=16;
+    slBtn->bVertical=false;
+    slBtn->name="hue threshhold";
+    slBtn->bDrawName=true;
+    slBtn->tooltip="slide to change";
+    slBtn->setLocation(slBtn->location);
+    slBtn->textureID="icon_flat";
+    slBtn->color=Vector4f(0.7,0.7,0.7,1.0);
+    slBtn->setup();
+    slBtn->parent=this;
+    renderer->buttonList.push_back(slBtn);
+    hueThreshholdSlider=slBtn;
+
+    slBtn = new SliderButton;
+    slBtn->location.x=340;
+    slBtn->location.y=310;
+    slBtn->scale.x=640;
+    slBtn->scale.y=16;
+    slBtn->bVertical=false;
+    slBtn->name="sat threshhold";
+    slBtn->bDrawName=true;
+    slBtn->tooltip="slide to change";
+    slBtn->setLocation(slBtn->location);
+    slBtn->textureID="icon_flat";
+    slBtn->color=Vector4f(0.7,0.7,0.7,1.0);
+    slBtn->setup();
+    slBtn->parent=this;
+    renderer->buttonList.push_back(slBtn);
+    satThreshholdSlider=slBtn;
+
+    slBtn = new SliderButton;
+    slBtn->location.x=340;
+    slBtn->location.y=320;
+    slBtn->scale.x=640;
+    slBtn->scale.y=16;
+    slBtn->bVertical=false;
+    slBtn->name="vel threshhold";
+    slBtn->bDrawName=true;
+    slBtn->tooltip="slide to change";
+    slBtn->setLocation(slBtn->location);
+    slBtn->textureID="icon_flat";
+    slBtn->color=Vector4f(0.7,0.7,0.7,1.0);
+    slBtn->setup();
+    slBtn->parent=this;
+    renderer->buttonList.push_back(slBtn);
+    velThreshholdSlider=slBtn;
+
+    but= new AssignButton;
+    but->location.x=500;
+    but->location.y=500;
+    but->scale.x=72;
+    but->scale.y=32;
+    but->name="using ink";
+    but->bDrawName=true;
+    but->tooltip="click to change to milk";
+    but->setLocation(but->location);
+    but->textureID="icon_flat";
+    but->color=COLOR_BLACK;
+    but->setup();
+    but->parent=this;
+    renderer->buttonList.push_back(but);
+
+    but= new AssignButton;
+    but->location.x=580;
+    but->location.y=500;
+    but->scale.x=72;
+    but->scale.y=32;
+    but->name="continuous";
+    but->bDrawName=true;
+    but->tooltip="click to change";
+    but->setLocation(but->location);
+    but->textureID="icon_flat";
+    but->color=COLOR_YELLOW;
+    but->setup();
+    but->parent=this;
     renderer->buttonList.push_back(but);
 
 
@@ -99,75 +266,22 @@ void testApp::msbSetup(){
     renderer->actorList.push_back(patchActor);
     renderer->layerList[0]->actorList.push_back(patchActor);
 
+
 }
 
+
+void testApp::registerProperties(){
+
+    createMemberID("FILENAME",&filename,this);
+}
 //--------------------------------------------------------------
 void testApp::update(){
-
-
-    unsigned char currentRed=0;
-    unsigned char currentGreen=0;
-    unsigned char currentBlue=0;
-
-    if (currentStep<256 && currentStep >= 0)
-     {
-     currentBlue=currentStep;
-     currentRed=currentStep;
-     currentGreen=currentStep;
-     }
-    else
-      bIsRecording=false;
 
 	vidGrabber.grabFrame();
 
 	//if (vidGrabber.isFrameNew()){
 
-		int totalPixels = camWidth*camHeight*3;
-		unsigned char * pixels = vidGrabber.getPixels();
-
-		for (int i = 0; i < totalPixels; i+=3){
-
-			bool isInteresting=false;
-
-			if (fluid=="ink" && pixels[i]+pixels[i+1]+pixels[i+2]>threshhold)
-			  isInteresting=true;
-            if (fluid=="milk" && pixels[i]+pixels[i+1]+pixels[i+2]<threshhold)
-              isInteresting=true;
-
-			if (isInteresting){
-                videoInverted[i] = 255;
-                videoInverted[i+1] = 0;
-                videoInverted[i+2] = 0;
-
-                if (bIsRecording || bJustStepped){
-                    if (bFrontToBack){
-                        if (depthMap[i]<currentRed){
-                            depthMap[i]=currentRed;
-                            depthMap[i+1]=currentGreen;
-                            depthMap[i+2]=currentBlue;
-                        }
-                    }else{
-                        depthMap[i]=currentRed;
-                        depthMap[i+1]=currentGreen;
-                        depthMap[i+2]=currentBlue;
-                    }
-                }
-            }else{
-                videoInverted[i] = 0;
-                videoInverted[i+1] = 0;
-                videoInverted[i+2] = 0;
-            }
-        }
-
-		videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
-		inkScanTexture.loadData(depthMap, camWidth,camHeight, GL_RGB);
-
-        if (bIsRecording && currentStep%16==0 && currentStep>0){
-
-            ofImage* nextCutOut = new ofImage;
-            nextCutOut->setFromPixels(videoInverted,640,480,OF_IMAGE_COLOR,true);
-            cutouts.push_back(nextCutOut);
-        }
+    doStep();
 
     bJustStepped=false;
 
@@ -182,29 +296,25 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 
+
     //MSBStuff
     renderer->draw();
 
+    glPushMatrix();
+    glTranslatef(0,32,0);
     ofSetColor(255,255,255);
     glScalef(0.5,0.5,1.0);
-	vidGrabber.draw(10,10);
+	vidGrabber.draw(20,20);
 	glScalef(2.0,2.0,1.0);
 	videoTexture.draw(20+camWidth/2.0f,10,320,240);
     inkScanTexture.draw(40+camWidth,10,320,240);
+
+    //ofSetColor(chromaKey->R,chromaKey->G,chromaKey->B,255);
 
     glTranslatef(350,0,0);
 	deltaTime=glutGet(GLUT_ELAPSED_TIME)-currentTime;
     currentTime=glutGet(GLUT_ELAPSED_TIME);
 
-    verdana.drawString("OpenFrameworks Rocks! \n\nSPACE - start/stop recording \n B     - Flip Back to Front recording \n R     - Reset \n F     - Save File \n C     - Make Cutouts ", 100,550);
-
-    char threshString [255];
-    sprintf(threshString,"current Threshhold is: %i (change with '+/-'),\n also, we're scanning with %s (change with 't') \n and stepping is set to %i (change with 'n')",threshhold, fluid.c_str(),bStepping);
-    verdana.drawString(threshString,350,550);
-
-	char timeString [255];
-    sprintf(timeString,"time passed: %f  currentStep: %i", currentTime/1000.0f, currentStep);
-	verdana.drawString(timeString, 350,700);
 	if (bIsRecording)
 	  {
 	  verdana.drawString("RECORDING...", 100,750);
@@ -214,11 +324,194 @@ void testApp::draw(){
 	    else
             currentStep++;
 	  }
+    glPopMatrix();
+
+    ofSetColor(chromaKey->R,chromaKey->G, chromaKey->B);
+    ofRect(20,260,100,100);
 
 }
 
 
+void testApp::trigger(Actor* other){
+
+    if (other==threshholdSlider){
+        threshhold=threshholdSlider->sliderValue* 768;
+    }
+
+    if (other==hueThreshholdSlider){
+        chromaKey->tH=hueThreshholdSlider->sliderValue*255.0;
+    }
+
+    if (other==satThreshholdSlider){
+        chromaKey->tS=satThreshholdSlider->sliderValue*255.0;
+    }
+
+    if (other==velThreshholdSlider){
+        chromaKey->tV=velThreshholdSlider->sliderValue*255.0;
+    }
+
+    if (other->name=="scan" || other->name=="scanning"){
+        bIsRecording=!bIsRecording;
+        startButton->tooltip="start scanning";
+        startButton->name="scan";
+        startButton->color=COLOR_WHITE;
+        if (bIsRecording){
+            startButton->color=COLOR_RED;
+            startButton->name="scanning";
+            startButton->tooltip="stop scanning";
+            //generate color image
+            unsigned char * pixels = vidGrabber.getPixels();
+            for (int i=0;i<camWidth*camHeight*3;i++)
+                colorMap[i]=pixels[i];
+        }
+
+    }
+
+    if (other->name=="step"){
+        currentStep++;
+        bJustStepped=true;
+    }
+
+    if (other->name=="reset"){
+        //clear depthMap
+        for (int i=0;i<camWidth*camHeight*3;i++)
+          depthMap[i]=0;
+
+        if (bFrontToBack)
+            currentStep=255;
+        else
+            currentStep=0;
+        fileRevision++;
+
+        cutouts.clear();
+    }
+
+
+    if (other->name=="using ink"){
+        fluid="milk";
+        other->name="using milk";
+        ((BasicButton*)other)->tooltip="click to change to ink";
+        other->color=COLOR_WHITE;
+        return;
+    }
+
+    if (other->name=="using milk"){
+        fluid="ink";
+        other->name="using ink";
+        ((BasicButton*)other)->tooltip="click to change to milk";
+        other->color=COLOR_BLACK;
+        return;
+    }
+
+    if (other->name=="save" || other->name=="save As..."){
+        generateAlphaImage();
+    }
+
+    if (other->name=="continuous"){
+        bStepping=false;
+        other->name="stepping";
+        startButton->name="step";
+        startButton->color=COLOR_YELLOW;
+        bIsRecording=false;
+        return;
+    }
+
+    if (other->name=="stepping"){
+        bStepping=true;
+        other->name="continuous";
+        startButton->name="scan";
+        startButton->color=COLOR_WHITE;
+        bIsRecording=false;
+        return;
+    }
+}
+
 void testApp::doStep(){
+
+    unsigned char currentRed=0;
+    unsigned char currentGreen=0;
+    unsigned char currentBlue=0;
+
+    if (currentStep<256 && currentStep >= 0)
+     {
+     currentBlue=currentStep;
+     currentRed=currentStep;
+     currentGreen=currentStep;
+     }
+    else
+      bIsRecording=false;
+
+    int totalPixels = camWidth*camHeight*3;
+    unsigned char * pixels = vidGrabber.getPixels();
+
+    //key and transfer
+    keySource->setFromPixels(pixels,camWidth,camHeight);
+    keySource->convertRgbToHsv();
+
+    unsigned char * pixelsHSV = keySource->getPixels();
+
+    for (int i = 0; i < totalPixels; i+=3){
+
+        bool isInteresting=false;
+
+        //luminance key
+
+        if (bLumaKey){
+
+            if (fluid=="ink" && pixels[i]+pixels[i+1]+pixels[i+2]>threshhold)
+              isInteresting=true;
+            if (fluid=="milk" && pixels[i]+pixels[i+1]+pixels[i+2]<threshhold)
+              isInteresting=true;
+
+        }else{
+
+
+            //chroma key
+            if( pixelsHSV[i] >= chromaKey->H-chromaKey->tH && pixelsHSV[i] <= chromaKey->H+chromaKey->tH &&
+                pixelsHSV[i+1] >= chromaKey->S-chromaKey->tS && pixelsHSV[i+1] <= chromaKey->S+chromaKey->tS &&
+                pixelsHSV[i+1] >= chromaKey->V-chromaKey->tV && pixelsHSV[i+1] <= chromaKey->V+chromaKey->tV ){
+
+                isInteresting=false;
+            }else{
+                isInteresting=true;
+            }
+
+        }
+        //transfer
+        if (isInteresting){
+            videoInverted[i] = 255;
+            videoInverted[i+1] = 0;
+            videoInverted[i+2] = 0;
+
+            if (bIsRecording || bJustStepped){
+                if (bFrontToBack){
+                    if (depthMap[i]<currentRed){
+                        depthMap[i]=currentRed;
+                        depthMap[i+1]=currentGreen;
+                        depthMap[i+2]=currentBlue;
+                    }
+                }else{
+                    depthMap[i]=currentRed;
+                    depthMap[i+1]=currentGreen;
+                    depthMap[i+2]=currentBlue;
+                }
+            }
+        }else{
+            videoInverted[i] = 0;
+            videoInverted[i+1] = 0;
+            videoInverted[i+2] = 0;
+        }
+    }
+
+    videoTexture.loadData(videoInverted, camWidth,camHeight, GL_RGB);
+    inkScanTexture.loadData(depthMap, camWidth,camHeight, GL_RGB);
+
+    if (bIsRecording && currentStep%16==0 && currentStep>0){
+
+        ofImage* nextCutOut = new ofImage;
+        nextCutOut->setFromPixels(videoInverted,640,480,OF_IMAGE_COLOR,true);
+        cutouts.push_back(nextCutOut);
+    }
 
 }
 
@@ -236,132 +529,89 @@ for (int i=0;i<totalPixels;i+=3)
     fullMap[current++]=depthMap[i];
     }
 endImage.setFromPixels(fullMap,camWidth,camHeight,OF_IMAGE_COLOR_ALPHA);
-string filename="inkScanImage";
-
-        std::string s;
-        std::stringstream out;
-        out << fileRevision;
-        s = out.str();
-
-        filename.append(s);
-        filename.append(".tga");
-
 endImage.saveImage(filename);
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed  (int key){
 
-    if (key=='+')
-      threshhold++;
-
-    if (key=='-')
-      threshhold--;
-
-
-
+    input->normalKeyDown(key, mouseX, mouseY);
 }
 
 
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
 
-	// in fullscreen mode, on a pc at least, the
-	// first time video settings the come up
-	// they come up *under* the fullscreen window
-	// use alt-tab to navigate to the settings
-	// window. we are working on a fix for this...
 
-	if (key == 's' || key == 'S'){
-		vidGrabber.videoSettings();
-	}
+    input->keyUp(key,mouseX,mouseY);
 
-    if (key == ' ' && !bStepping){
+    if (!input->bTextInput){
 
-        bIsRecording=!bIsRecording;
-        if (bIsRecording)
-          {
-          //generate color image
-          unsigned char * pixels = vidGrabber.getPixels();
-          for (int i=0;i<camWidth*camHeight*3;i++)
-            colorMap[i]=pixels[i];
-          }
+        if (key==' '){
+            bIsRecording=!bIsRecording;
+            startButton->tooltip="start scanning";
+            startButton->name="scan";
+            startButton->color=COLOR_WHITE;
+            if (bIsRecording){
+                startButton->color=COLOR_RED;
+                startButton->name="scanning";
+                startButton->tooltip="stop scanning";
+                //generate color image
+                unsigned char * pixels = vidGrabber.getPixels();
+                for (int i=0;i<camWidth*camHeight*3;i++)
+                    colorMap[i]=pixels[i];
+            }
+        }
+
+      if (key=='s' || key=='S')
+            vidGrabber.videoSettings();
+
     }
 
-    if (key == ' ' && bStepping){
 
-        currentStep++;
-        bJustStepped=true;
-    }
 
-    if (key == 'r'){
-
-        //clear depthMap
-        for (int i=0;i<camWidth*camHeight*3;i++)
-          depthMap[i]=0;
-
-        if (bFrontToBack)
-            currentStep=255;
-        else
-            currentStep=0;
-        fileRevision++;
-
-        cutouts.clear();
-    }
-
-    if (key=='c'){
-        createCutouts();
-    }
-
-    if (key == 'f' || key == 'F'){
-        generateAlphaImage();
-        createXML();
-    }
-
-    if (key=='b' || key=='B'){
-		if (bFrontToBack){
-			currentStep=0;
-		}
-		else {
-			currentStep=255;
-		}
-
-        bFrontToBack=!bFrontToBack;
-    }
-
-    if (key== 'l' || key== 'L'){
-        endImage.loadImage("firstTest.bmp");
-        depthMap=endImage.getPixels();
-    }
-
-    if (key=='t' || key=='T')
-      if (fluid=="ink")
-        fluid="milk";
-      else
-        fluid="ink";
-
-    if (key=='n' || key =='N')
-      bStepping=!bStepping;
 }
 
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){
 
+    input->moveMouse(x,y);
 }
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
 
+    input->dragMouse(x,y);
 }
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
 
+    input->pressedMouse(button,MOUSEBTNPRESSED,x,y);
+    mouseButton=button;
+
+    if (x>10 && x<10+camWidth/2.0 && y>42 && y<42+camHeight/2.0){
+
+        x-=10;
+        y-=42;
+
+        x*=2;
+        y*=2;
+
+        unsigned char* myPix = vidGrabber.getPixels();
+
+        chromaKey->R =myPix[camWidth * 3 * y + x * 3];
+        chromaKey->G =myPix[camWidth * 3 * y + x * 3 +1];
+        chromaKey->B =myPix[camWidth * 3 * y + x * 3 +2];
+
+        chromaKey->setFromRGB(chromaKey->R,chromaKey->G,chromaKey->B);
+    }
 }
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(){
 
+    input->pressedMouse(mouseButton,MOUSEBTNRELEASED,mouseX,mouseY);
 }
 
 
@@ -386,104 +636,5 @@ void testApp::createXML(){
 
 //don't do xml for now!
 return;
-
-cout << "doing the xml thing..." << endl;
-string filename="inkScanData";
-
-        std::string s;
-        std::stringstream out;
-        out << fileRevision;
-        s = out.str();
-
-        filename.append(s);
-        filename.append(".xml");
-
-TiXmlDocument doc;
-TiXmlDeclaration * decl = new TiXmlDeclaration( "1.0", "", "" );
-doc.LinkEndChild( decl );
-TiXmlElement * root = new TiXmlElement( "Moviesandbox" );
-doc.LinkEndChild( root );
-
-TiXmlElement * element = new TiXmlElement( "Actor" );
-element->SetAttribute("name", "string drawing");
-TiXmlText * text = new TiXmlText( "14ParticleSystem" );
-element->LinkEndChild( text );
-
-TiXmlElement * property=new TiXmlElement("LOCATION");
-string value = "vec3f 0.0 0.0 0.0";
-property->LinkEndChild ( new TiXmlText( value));
-element->LinkEndChild( property );
-
-property=new TiXmlElement("ROTATION");
-value = "vec3f 0.0 0.0 0.0";
-property->LinkEndChild ( new TiXmlText( value));
-element->LinkEndChild( property );
-
-property=new TiXmlElement("COLOR");
-value = "vec4f 1.0 1.0 1.0";
-property->LinkEndChild ( new TiXmlText( value));
-element->LinkEndChild( property );
-
-
-
-for (int i=0;i<camWidth*camHeight*3;i+=3)
-    {
-if (depthMap[i+2]>2)
-  {
-
-    float actualImagePosition=float(i)/float(3);
-    actualImagePosition=floor(actualImagePosition);  //no commas in image position...
-    float currentRow=floor(actualImagePosition/float(camWidth));
-
-
-    //this is from testing
-    float zDistance=(100.0f/currentStep)*100.0f;
-
-    float locX=(float((i/3)%(camWidth)))/(float(50));
-    float locY=currentRow/50;
-    float locZ=float(depthMap[i+2])/zDistance;
-    float locW=0.03f;
-
-    float colR=colorMap[i];
-    float colG=colorMap[i+1];
-    float colB=colorMap[i+2];
-    float colA=1.0f;
-
-    colR=colR/255.0f;
-    colG=colG/255.0f;
-    colB=colB/255.0f;
-    cout << "current red: " << colR << endl;
-
-    TiXmlElement * pElement = new TiXmlElement("particle");
-
-        TiXmlElement * mElement = new TiXmlElement("location");
-        char loc[80];
-        sprintf(loc,"vec4f %f %f %f %f", locX, locY, locZ, locW);
-        mElement->LinkEndChild(new TiXmlText(loc));
-        pElement->LinkEndChild( mElement );
-
-        mElement = new TiXmlElement("color");
-        char col[50];
-        sprintf(col,"vec4f %f %f %f %f", colR, colG, colB, colA);
-        mElement->LinkEndChild(new TiXmlText(col));
-        pElement->LinkEndChild( mElement );
-
-        mElement = new TiXmlElement("birth");
-        char bir[50];
-        sprintf(bir,"float %f", 0.0f);
-        mElement->LinkEndChild(new TiXmlText(bir));
-        pElement->LinkEndChild( mElement );
-
-    element->LinkEndChild( pElement );
-  }
-    }
-
-root->LinkEndChild(element);
-
-string saveString=filename;
-
-cout << "saving filename: " << saveString << endl;
-
-doc.SaveFile( saveString );
 
 }

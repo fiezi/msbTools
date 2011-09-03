@@ -59,6 +59,8 @@
 			<Add directory="..\..\..\libs\openFrameworks\sound" />
 			<Add directory="..\..\..\libs\openFrameworks\video" />
 			<Add directory="..\..\..\libs\openFrameworks\communication" />
+			<Add directory="..\..\..\addons\ofxOpenCv\libs\opencv\include" />
+			<Add directory="..\..\..\addons\ofxOpenCv\src" />
 			<Add directory="..\..\..\libs\poco\include" />
 			<Add directory="..\..\..\addons\msbOFCore" />
 			<Add directory="..\..\..\addons\msbOFCore\msbButtons" />
@@ -92,6 +94,9 @@
 			<Add option="-lwsock32" />
 			<Add option="-lws2_32" />
 			<Add option="-lIphlpapi" />
+			<Add library="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libcv.a" />
+			<Add library="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libcvaux.a" />
+			<Add library="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libcxcore.a" />
 		</Linker>
 		<ExtraCommands>
 			<Add after='xcopy /e /i /y &quot;$(PROJECT_DIR)..\..\..\export\win_cb\*.dll&quot;  &quot;$(PROJECT_DIR)bin&quot;' />
@@ -155,6 +160,22 @@
 		<Unit filename="..\..\..\addons\msbOFCore\tinyxml\tinyxmlparser.cpp" />
 		<Unit filename="..\..\..\addons\msbOFCore\vMath\vmath.cpp" />
 		<Unit filename="..\..\..\addons\msbOFCore\vMath\vmath.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvBlob.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvColorImage.cpp" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvColorImage.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvConstants.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvContourFinder.cpp" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvContourFinder.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvFloatImage.cpp" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvFloatImage.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvGrayscaleImage.cpp" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvGrayscaleImage.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvImage.cpp" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvImage.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvMain.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvShortImage.cpp" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvShortImage.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxOpenCv.h" />
 		<Unit filename="bin\shaders\color.frag">
 			<Option virtualFolder="shaders\" />
 		</Unit>
@@ -205,6 +226,12 @@
 		</Unit>
 		<Unit filename="bin\shaders\texture.vert">
 			<Option virtualFolder="shaders\" />
+		</Unit>
+		<Unit filename="src\chromaKeyer.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\chromaKeyer.h">
+			<Option virtualFolder="src\" />
 		</Unit>
 		<Unit filename="src\main.cpp">
 			<Option virtualFolder="src\" />

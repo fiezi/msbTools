@@ -10,7 +10,7 @@ void testApp::setup(){
 
     registerProperties();
 
-    oscPath="/pilot/float";
+    oscPath="/pilot/vector3f";
 
     channel=1;
     bSending=false;
@@ -105,7 +105,7 @@ void testApp::draw(){
 	// draw the left:
 	ofSetHexColor(0xFFFFFF);
 	for (int i = 0; i < 256; i++){
-		ofLine(10+i,200,10+i,200+left[i]*100.0f);
+		ofLine(10+i,200,10+i,200+left[i]*512.0f);
 	}
 
 	ofSetHexColor(0x333333);
@@ -130,12 +130,16 @@ void testApp::audioReceived 	(float * input, int bufferSize, int nChannels){
 	for (int i=0;i<256;i++)
         mouth+=abs(left[i]);
 
-    if (mouth/255.0f>0.1f){
-        m.addFloatArg( mouth/255.0f );
-    }
-    else{
         m.addFloatArg( 0.0f );
-    }
+
+//    if (mouth/255.0f>0.1f){
+        m.addFloatArg( mouth/12.0f  - 0.8f);
+  //  }
+   // else{
+        m.addFloatArg( 0.0f );
+   // }
+
+        m.addFloatArg( 0.0f );
 
     if (sender && bSending)
         sender->sendMessage( m );

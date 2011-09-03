@@ -4,6 +4,7 @@
  <!-- Textures -->
     <Texture textureID="NULL" filename="icons/error.tga" bAlpha="1" bWrap="1" />
     <Texture textureID="icon_base" filename="icons/icon_base.tga" bAlpha="1" bWrap="1" />
+    <Texture textureID="icon_flat" filename="icons/icon_flat.tga" bAlpha="1" bWrap="1" />
 
  <!-- Shaders -->
 

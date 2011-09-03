@@ -153,7 +153,7 @@ void testApp::setup()
 	kinect.open();
 
 #ifdef TARGET_WIN32
-	
+
    hMapFile = CreateFileMapping(
                  INVALID_HANDLE_VALUE,    // use paging file
                  NULL,                    // default security
@@ -189,11 +189,11 @@ void testApp::setup()
 	sourcebuffer=NULL;
 	//taken from: http://mike.kronenberg.org/?p=40
 	//all credit goes to Mike Kronenberg!
-	
+
 	// we need a dummy file, this gives us the possibility to
 	// access the shared memory over the filesystem
 	sharedMemFile = malloc(BUF_SIZE);
-	
+
 	// open trunkate/create read/write for everybody
 	fd = open("/tmp/msbRamFile", O_CREAT|O_RDWR, 0666);
 	if (fd == -1) {
@@ -202,20 +202,20 @@ void testApp::setup()
 	ret = write(fd, sharedMemFile, BUF_SIZE); // create the file
 	ret = close(fd);
 	free(sharedMemFile);
-	
+
 	//attach shared memory file
 	fd = open("/tmp/msbRamFile", O_RDWR);
 	if(!fd)
 		cout << "Could not open '/tmp/msbRamFile'"<<endl;
-	
+
 	// load the file into memory, shared, read & write access
 	sourcebuffer = mmap( 0, BUF_SIZE, PROT_READ|PROT_WRITE, MAP_FILE|MAP_SHARED, fd, 0);
 	if(!sourcebuffer)
 		cout << "Could not mmap '%s.vga'"<< endl;
-	
+
 	// once the file is mapped, we can dispose of the filehandle
 	close(fd);
-		
+
 #endif
     myPic= new float[640*480*4];
 
@@ -291,6 +291,7 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw()
 {
+
     glEnable(GL_LIGHTING);
     renderer->draw();
     glDisable(GL_LIGHTING);
