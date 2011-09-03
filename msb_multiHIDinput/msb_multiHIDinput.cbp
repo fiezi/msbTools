@@ -6,7 +6,7 @@
 		<Option makefile="makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="addons\ofxDirList\src\;addons\ofxOpenCv\src\;addons\ofxOsc\src\;addons\ofxThread\src\;addons\ofxVectorGraphics\libs\;addons\ofxVectorGraphics\src\;addons\ofxVectorMath\src\;src\;addons\;" />
+		<Option virtualFolders="addons\ofxDirList\src\;addons\ofxOpenCv\src\;addons\ofxOsc\src\;addons\ofxThread\src\;addons\ofxVectorGraphics\libs\;addons\ofxVectorGraphics\src\;addons\ofxVectorMath\src\;src\;addons\;plib\;plib\js\;plib\util\;" />
 		<Build>
 			<Target title="release">
 				<Option output="bin\$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
@@ -81,6 +81,8 @@
 			<Add directory="..\..\..\addons\msbOFCore\vMath" />
 			<Add directory="..\..\..\addons\msbOFCore\tinyxml" />
 			<Add directory="..\..\..\addons\msbOFCore\msbButtons" />
+			<Add directory="src\plib\util" />
+			<Add directory="src\plib\js" />
 		</Compiler>
 		<Linker>
 			<Add option="../../../libs/FreeImage/lib/win_cb/FreeImage.lib" />
@@ -338,6 +340,60 @@
 		</Unit>
 		<Unit filename="src\main.cpp">
 			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\plib\js\js.cxx">
+			<Option virtualFolder="plib\js\" />
+		</Unit>
+		<Unit filename="src\plib\js\js.h">
+			<Option virtualFolder="plib\js\" />
+		</Unit>
+		<Unit filename="src\plib\js\jsBSD.cxx">
+			<Option virtualFolder="plib\js\" />
+		</Unit>
+		<Unit filename="src\plib\js\jsLinux.cxx">
+			<Option virtualFolder="plib\js\" />
+		</Unit>
+		<Unit filename="src\plib\js\jsLinuxOld.cxx">
+			<Option virtualFolder="plib\js\" />
+		</Unit>
+		<Unit filename="src\plib\js\jsMacOS.cxx">
+			<Option virtualFolder="plib\js\" />
+		</Unit>
+		<Unit filename="src\plib\js\jsMacOSX.cxx">
+			<Option virtualFolder="plib\js\" />
+		</Unit>
+		<Unit filename="src\plib\js\jsNone.cxx">
+			<Option virtualFolder="plib\js\" />
+		</Unit>
+		<Unit filename="src\plib\js\jsWindows.cxx">
+			<Option virtualFolder="plib\js\" />
+		</Unit>
+		<Unit filename="src\plib\util\ul.cxx">
+			<Option virtualFolder="plib\util\" />
+		</Unit>
+		<Unit filename="src\plib\util\ul.h">
+			<Option virtualFolder="plib\util\" />
+		</Unit>
+		<Unit filename="src\plib\util\ulClock.cxx">
+			<Option virtualFolder="plib\util\" />
+		</Unit>
+		<Unit filename="src\plib\util\ulError.cxx">
+			<Option virtualFolder="plib\util\" />
+		</Unit>
+		<Unit filename="src\plib\util\ulLinkedList.cxx">
+			<Option virtualFolder="plib\util\" />
+		</Unit>
+		<Unit filename="src\plib\util\ulList.cxx">
+			<Option virtualFolder="plib\util\" />
+		</Unit>
+		<Unit filename="src\plib\util\ulLocal.h">
+			<Option virtualFolder="plib\util\" />
+		</Unit>
+		<Unit filename="src\plib\util\ulRTTI.cxx">
+			<Option virtualFolder="plib\util\" />
+		</Unit>
+		<Unit filename="src\plib\util\ulRTTI.h">
+			<Option virtualFolder="plib\util\" />
 		</Unit>
 		<Unit filename="src\testApp.cpp">
 			<Option virtualFolder="src\" />

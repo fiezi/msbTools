@@ -10,6 +10,9 @@
 #include "ofx3DModelLoader.h"
 #include "msbOFCore.h"
 
+#include "windows.h"
+#include "ul.h"
+#include "js.h"
 
 class testApp : public ofBaseApp{
 
@@ -41,6 +44,8 @@ class testApp : public ofBaseApp{
 
         Input*      input;
         Renderer*   renderer;
+
+        vector<jsJoystick*> joysticks;
 
 };
 

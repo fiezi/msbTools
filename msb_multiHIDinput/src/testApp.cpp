@@ -3,6 +3,8 @@
 #include "assignButton.h"
 #include "msbLight.h"
 
+
+
 //--------------------------------------------------------------
 void testApp::setup(){
 
@@ -85,6 +87,21 @@ void testApp::setup(){
 
     ofBackground(128, 128, 164);
 
+    //enumerate all joysticks
+
+    jsInit();
+
+    jsJoystick* myJoystick;
+    myJoystick = new jsJoystick;
+
+    int i=0;
+    while (myJoystick->notWorking()<1){
+        joysticks.push_back(myJoystick);
+        cout << myJoystick->getName() << endl;
+        i++;
+        myJoystick=new jsJoystick(i);
+    }
+
 
 }
 
@@ -108,8 +125,6 @@ void testApp::update(){
 
     patchActor->ofTexturePtr=&vidGrabber.getTextureReference();
 
-
-    return;
 }
 
 
