@@ -148,18 +148,12 @@ void testApp::update(){
     renderer->update();
 
     if (bSending && joy){
-        int myInt;
-        float myAxis[10];
-        joy->read(&myInt, &myAxis[0]);
+        string jName=joy->getName();
 
-        ofxOscMessage myMessage;
-        myMessage.addFloatArg(myAxis[0]);
-        myMessage.addFloatArg(myAxis[1]);
-        myMessage.addFloatArg(myAxis[2]);
-
-        myMessage.setAddress("/pilot/float/float/float");
-        osc_sender.sendMessage(myMessage);
-
+        //figure out if gametrak...
+        string str="Game-Trak";
+        if (jName.find(str)!=string::npos)
+            sendGameTrak();
     }
 }
 
@@ -173,14 +167,14 @@ void testApp::draw(){
     if (joy){
         int myInt;
         float myAxis[10];
-        joy->rawRead(&myInt, &myAxis[0]);
+        joy->read(&myInt, &myAxis[0]);
 
         char myString[512];
 
         for (int i=0;i<joy->getNumAxes();i++){
             sprintf(myString,"Axis %d: %f",i,myAxis[i]);
             string infoString=myString;
-            ofDrawBitmapString(infoString,200,200 + i*16);
+            ofDrawBitmapString(infoString,200,300 + i*16);
         }
     }
 
@@ -215,6 +209,41 @@ void testApp::trigger(Actor* other){
 
 
 
+}
+
+
+
+void testApp::sendGameTrak(){
+
+        int myInt;
+        float myAxis[10];
+        joy->read(&myInt, &myAxis[0]);
+
+        float maxDist=100.0;
+        float maxAngle=30.0;
+
+        //distance should be from 0 to 1
+        float dist=(1.0 - (myAxis[2] + 1.0)/2.0) * maxDist;
+
+        //angles can be from -30 to 30
+        float angleX=-myAxis[0]* maxAngle;
+        float angleZ=myAxis[1]* maxAngle;
+
+        float xPos = sin(angleX * M_PI_2/180.0) * dist;
+        float zPos = sin(angleZ * M_PI_2/180.0) * dist;
+        //float yPos = (1.0 - sin(angleX * M_PI_2) - sin(angleZ * M_PI_2)) * dist;
+        float yPos = min(cos(angleX * M_PI_2/180.0),cos(angleZ * M_PI_2/180.0)) * dist;
+
+
+        ofxOscMessage myMessage;
+        myMessage.addFloatArg(xPos);
+        myMessage.addFloatArg(yPos);
+        myMessage.addFloatArg(zPos);
+
+        myMessage.setAddress("/pilot/vector3f");
+        osc_sender.sendMessage(myMessage);
+
+        cout << "sending... gt" << endl;
 }
 
 //--------------------------------------------------------------
