@@ -40,10 +40,10 @@
     <Rendersettings
 
 
-      WindowSizeX="1024"
-      WindowSizeY="768"
-      ScreenSizeX="1024"
-      ScreenSizeY="768"
+      WindowSizeX="640"
+      WindowSizeY="480"
+      ScreenSizeX="640"
+      ScreenSizeY="480"
       bRenderStereo="0"
 
       bFullScreen="0"
@@ -54,8 +54,8 @@
       bMultisample="0"
       numSamples="1"
 
-      ShadowSize="768"
-      SceneSize="768"
+      ShadowSize="640"
+      SceneSize="640"
 
       MouseSensitivity="0.04"
       MoveSpeed="8.0"

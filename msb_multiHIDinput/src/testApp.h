@@ -14,13 +14,19 @@
 #include "ul.h"
 #include "js.h"
 
-class testApp : public ofBaseApp{
+class testApp : public ofBaseApp, public Actor{
 
 	public:
 
 		void setup();
+		void setupInterface();
+
+		void registerProperties();
+
 		void update();
 		void draw();
+
+        void trigger(Actor* other);
 
 		void keyPressed  (int key);
 		void keyReleased(int key);
@@ -33,19 +39,22 @@ class testApp : public ofBaseApp{
 		// we don't actually use these
         // just checking to see if they
         // all work in the same place :)
-
-        ofxCvGrayscaleImage cvGray;
-        ofxDirList dirList;
         ofxOscSender osc_sender;
         ofxThread thread;
-        ofx3DModelLoader modelLoader;
-
-		ofVideoGrabber 		vidGrabber;
 
         Input*      input;
         Renderer*   renderer;
 
-        vector<jsJoystick*> joysticks;
+        vector<BasicButton*>  joyList;
+        jsJoystick*     joy;
+
+        vector<BasicButton*>  eventList;
+        vector<string> btnEventNames;
+
+        string  ipAddress;
+        int     channel;
+
+        bool    bSending;
 
 };
 
