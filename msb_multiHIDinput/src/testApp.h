@@ -14,6 +14,8 @@
 #include "ul.h"
 #include "js.h"
 
+#include "sixense.h"
+
 class testApp : public ofBaseApp, public Actor{
 
 	public:
@@ -29,6 +31,7 @@ class testApp : public ofBaseApp, public Actor{
         void trigger(Actor* other);
 
         void sendGameTrak();
+        void sendHydra();
 
 		void keyPressed  (int key);
 		void keyReleased(int key);

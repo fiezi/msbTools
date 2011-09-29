@@ -6,7 +6,7 @@
 		<Option makefile="makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="addons\ofxDirList\src\;addons\ofxOpenCv\src\;addons\ofxOsc\src\;addons\ofxThread\src\;addons\ofxVectorGraphics\libs\;addons\ofxVectorGraphics\src\;addons\ofxVectorMath\src\;src\;addons\;plib\;plib\js\;plib\util\;" />
+		<Option virtualFolders="addons\ofxDirList\src\;addons\ofxOpenCv\src\;addons\ofxOsc\src\;addons\ofxThread\src\;addons\ofxVectorGraphics\libs\;addons\ofxVectorGraphics\src\;addons\ofxVectorMath\src\;src\;addons\;plib\;plib\js\;plib\util\;sixense\;" />
 		<Build>
 			<Target title="release">
 				<Option output="bin\$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
@@ -83,6 +83,7 @@
 			<Add directory="..\..\..\addons\msbOFCore\msbButtons" />
 			<Add directory="src\plib\util" />
 			<Add directory="src\plib\js" />
+			<Add directory="src\sixense\include" />
 		</Compiler>
 		<Linker>
 			<Add option="../../../libs/FreeImage/lib/win_cb/FreeImage.lib" />
@@ -119,6 +120,8 @@
 			<Add library="gdi32" />
 			<Add library="wsock32" />
 			<Add library="ws2_32" />
+			<Add library="src\sixense\lib\sixense.lib" />
+			<Add library="src\sixense\lib\sixense_utils.lib" />
 		</Linker>
 		<ExtraCommands>
 			<Add after='xcopy /e /i /y &quot;$(PROJECT_DIR)..\..\..\export\win_cb\*.dll&quot;  &quot;$(PROJECT_DIR)bin&quot;' />
@@ -394,6 +397,12 @@
 		</Unit>
 		<Unit filename="src\plib\util\ulRTTI.h">
 			<Option virtualFolder="plib\util\" />
+		</Unit>
+		<Unit filename="src\sixense\include\sixense.h">
+			<Option virtualFolder="sixense\" />
+		</Unit>
+		<Unit filename="src\sixense\include\sixense_math.hpp">
+			<Option virtualFolder="sixense\" />
 		</Unit>
 		<Unit filename="src\testApp.cpp">
 			<Option virtualFolder="src\" />
