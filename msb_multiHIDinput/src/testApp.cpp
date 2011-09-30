@@ -6,6 +6,7 @@
 
 
 
+
 //--------------------------------------------------------------
 void testApp::setup(){
 
@@ -37,6 +38,9 @@ void testApp::setup(){
     ofBackground(128, 128, 128);
 
     setupInterface();
+
+    //sixense stuff
+    sixenseInit();
 }
 
 
@@ -154,6 +158,9 @@ void testApp::update(){
         string str="Game-Trak";
         if (jName.find(str)!=string::npos)
             sendGameTrak();
+        str="Razer Hydra";
+        if (jName.find(str)!=string::npos)
+            sendHydra();
     }
 }
 
@@ -212,6 +219,27 @@ void testApp::trigger(Actor* other){
 }
 
 
+void testApp::sendHydra(){
+
+    sixenseAllControllerData acd;
+    sixenseSetActiveBase(0);
+    sixenseGetAllNewestData( &acd );
+    Vector3f myPos;
+    myPos.x=acd.controllers[0].pos[0];
+    myPos.y=acd.controllers[0].pos[1];
+    myPos.z=acd.controllers[0].pos[2];
+
+        ofxOscMessage myMessage;
+        myMessage.addFloatArg(myPos.x/100.0);
+        myMessage.addFloatArg(myPos.y/100.0);
+        myMessage.addFloatArg(myPos.z/100.0);
+
+        myMessage.setAddress("/pilot/vector3f");
+        osc_sender.sendMessage(myMessage);
+
+       // cout << "sending... hydra" << endl;
+
+}
 
 void testApp::sendGameTrak(){
 
