@@ -268,15 +268,15 @@
 		E44666BD0F5B3E04005D0BF0 /* ofxOscReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxOscReceiver.h; path = ../../../addons/ofxOsc/src/ofxOscReceiver.h; sourceTree = SOURCE_ROOT; };
 		E44666BE0F5B3E04005D0BF0 /* ofxOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxOscSender.cpp; path = ../../../addons/ofxOsc/src/ofxOscSender.cpp; sourceTree = SOURCE_ROOT; };
 		E44666BF0F5B3E04005D0BF0 /* ofxOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxOscSender.h; path = ../../../addons/ofxOsc/src/ofxOscSender.h; sourceTree = SOURCE_ROOT; };
-		E45BE0390E8CC647009D7055 /* FreeImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FreeImage.h; path = ../../../libs/freeimage/include/FreeImage.h; sourceTree = SOURCE_ROOT; };
+		E45BE0390E8CC647009D7055 /* FreeImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FreeImage.h; path = ../../../libs/FreeImage/include/FreeImage.h; sourceTree = SOURCE_ROOT; };
 		E45BE03F0E8CC650009D7055 /* fmod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fmod.h; path = ../../../libs/fmodex/include/fmod.h; sourceTree = SOURCE_ROOT; };
 		E45BE0400E8CC650009D7055 /* fmod.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = fmod.hpp; path = ../../../libs/fmodex/include/fmod.hpp; sourceTree = SOURCE_ROOT; };
 		E45BE0410E8CC650009D7055 /* fmod_codec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fmod_codec.h; path = ../../../libs/fmodex/include/fmod_codec.h; sourceTree = SOURCE_ROOT; };
 		E45BE0420E8CC650009D7055 /* fmod_dsp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fmod_dsp.h; path = ../../../libs/fmodex/include/fmod_dsp.h; sourceTree = SOURCE_ROOT; };
 		E45BE0430E8CC650009D7055 /* fmod_errors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fmod_errors.h; path = ../../../libs/fmodex/include/fmod_errors.h; sourceTree = SOURCE_ROOT; };
 		E45BE0440E8CC650009D7055 /* fmod_output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fmod_output.h; path = ../../../libs/fmodex/include/fmod_output.h; sourceTree = SOURCE_ROOT; };
-		E45BE0A70E8CC67C009D7055 /* GLee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLee.h; path = ../../../libs/GLee/include/GLee.h; sourceTree = SOURCE_ROOT; };
-		E45BE0A90E8CC67C009D7055 /* GLee.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = GLee.a; path = ../../../libs/GLee/lib/osx/GLee.a; sourceTree = SOURCE_ROOT; };
+		E45BE0A70E8CC67C009D7055 /* GLee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLee.h; path = ../../../libs/glee/include/GLee.h; sourceTree = SOURCE_ROOT; };
+		E45BE0A90E8CC67C009D7055 /* GLee.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = GLee.a; path = osx/GLee.a; sourceTree = "<group>"; };
 		E45BE2E00E8CC69C009D7055 /* RtAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RtAudio.h; path = ../../../libs/rtAudio/include/RtAudio.h; sourceTree = SOURCE_ROOT; };
 		E45BE2E10E8CC69C009D7055 /* RtError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RtError.h; path = ../../../libs/rtAudio/include/RtError.h; sourceTree = SOURCE_ROOT; };
 		E45BE2E30E8CC69C009D7055 /* rtAudio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = rtAudio.a; path = ../../../libs/rtAudio/lib/osx/rtAudio.a; sourceTree = SOURCE_ROOT; };
@@ -717,14 +717,14 @@
 			name = libs;
 			sourceTree = "<group>";
 		};
-		E45BE0370E8CC647009D7055 /* freeimage */ = {
+		E45BE0370E8CC647009D7055 /* FreeImage */ = {
 			isa = PBXGroup;
 			children = (
 				E49DA7E110CD40AD0006B5A8 /* osx */,
 				E45BE0380E8CC647009D7055 /* include */,
 			);
-			name = freeimage;
-			path = ../../../libs/freeimage;
+			name = FreeImage;
+			path = ../../../libs/FreeImage;
 			sourceTree = SOURCE_ROOT;
 		};
 		E45BE0380E8CC647009D7055 /* include */ = {
@@ -766,10 +766,10 @@
 				E4C2425B10CC5A78004149E2 /* glut */,
 				E45BEC7B0E8CC911009D7055 /* poco */,
 				E45BE2D50E8CC69C009D7055 /* rtAudio */,
-				E45BE0A50E8CC67C009D7055 /* GLee */,
+				E45BE0A50E8CC67C009D7055 /* glee */,
 				E45BE0490E8CC676009D7055 /* freetype */,
 				E45BE03D0E8CC650009D7055 /* fmodex */,
-				E45BE0370E8CC647009D7055 /* freeimage */,
+				E45BE0370E8CC647009D7055 /* FreeImage */,
 			);
 			name = "core libraries";
 			sourceTree = "<group>";
@@ -783,14 +783,14 @@
 			path = ../../../libs/freetype;
 			sourceTree = SOURCE_ROOT;
 		};
-		E45BE0A50E8CC67C009D7055 /* GLee */ = {
+		E45BE0A50E8CC67C009D7055 /* glee */ = {
 			isa = PBXGroup;
 			children = (
 				E45BE0A60E8CC67C009D7055 /* include */,
 				E45BE0A80E8CC67C009D7055 /* lib */,
 			);
-			name = GLee;
-			path = ../../../libs/GLee;
+			name = glee;
+			path = ../../../libs/glee;
 			sourceTree = SOURCE_ROOT;
 		};
 		E45BE0A60E8CC67C009D7055 /* include */ = {
@@ -798,18 +798,16 @@
 			children = (
 				E45BE0A70E8CC67C009D7055 /* GLee.h */,
 			);
-			name = include;
-			path = ../../../libs/GLee/include;
-			sourceTree = SOURCE_ROOT;
+			path = include;
+			sourceTree = "<group>";
 		};
 		E45BE0A80E8CC67C009D7055 /* lib */ = {
 			isa = PBXGroup;
 			children = (
 				E45BE0A90E8CC67C009D7055 /* GLee.a */,
 			);
-			name = lib;
-			path = ../../../libs/GLee/lib/osx;
-			sourceTree = SOURCE_ROOT;
+			path = lib;
+			sourceTree = "<group>";
 		};
 		E45BE2D50E8CC69C009D7055 /* rtAudio */ = {
 			isa = PBXGroup;

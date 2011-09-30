@@ -40,7 +40,9 @@ void testApp::setup(){
     setupInterface();
 
     //sixense stuff
+#ifdef TARGET_WIN32
     sixenseInit();
+#endif
 }
 
 
@@ -221,6 +223,8 @@ void testApp::trigger(Actor* other){
 
 void testApp::sendHydra(){
 
+#ifdef TARGET_WIN32
+	
     sixenseAllControllerData acd;
     sixenseSetActiveBase(0);
     sixenseGetAllNewestData( &acd );
@@ -238,6 +242,7 @@ void testApp::sendHydra(){
         osc_sender.sendMessage(myMessage);
 
        // cout << "sending... hydra" << endl;
+#endif
 
 }
 

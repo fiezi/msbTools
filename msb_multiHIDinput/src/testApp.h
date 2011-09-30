@@ -10,11 +10,15 @@
 #include "ofx3DModelLoader.h"
 #include "msbOFCore.h"
 
+#ifdef TARGET_WIN32
 #include "windows.h"
+#include "sixense.h"
+#endif
+
 #include "ul.h"
 #include "js.h"
 
-#include "sixense.h"
+
 
 class testApp : public ofBaseApp, public Actor{
 
