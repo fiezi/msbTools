@@ -5,6 +5,8 @@
 /ofMilkscanner/obj
 /ofMilkscanner/build
 /msbKinect/obj
+/msbKinect/build
+/msbKinect/bin/.DS_Store
 /msbMilkscanner/obj
 /msbMilkscanner/build
 /msbCharacterRecorder/obj
@@ -20,3 +22,5 @@
 /msbAudioInput/msbAudioInput.layout
 /msb_multiHIDinput/obj
 /msb_multiHIDinput/msb_multiHIDinput.layout
+
+

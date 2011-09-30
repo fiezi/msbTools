@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="release" />
+	<File name="..\..\..\addons\msbOFCore\actor.h" open="0" top="0" tabpos="0">
+		<Cursor position="438" topLine="6" />
+	</File>
+	<File name="..\..\..\addons\msbOFCore\includes.h" open="0" top="0" tabpos="0">
+		<Cursor position="181" topLine="0" />
+	</File>
+	<File name="..\..\..\addons\msbOFCore\input.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1843" topLine="15" />
+	</File>
+	<File name="..\..\..\addons\msbOFCore\msbButtons\listButton.h" open="0" top="0" tabpos="0">
+		<Cursor position="82" topLine="0" />
+	</File>
+	<File name="..\..\..\addons\msbOFCore\node.h" open="0" top="0" tabpos="0">
+		<Cursor position="451" topLine="0" />
+	</File>
+	<File name="..\..\..\addons\msbOFCore\renderer.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="23916" topLine="156" />
+	</File>
+	<File name="src\testApp.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="7854" topLine="16" />
+	</File>
+	<File name="src\testApp.h" open="0" top="0" tabpos="5">
+		<Cursor position="1637" topLine="39" />
+	</File>
+</CodeBlocks_layout_file>
