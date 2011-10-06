@@ -7,6 +7,7 @@
 #include "ofMain.h"
 
 #include "ofxKinect.h"
+#include "ofxOsc.h"
 #include "msbOFCore.h"
 #include "actor.h"
 
@@ -19,7 +20,15 @@ class testApp : public ofBaseApp, public Actor
 	public:
 
 		void setup();
+
+        void msbSetup();
+		void interfaceSetup();
+		void filemappingSetup();
+
 		void update();
+
+		void sendSkeleton();
+
 		void draw();
 		void exit();
 
@@ -47,9 +56,16 @@ class testApp : public ofBaseApp, public Actor
 
 #endif
         ofxKinect           kinect;
+        ofxOscSender        osc_sender;
+
+
+        string              ipAddress;
+        int                 channel;
 
 		bool                bShareMemory;
         bool                bSetCutoffToZero;
+        bool                bFullscreen;
+        bool                bSendSkeleton;
 
         //msbTools specific
 

@@ -24,8 +24,38 @@
 
 
 //--------------------------------------------------------------
-void testApp::setup()
-{
+void testApp::setup(){
+
+    bFullscreen=false;
+    cutOffDepth=4096;
+    bSetCutoffToZero=false;
+    bShareMemory=false;
+    bSendSkeleton=false;
+
+    channel=1;
+    ipAddress="127.0.0.1";
+
+    osc_sender.setup(ipAddress,31840+channel);
+
+
+    msbSetup();
+
+    //interface setup
+    interfaceSetup();
+
+    //OF_STUFF
+
+	//kinect.init(true);  //shows infrared image
+	kinect.init();
+	kinect.setVerbose(true);
+	kinect.open();
+
+    filemappingSetup();
+
+}
+
+void testApp::msbSetup(){
+
     //MSB setup
     renderer=Renderer::getInstance();
     input=Input::getInstance();
@@ -38,7 +68,6 @@ void testApp::setup()
     renderer->camActor->setLocation(Vector3f(0,0,-5));
     renderer->camActor->postLoad();
 
-    cutOffDepth=4096;
     registerProperties();
 
 
@@ -58,7 +87,12 @@ void testApp::setup()
 
     renderer->actorList.push_back(myActor);
     renderer->layerList[0]->actorList.push_back(myActor);
+
     patchActor=myActor;
+}
+
+void testApp::interfaceSetup(){
+
 
     SliderButton *but;
 
@@ -145,12 +179,27 @@ void testApp::setup()
     tiBut->bPermanent=true;
     tiBut->setup();
 
-    //OF_STUFF
+    tiBut= new TextInputButton;
+    tiBut->location.x=10;
+    tiBut->location.y=640;
+    tiBut->scale.x=100;
+    tiBut->scale.y=12;
+    tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+    tiBut->textureID="icon_flat";
+    tiBut->name="send Skeleton";
+    tiBut->bDrawName=true;
+    tiBut->setLocation(tiBut->location);
+    tiBut->parent=this;
+    tiBut->buttonProperty="BSENDSKELETON";
+    renderer->buttonList.push_back(tiBut);
+    tiBut->bPermanent=true;
+    tiBut->setup();
 
-	//kinect.init(true);  //shows infrared image
-	kinect.init();
-	kinect.setVerbose(true);
-	kinect.open();
+
+}
+
+void testApp::filemappingSetup(){
+
 
 #ifdef TARGET_WIN32
 
@@ -219,16 +268,14 @@ void testApp::setup()
 #endif
     myPic= new float[640*480*4];
 
-    bShareMemory=false;
-    bSetCutoffToZero=false;
 }
-
 
 void testApp::registerProperties(){
 
    createMemberID("BSHAREMEMORY",&bShareMemory,this);
    createMemberID("CUTOFFDEPTH",&cutOffDepth,this);
    createMemberID("BSETCUTOFFTOZERO",&bSetCutoffToZero,this);
+   createMemberID("BSENDSKELETON",&bSendSkeleton,this);
 }
 
 int testApp::shareMemory(){
@@ -286,20 +333,142 @@ void testApp::update(){
     renderer->update();
 
     patchActor->ofTexturePtr=&kinect.getDepthTextureReference();
+
+    if (bSendSkeleton)
+        sendSkeleton();
+}
+
+
+void testApp::sendSkeleton(){
+
+
+        	XnSkeletonJointPosition joint1,
+                                    joint2,
+                                    joint3,
+                                    joint4,
+                                    joint5,
+                                    joint6,
+                                    joint7,
+                                    joint8,
+                                    joint9,
+                                    joint10,
+                                    joint11,
+                                    joint12,
+                                    joint13,
+                                    joint14,
+                                    joint15;
+
+
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_HEAD, joint1);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_NECK, joint2);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_SHOULDER, joint3);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_ELBOW, joint4);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_HAND, joint5);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_SHOULDER, joint6);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_ELBOW, joint7);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_HAND, joint8);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_TORSO, joint9);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_HIP, joint10);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_HIP, joint11);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_KNEE, joint12);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_FOOT, joint13);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_KNEE, joint14);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_FOOT, joint15);
+
+        ofxOscMessage myMessage;
+        myMessage.setAddress("/pilot/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f");
+
+        myMessage.addFloatArg(joint1.position.X/100.0);
+        myMessage.addFloatArg(joint1.position.Y/100.0);
+        myMessage.addFloatArg(joint1.position.Z/100.0);
+
+        myMessage.addFloatArg(joint2.position.X/100.0);
+        myMessage.addFloatArg(joint2.position.Y/100.0);
+        myMessage.addFloatArg(joint2.position.Z/100.0);
+
+        myMessage.addFloatArg(joint3.position.X/100.0);
+        myMessage.addFloatArg(joint3.position.Y/100.0);
+        myMessage.addFloatArg(joint3.position.Z/100.0);
+
+        myMessage.addFloatArg(joint4.position.X/100.0);
+        myMessage.addFloatArg(joint4.position.Y/100.0);
+        myMessage.addFloatArg(joint4.position.Z/100.0);
+
+        myMessage.addFloatArg(joint5.position.X/100.0);
+        myMessage.addFloatArg(joint5.position.Y/100.0);
+        myMessage.addFloatArg(joint5.position.Z/100.0);
+
+        myMessage.addFloatArg(joint6.position.X/100.0);
+        myMessage.addFloatArg(joint6.position.Y/100.0);
+        myMessage.addFloatArg(joint6.position.Z/100.0);
+
+        myMessage.addFloatArg(joint7.position.X/100.0);
+        myMessage.addFloatArg(joint7.position.Y/100.0);
+        myMessage.addFloatArg(joint7.position.Z/100.0);
+
+        myMessage.addFloatArg(joint8.position.X/100.0);
+        myMessage.addFloatArg(joint8.position.Y/100.0);
+        myMessage.addFloatArg(joint8.position.Z/100.0);
+
+        myMessage.addFloatArg(joint9.position.X/100.0);
+        myMessage.addFloatArg(joint9.position.Y/100.0);
+        myMessage.addFloatArg(joint9.position.Z/100.0);
+
+        myMessage.addFloatArg(joint10.position.X/100.0);
+        myMessage.addFloatArg(joint10.position.Y/100.0);
+        myMessage.addFloatArg(joint10.position.Z/100.0);
+
+        myMessage.addFloatArg(joint11.position.X/100.0);
+        myMessage.addFloatArg(joint11.position.Y/100.0);
+        myMessage.addFloatArg(joint11.position.Z/100.0);
+
+        myMessage.addFloatArg(joint12.position.X/100.0);
+        myMessage.addFloatArg(joint12.position.Y/100.0);
+        myMessage.addFloatArg(joint12.position.Z/100.0);
+
+        myMessage.addFloatArg(joint13.position.X/100.0);
+        myMessage.addFloatArg(joint13.position.Y/100.0);
+        myMessage.addFloatArg(joint13.position.Z/100.0);
+
+        myMessage.addFloatArg(joint14.position.X/100.0);
+        myMessage.addFloatArg(joint14.position.Y/100.0);
+        myMessage.addFloatArg(joint14.position.Z/100.0);
+
+        myMessage.addFloatArg(joint15.position.X/100.0);
+        myMessage.addFloatArg(joint15.position.Y/100.0);
+        myMessage.addFloatArg(joint15.position.Z/100.0);
+
+
+        osc_sender.sendMessage(myMessage);
+
+        Matrix4f myMatrix;
+
+        //myMatrix.setRotation(myRot);
+        //myMatrix.setTranslation(myPos/100.0);
+        //for (int i=0;i<16;i++)
+//        myMessage.addFloatArg( myMatrix.data[i]);
+
+
 }
 
 //--------------------------------------------------------------
-void testApp::draw()
-{
+void testApp::draw(){
 
-    glEnable(GL_LIGHTING);
-    renderer->draw();
-    glDisable(GL_LIGHTING);
+    if (bFullscreen){
 
-	ofSetColor(255, 255, 255);
+        kinect.drawDepth(0, 0, renderer->screenX, renderer->screenY);
 
-	kinect.drawDepth(10, 50, 400, 300);
-	kinect.draw(420, 50, 400, 300);
+    }else{
+
+        glEnable(GL_LIGHTING);
+        renderer->draw();
+        glDisable(GL_LIGHTING);
+
+        ofSetColor(255, 255, 255);
+
+        kinect.drawDepth(10, 50, 400, 300);
+        kinect.draw(420, 50, 400, 300);
+    }
 
 
 }
@@ -324,6 +493,9 @@ void testApp::keyPressed (int key){
 
     input->normalKeyDown(key,mouseX,mouseY);
     input->specialKeyDown(key,mouseX,mouseY);
+
+    if (key=='f')
+        bFullscreen=!bFullscreen;
 
 }
 

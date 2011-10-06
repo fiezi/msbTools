@@ -42,6 +42,8 @@
 				</Compiler>
 				<Linker>
 					<Add option="../../../libs/openFrameworksCompiled/lib/win_cb/openFrameworksDebug.lib" />
+					<Add library="..\..\..\addons\ofxKinectOpenNI\NITE\Lib\XnVNITE_1_4_1.lib" />
+					<Add library="..\..\..\addons\ofxKinectOpenNI\NITE\Lib\XnVCNITE_1_4_1.lib" />
 				</Linker>
 				<ExtraCommands>
 					<Add after='xcopy /e /i /y &quot;$(PROJECT_DIR)..\..\..\export\win_cb\*.dll&quot;  &quot;$(PROJECT_DIR)bin&quot;' />
@@ -97,13 +99,17 @@
 			<Add directory="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb" />
 			<Add directory="..\..\..\addons\ofxThread\src" />
 			<Add directory="..\..\..\addons\ofxVectorMath\src" />
-			<Add directory="..\..\..\addons\ofxKinect\openNI\Include" />
-			<Add directory="..\..\..\addons\ofxKinect\openNI\Include\Win32" />
-			<Add directory="..\..\..\addons\ofxKinect" />
+			<Add directory="..\..\..\addons\ofxKinectOpenNI\openNI\Include" />
+			<Add directory="..\..\..\addons\ofxKinectOpenNI\openNI\Include\Win32" />
+			<Add directory="..\..\..\addons\ofxKinectOpenNI" />
 			<Add directory="..\..\..\addons\msbOFCore" />
 			<Add directory="..\..\..\addons\msbOFCore\vMath" />
 			<Add directory="..\..\..\addons\msbOFCore\tinyxml" />
 			<Add directory="..\..\..\addons\msbOFCore\msbButtons" />
+			<Add directory="..\..\..\addons\ofxKinectOpenNI\NITE\Include" />
+			<Add directory="..\..\..\addons\ofxOsc\src" />
+			<Add directory="..\..\..\addons\ofxOsc\libs\oscpack\include\ip" />
+			<Add directory="..\..\..\addons\ofxOsc\libs\oscpack\include\osc" />
 		</Compiler>
 		<Linker>
 			<Add option="../../../libs/FreeImage/lib/win_cb/FreeImage.lib" />
@@ -121,6 +127,7 @@
 			<Add option="../../../libs/poco/lib/win_cb/libPocoFoundationmt.a" />
 			<Add option="../../../addons/ofxOpenCv/libs/opencv/lib/win_cb/libcv.a" />
 			<Add option="../../../addons/ofxOpenCv/libs/opencv/lib/win_cb/libcxcore.a" />
+			<Add option="../../../addons/ofxOsc/libs/oscpack/lib/win_cb/oscpack.a" />
 			<Add option="-lopengl32" />
 			<Add option="-lglu32" />
 			<Add option="-ldsound" />
@@ -134,11 +141,13 @@
 			<Add option="-lwsock32" />
 			<Add option="-lws2_32" />
 			<Add option="-lIphlpapi" />
-			<Add library="..\..\..\addons\ofxKinectOpenNI\openNI\Lib\openNI.lib" />
+			<Add library="..\..\..\addons\ofxKinectOpenNI\openNI\Lib\Win32\openNI.lib" />
 			<Add library="winmm" />
 			<Add library="gdi32" />
 			<Add library="wsock32" />
 			<Add library="ws2_32" />
+			<Add library="..\..\..\addons\ofxKinectOpenNI\NITE\Lib\XnVCNITE_1_4_1.lib" />
+			<Add library="..\..\..\addons\ofxKinectOpenNI\NITE\Lib\XnVNITE_1_4_1.lib" />
 		</Linker>
 		<Unit filename="..\..\..\addons\msbOFCore\actor.cpp" />
 		<Unit filename="..\..\..\addons\msbOFCore\actor.h" />
@@ -259,6 +268,16 @@
 		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvShortImage.cpp" />
 		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvShortImage.h" />
 		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxOpenCv.h" />
+		<Unit filename="..\..\..\addons\ofxOsc\src\ofxOsc.h" />
+		<Unit filename="..\..\..\addons\ofxOsc\src\ofxOscArg.h" />
+		<Unit filename="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp" />
+		<Unit filename="..\..\..\addons\ofxOsc\src\ofxOscBundle.h" />
+		<Unit filename="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp" />
+		<Unit filename="..\..\..\addons\ofxOsc\src\ofxOscMessage.h" />
+		<Unit filename="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp" />
+		<Unit filename="..\..\..\addons\ofxOsc\src\ofxOscReceiver.h" />
+		<Unit filename="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp" />
+		<Unit filename="..\..\..\addons\ofxOsc\src\ofxOscSender.h" />
 		<Unit filename="..\..\..\addons\ofxThread\src\ofxThread.cpp" />
 		<Unit filename="..\..\..\addons\ofxThread\src\ofxThread.h" />
 		<Unit filename="..\..\..\addons\ofxVectorMath\src\ofxMatrix3x3.cpp" />
