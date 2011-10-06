@@ -24,7 +24,7 @@ using sixenseMath::Matrix3;
 
 namespace sixenseUtils {
 
-	// LaserPointer computes a ray that shoots from the controller and intersects with the screen. 
+	// LaserPointer computes a ray that shoots from the controller and intersects with the screen.
 	class SIXENSE_UTILS_EXPORT MousePointer {
 
 	public:
@@ -49,12 +49,12 @@ namespace sixenseUtils {
 		// velocity params
 		float _min_vel, _max_vel;
 		float _acceleration;
-	
+
 		// This offset is the position of the center of the virtual screen relative to the base
-		Vector2 mouse_offset;
+		sixenseMath::Vector2 mouse_offset;
 
 		// Keep track of the previous mouse pos so we can compute velocity
-		Vector2 _last_mouse_pos;
+		sixenseMath::Vector2 _last_mouse_pos;
 
 		// Keep track of the last accel so we can filter it
 		float _last_accel;

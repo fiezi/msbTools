@@ -42,6 +42,9 @@ void testApp::setup(){
     //sixense stuff
 #ifdef TARGET_WIN32
     sixenseInit();
+    sixenseSetActiveBase(0);
+    sixenseAutoEnableHemisphereTracking(0);
+
 #endif
 }
 
@@ -224,21 +227,35 @@ void testApp::trigger(Actor* other){
 void testApp::sendHydra(){
 
 #ifdef TARGET_WIN32
-	
+
     sixenseAllControllerData acd;
-    sixenseSetActiveBase(0);
     sixenseGetAllNewestData( &acd );
     Vector3f myPos;
     myPos.x=acd.controllers[0].pos[0];
     myPos.y=acd.controllers[0].pos[1];
     myPos.z=acd.controllers[0].pos[2];
 
+    Quatf quatern= Quatf(acd.controllers[0].rot_quat[0],acd.controllers[0].rot_quat[1],acd.controllers[0].rot_quat[2],acd.controllers[0].rot_quat[3]);
+
+    Matrix3f myRot= quatern.rotMatrix();
+
+    myRot.transpose();
+
+
         ofxOscMessage myMessage;
         myMessage.addFloatArg(myPos.x/100.0);
         myMessage.addFloatArg(myPos.y/100.0);
         myMessage.addFloatArg(myPos.z/100.0);
 
-        myMessage.setAddress("/pilot/vector3f");
+        myMessage.setAddress("/pilot/vector3f/matrix4f");
+
+        Matrix4f myMatrix;
+
+        myMatrix.setRotation(myRot);
+        myMatrix.setTranslation(myPos/100.0);
+        for (int i=0;i<16;i++)
+        myMessage.addFloatArg( myMatrix.data[i]);
+
         osc_sender.sendMessage(myMessage);
 
        // cout << "sending... hydra" << endl;

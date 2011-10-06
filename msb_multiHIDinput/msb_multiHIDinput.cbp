@@ -6,7 +6,7 @@
 		<Option makefile="makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="addons\ofxDirList\src\;addons\ofxOpenCv\src\;addons\ofxOsc\src\;addons\ofxThread\src\;addons\ofxVectorGraphics\libs\;addons\ofxVectorGraphics\src\;addons\ofxVectorMath\src\;src\;addons\;plib\;plib\js\;plib\util\;sixense\;" />
+		<Option virtualFolders="addons\ofxDirList\src\;addons\ofxOpenCv\src\;addons\ofxOsc\src\;addons\ofxThread\src\;addons\ofxVectorGraphics\libs\;addons\ofxVectorGraphics\src\;addons\ofxVectorMath\src\;src\;addons\;plib\;plib\js\;plib\util\;sixense\;sixense\sixense_utils\;" />
 		<Build>
 			<Target title="release">
 				<Option output="bin\$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
@@ -84,6 +84,8 @@
 			<Add directory="src\plib\util" />
 			<Add directory="src\plib\js" />
 			<Add directory="src\sixense\include" />
+			<Add directory="src\sixense\include\sixense_utils" />
+			<Add directory="src\sixense\include\sixense_utils\controller_manager" />
 		</Compiler>
 		<Linker>
 			<Add option="../../../libs/FreeImage/lib/win_cb/FreeImage.lib" />
@@ -403,6 +405,39 @@
 		</Unit>
 		<Unit filename="src\sixense\include\sixense_math.hpp">
 			<Option virtualFolder="sixense\" />
+		</Unit>
+		<Unit filename="src\sixense\include\sixense_utils\button_states.hpp">
+			<Option virtualFolder="sixense\sixense_utils\" />
+		</Unit>
+		<Unit filename="src\sixense\include\sixense_utils\controller_manager\controller_manager.hpp">
+			<Option virtualFolder="sixense\sixense_utils\" />
+		</Unit>
+		<Unit filename="src\sixense\include\sixense_utils\derivatives.hpp">
+			<Option virtualFolder="sixense\sixense_utils\" />
+		</Unit>
+		<Unit filename="src\sixense\include\sixense_utils\event_triggers.hpp">
+			<Option virtualFolder="sixense\sixense_utils\" />
+		</Unit>
+		<Unit filename="src\sixense\include\sixense_utils\export.hpp">
+			<Option virtualFolder="sixense\sixense_utils\" />
+		</Unit>
+		<Unit filename="src\sixense\include\sixense_utils\fps.hpp">
+			<Option virtualFolder="sixense\sixense_utils\" />
+		</Unit>
+		<Unit filename="src\sixense\include\sixense_utils\keyboard_and_mouse_win32.hpp">
+			<Option virtualFolder="sixense\sixense_utils\" />
+		</Unit>
+		<Unit filename="src\sixense\include\sixense_utils\laser_pointer.hpp">
+			<Option virtualFolder="sixense\sixense_utils\" />
+		</Unit>
+		<Unit filename="src\sixense\include\sixense_utils\mouse_pointer.hpp">
+			<Option virtualFolder="sixense\sixense_utils\" />
+		</Unit>
+		<Unit filename="src\sixense\include\sixense_utils\sixense_utils_string.hpp">
+			<Option virtualFolder="sixense\sixense_utils\" />
+		</Unit>
+		<Unit filename="src\sixense\include\sixense_utils\time.hpp">
+			<Option virtualFolder="sixense\sixense_utils\" />
 		</Unit>
 		<Unit filename="src\testApp.cpp">
 			<Option virtualFolder="src\" />

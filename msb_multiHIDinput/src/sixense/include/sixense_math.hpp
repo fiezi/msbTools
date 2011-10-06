@@ -16,6 +16,9 @@
 
 namespace sixenseMath {
 
+    class Matrix4;
+    class Matrix3;
+
 	class Vector2 {
 	public:
 		Vector2();
@@ -206,10 +209,10 @@ namespace sixenseMath {
 		friend class Plane;
 		public:
 			Line( const Line& );
-			Line( const Vector3& dir, const Vector3& pos ); 
+			Line( const Vector3& dir, const Vector3& pos );
 
 			Vector3 getClosestPoint( const Vector3& );
-			
+
 		private:
 			Vector3 _dir;
 			Vector3 _pos1;
@@ -219,7 +222,7 @@ namespace sixenseMath {
 
 	class Plane	{
 	public:
-		Plane(); 
+		Plane();
 		Plane( const Plane&	);
 		Plane( Vector3 p0, Vector3 p1, Vector3 p2 );
 		Plane( Vector3 point, Vector3 normal );
