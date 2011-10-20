@@ -42,8 +42,6 @@
 				</Compiler>
 				<Linker>
 					<Add option="../../../libs/openFrameworksCompiled/lib/win_cb/openFrameworksDebug.lib" />
-					<Add library="..\..\..\addons\ofxKinectOpenNI\NITE\Lib\XnVNITE_1_4_1.lib" />
-					<Add library="..\..\..\addons\ofxKinectOpenNI\NITE\Lib\XnVCNITE_1_4_1.lib" />
 				</Linker>
 				<ExtraCommands>
 					<Add after='xcopy /e /i /y &quot;$(PROJECT_DIR)..\..\..\export\win_cb\*.dll&quot;  &quot;$(PROJECT_DIR)bin&quot;' />
@@ -74,7 +72,6 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wno-multichar" />
-			<Add option="-DTARGET_WIN32" />
 			<Add directory="..\..\..\libs\glu\include" />
 			<Add directory="..\..\..\libs\freetype\include" />
 			<Add directory="..\..\..\libs\freetype\include\freetype2" />
@@ -141,13 +138,12 @@
 			<Add option="-lwsock32" />
 			<Add option="-lws2_32" />
 			<Add option="-lIphlpapi" />
-			<Add library="..\..\..\addons\ofxKinectOpenNI\openNI\Lib\Win32\openNI.lib" />
 			<Add library="winmm" />
 			<Add library="gdi32" />
 			<Add library="wsock32" />
 			<Add library="ws2_32" />
+			<Add library="..\..\..\addons\ofxKinectOpenNI\openNI\Lib\Win32\openNI.lib" />
 			<Add library="..\..\..\addons\ofxKinectOpenNI\NITE\Lib\XnVCNITE_1_4_1.lib" />
-			<Add library="..\..\..\addons\ofxKinectOpenNI\NITE\Lib\XnVNITE_1_4_1.lib" />
 		</Linker>
 		<Unit filename="..\..\..\addons\msbOFCore\actor.cpp" />
 		<Unit filename="..\..\..\addons\msbOFCore\actor.h" />
