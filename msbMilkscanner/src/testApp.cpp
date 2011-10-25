@@ -55,7 +55,7 @@ void testApp::setup(){
     bIsRecording=false;
     bIsInterval=false;
     bFrontToBack=false;
-    bLumaKey=true;
+    bLumaKey=true;             //let's not do luma now...
 
     mouseButton=0;
 
@@ -169,6 +169,7 @@ void testApp::msbSetup(){
     renderer->buttonList.push_back(slBtn);
     threshholdSlider=slBtn;
 
+/*
     slBtn = new SliderButton;
     slBtn->location.x=340;
     slBtn->location.y=300;
@@ -219,7 +220,7 @@ void testApp::msbSetup(){
     slBtn->parent=this;
     renderer->buttonList.push_back(slBtn);
     velThreshholdSlider=slBtn;
-
+*/
     but= new AssignButton;
     but->location.x=500;
     but->location.y=500;
@@ -274,6 +275,7 @@ void testApp::registerProperties(){
 
     createMemberID("FILENAME",&filename,this);
 }
+
 //--------------------------------------------------------------
 void testApp::update(){
 
@@ -326,8 +328,8 @@ void testApp::draw(){
 	  }
     glPopMatrix();
 
-    ofSetColor(chromaKey->R,chromaKey->G, chromaKey->B);
-    ofRect(20,260,100,100);
+    //ofSetColor(chromaKey->R,chromaKey->G, chromaKey->B);
+    //ofRect(20,260,100,100);
 
 }
 

@@ -19,8 +19,8 @@
 	<File name="..\..\..\addons\msbOFCore\renderer.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="23916" topLine="156" />
 	</File>
-	<File name="src\testApp.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="7854" topLine="16" />
+	<File name="src\testApp.cpp" open="1" top="1" tabpos="0">
+		<Cursor position="1333" topLine="33" />
 	</File>
 	<File name="src\testApp.h" open="0" top="0" tabpos="5">
 		<Cursor position="1637" topLine="39" />
