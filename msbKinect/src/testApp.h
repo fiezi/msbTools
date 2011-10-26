@@ -29,6 +29,10 @@ class testApp : public ofBaseApp, public Actor
 
 		void sendSkeleton();
 
+        Matrix4f makeMatrix4(XnSkeletonJointOrientation* joint);
+
+        string makeMatrixMessage( ofxOscMessage* myMessage, Matrix4f myMat4 );
+
 		void draw();
 		void exit();
 
