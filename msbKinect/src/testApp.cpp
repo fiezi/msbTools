@@ -342,7 +342,7 @@ void testApp::update(){
 
 void testApp::sendSkeleton(){
 
-
+/*
         	XnSkeletonJointPosition joint1,
                                     joint2,
                                     joint3,
@@ -359,7 +359,6 @@ void testApp::sendSkeleton(){
                                     joint14,
                                     joint15;
 
-
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_HEAD, joint1);
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_NECK, joint2);
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_SHOULDER, joint3);
@@ -368,7 +367,10 @@ void testApp::sendSkeleton(){
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_SHOULDER, joint6);
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_ELBOW, joint7);
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_HAND, joint8);
+
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_TORSO, joint9);
+
+
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_HIP, joint10);
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_HIP, joint11);
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_KNEE, joint12);
@@ -439,10 +441,98 @@ void testApp::sendSkeleton(){
         myMessage.addFloatArg(joint15.position.Y/100.0);
         myMessage.addFloatArg(joint15.position.Z/100.0);
 
+*/
+        XnSkeletonJointOrientation joint[15];
+        int j=0;
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_HEAD, joint[j++]);                    //0
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_NECK, joint[j++]);                    //1
+
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_LEFT_SHOULDER, joint[j++]);           //2
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_LEFT_ELBOW, joint[j++]);              //3
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_LEFT_HAND, joint[j++]);               //4
+
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_RIGHT_SHOULDER, joint[j++]);         //5
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_RIGHT_ELBOW, joint[j++]);              //6
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_RIGHT_HAND, joint[j++]);              //7
+
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_TORSO, joint[j++]);                   //8
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_LEFT_HIP, joint[j++]);                //9
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_RIGHT_HIP, joint[j++]);               //10
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_LEFT_KNEE, joint[j++]);               //11
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_LEFT_FOOT, joint[j++]);               //12
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_RIGHT_KNEE, joint[j++]);              //13
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_RIGHT_FOOT, joint[j++]);              //14
+
+        XnSkeletonJointPosition body;
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_TORSO, body);
+
+
+
+        Matrix4f boneMat[15];
+
+
+
+        Matrix4f nullMat;
+
+
+        ofxOscMessage myMessage;
+
+        string oscAddress = "/pilot";
+
+
+            //torso as root
+            boneMat[8]=makeMatrix4(&joint[8]);
+
+            //neck
+            boneMat[1]=boneMat[8].inverse() * makeMatrix4(&joint[1]);
+
+
+            //right shoulder - multiply with an additional rotation of 90 degrees around x-axis
+            boneMat[2]=(boneMat[8]).inverse() * makeMatrix4(&joint[2]);
+            //right elbow
+            boneMat[3]= (boneMat[8] * boneMat[2] ).inverse() *  makeMatrix4(&joint[3]);
+
+
+
+            //left shoulder
+            boneMat[5]=(boneMat[8]).inverse() * makeMatrix4(&joint[5]);
+            //left elbow
+            boneMat[6]= (boneMat[8] * boneMat[5] ).inverse() * makeMatrix4(&joint[6]);
+
+
+
+
+
+            //left hip
+            boneMat[9]= makeMatrix4(&joint[9]);
+            //right hip
+            boneMat[10]= makeMatrix4(&joint[10]);
+
+            //left knee
+            boneMat[11]= (boneMat[9] ).inverse() * makeMatrix4(&joint[11]);
+
+            //right knee
+            boneMat[13]= (boneMat[10] ).inverse() * makeMatrix4(&joint[13]);
+
+
+
+
+        for (int i=0;i<15;i++){
+            oscAddress += makeMatrixMessage(&myMessage,boneMat[i]);
+        }
+
+
+        oscAddress+="/vector3f";
+
+        myMessage.addFloatArg(body.position.X/250.0);
+        myMessage.addFloatArg(body.position.Y/250.0);
+        myMessage.addFloatArg(body.position.Z/250.0);
+
+        myMessage.setAddress(oscAddress);
 
         osc_sender.sendMessage(myMessage);
 
-        Matrix4f myMatrix;
+
 
         //myMatrix.setRotation(myRot);
         //myMatrix.setTranslation(myPos/100.0);
@@ -450,6 +540,43 @@ void testApp::sendSkeleton(){
 //        myMessage.addFloatArg( myMatrix.data[i]);
 
 
+}
+
+
+Matrix4f testApp::makeMatrix4(XnSkeletonJointOrientation* joint){
+
+    Matrix3f myMat3;
+
+    for (int i=0;i<9;i++)
+        myMat3.data[i]=joint->orientation.elements[i];
+
+    myMat3 = myMat3.transpose();
+
+
+
+    Matrix4f myMat4;
+
+    myMat4.setRotation(myMat3);
+
+    //invert myMat z positions (because they are negative towards sensor...
+
+    myMat4[8]*=-1;
+    myMat4[9]*=-1;
+    myMat4[10]*=-1;
+
+   // return ( base.inverse() * myMat4 );
+    return ( myMat4 );
+
+}
+
+string testApp::makeMatrixMessage( ofxOscMessage* myMessage, Matrix4f myMat4 ){
+
+
+    for (int i=0;i<16;i++){
+         myMessage->addFloatArg( myMat4.data[i]);
+    }
+
+    return "/matrix4f";
 }
 
 //--------------------------------------------------------------

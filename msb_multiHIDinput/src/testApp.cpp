@@ -39,13 +39,6 @@ void testApp::setup(){
 
     setupInterface();
 
-    //sixense stuff
-#ifdef TARGET_WIN32
-    sixenseInit();
-    sixenseSetActiveBase(0);
-    sixenseAutoEnableHemisphereTracking(0);
-
-#endif
 }
 
 
@@ -204,6 +197,16 @@ void testApp::trigger(Actor* other){
 
             other->color=COLOR_RED;
 
+                //sixense stuff
+                #ifdef TARGET_WIN32
+                    sixenseInit();
+                    sixenseSetActiveBase(0);
+                    sixenseAutoEnableHemisphereTracking(0);
+
+                #endif
+
+
+
             //OSC stuff
             osc_sender.setup(ipAddress,31840+channel);
             bSending=true;
@@ -228,8 +231,10 @@ void testApp::sendHydra(){
 
 #ifdef TARGET_WIN32
 
+    sixenseSetActiveBase(0);
     sixenseAllControllerData acd;
     sixenseGetAllNewestData( &acd );
+    //sixenseUtils::getTheControllerManager()->update( &acd );
     Vector3f myPos;
     myPos.x=acd.controllers[0].pos[0];
     myPos.y=acd.controllers[0].pos[1];
@@ -243,22 +248,44 @@ void testApp::sendHydra(){
 
 
         ofxOscMessage myMessage;
-        myMessage.addFloatArg(myPos.x/100.0);
-        myMessage.addFloatArg(myPos.y/100.0);
-        myMessage.addFloatArg(myPos.z/100.0);
+        myMessage.addFloatArg(myPos.x/10.0);
+        myMessage.addFloatArg(myPos.y/10.0);
+        myMessage.addFloatArg(myPos.z/10.0);
+        myMessage.addFloatArg(1.0);
 
-        myMessage.setAddress("/pilot/vector3f/matrix4f");
-
+        myMessage.setAddress("/brush/vector3f/float");
+/*
         Matrix4f myMatrix;
 
         myMatrix.setRotation(myRot);
         myMatrix.setTranslation(myPos/100.0);
         for (int i=0;i<16;i++)
         myMessage.addFloatArg( myMatrix.data[i]);
-
+*/
         osc_sender.sendMessage(myMessage);
 
-       // cout << "sending... hydra" << endl;
+        ofxOscMessage myTrigger;
+        myTrigger.setAddress("/brush/draw");
+
+        ofxOscMessage myButtons;
+        myButtons.setAddress("/brush/new");
+
+
+
+        if (acd.controllers[0].buttons ==128){
+            osc_sender.sendMessage(myTrigger);
+            cout << "drawing" << endl;
+        }
+
+
+        if (acd.controllers[1].buttons == 128){
+            osc_sender.sendMessage(myButtons);
+            cout << "new drawing ***************" << endl;
+        }
+
+
+
+        cout << "sending... hydra" << endl;
 #endif
 
 }
