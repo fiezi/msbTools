@@ -46,6 +46,7 @@ void testApp::setup(){
     //OF_STUFF
 
 	//kinect.init(true);  //shows infrared image
+	kinect.bImage=true;
 	kinect.init();
 	kinect.setVerbose(true);
 	kinect.open();
