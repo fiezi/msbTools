@@ -27,7 +27,7 @@ class testApp : public ofBaseApp, public Actor
 
 		void update();
 
-		void sendSkeleton();
+		void sendSkeleton(int i);
 
         Matrix4f makeMatrix4(XnSkeletonJointOrientation* joint);
 
@@ -65,6 +65,8 @@ class testApp : public ofBaseApp, public Actor
 
         string              ipAddress;
         int                 channel;
+
+        int                 skelNo;
 
 		bool                bShareMemory;
         bool                bSetCutoffToZero;

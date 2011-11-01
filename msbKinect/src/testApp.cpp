@@ -32,11 +32,13 @@ void testApp::setup(){
     bShareMemory=false;
     bSendSkeleton=false;
 
+    skelNo = 1;
     channel=1;
     ipAddress="127.0.0.1";
 
     osc_sender.setup(ipAddress,31840+channel);
 
+	//kinect.bImage=true;
 
     msbSetup();
 
@@ -46,7 +48,6 @@ void testApp::setup(){
     //OF_STUFF
 
 	//kinect.init(true);  //shows infrared image
-	kinect.bImage=true;
 	kinect.init();
 	kinect.setVerbose(true);
 	kinect.open();
@@ -71,6 +72,8 @@ void testApp::msbSetup(){
 
     registerProperties();
 
+    if (!kinect.bImage)
+        return;
 
     //Adding MSB content
     //heightfield based on videoTexture from OF
@@ -196,6 +199,22 @@ void testApp::interfaceSetup(){
     tiBut->bPermanent=true;
     tiBut->setup();
 
+    tiBut= new TextInputButton;
+    tiBut->location.x=10;
+    tiBut->location.y=660;
+    tiBut->scale.x=100;
+    tiBut->scale.y=12;
+    tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+    tiBut->textureID="icon_flat";
+    tiBut->name="Skel Number";
+    tiBut->bDrawName=true;
+    tiBut->setLocation(tiBut->location);
+    tiBut->parent=this;
+    tiBut->buttonProperty="SKELNO";
+    renderer->buttonList.push_back(tiBut);
+    tiBut->bPermanent=true;
+    tiBut->setup();
+
 
 }
 
@@ -277,6 +296,7 @@ void testApp::registerProperties(){
    createMemberID("CUTOFFDEPTH",&cutOffDepth,this);
    createMemberID("BSETCUTOFFTOZERO",&bSetCutoffToZero,this);
    createMemberID("BSENDSKELETON",&bSendSkeleton,this);
+   createMemberID("SKELNO",&skelNo,this);
 }
 
 int testApp::shareMemory(){
@@ -331,140 +351,49 @@ void testApp::update(){
     if (bShareMemory)
         shareMemory();
 
+    if (bSendSkeleton){
+        for (int i=0;i<kinect.users.size();i++){
+            if (kinect.users[i]->bCalibrated)
+                sendSkeleton(i);
+        }
+    }
+
     renderer->update();
 
-    patchActor->ofTexturePtr=&kinect.getDepthTextureReference();
+    if (kinect.bImage)
+        patchActor->ofTexturePtr=&kinect.getDepthTextureReference();
 
-    if (bSendSkeleton)
-        sendSkeleton();
 }
 
 
-void testApp::sendSkeleton(){
+void testApp::sendSkeleton(int i){
 
-/*
-        	XnSkeletonJointPosition joint1,
-                                    joint2,
-                                    joint3,
-                                    joint4,
-                                    joint5,
-                                    joint6,
-                                    joint7,
-                                    joint8,
-                                    joint9,
-                                    joint10,
-                                    joint11,
-                                    joint12,
-                                    joint13,
-                                    joint14,
-                                    joint15;
+        if (i!=skelNo)
+            return;
 
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_HEAD, joint1);
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_NECK, joint2);
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_SHOULDER, joint3);
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_ELBOW, joint4);
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_HAND, joint5);
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_SHOULDER, joint6);
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_ELBOW, joint7);
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_HAND, joint8);
-
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_TORSO, joint9);
-
-
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_HIP, joint10);
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_HIP, joint11);
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_KNEE, joint12);
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_LEFT_FOOT, joint13);
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_KNEE, joint14);
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_RIGHT_FOOT, joint15);
-
-        ofxOscMessage myMessage;
-        myMessage.setAddress("/pilot/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f/vector3f");
-
-        myMessage.addFloatArg(joint1.position.X/100.0);
-        myMessage.addFloatArg(joint1.position.Y/100.0);
-        myMessage.addFloatArg(joint1.position.Z/100.0);
-
-        myMessage.addFloatArg(joint2.position.X/100.0);
-        myMessage.addFloatArg(joint2.position.Y/100.0);
-        myMessage.addFloatArg(joint2.position.Z/100.0);
-
-        myMessage.addFloatArg(joint3.position.X/100.0);
-        myMessage.addFloatArg(joint3.position.Y/100.0);
-        myMessage.addFloatArg(joint3.position.Z/100.0);
-
-        myMessage.addFloatArg(joint4.position.X/100.0);
-        myMessage.addFloatArg(joint4.position.Y/100.0);
-        myMessage.addFloatArg(joint4.position.Z/100.0);
-
-        myMessage.addFloatArg(joint5.position.X/100.0);
-        myMessage.addFloatArg(joint5.position.Y/100.0);
-        myMessage.addFloatArg(joint5.position.Z/100.0);
-
-        myMessage.addFloatArg(joint6.position.X/100.0);
-        myMessage.addFloatArg(joint6.position.Y/100.0);
-        myMessage.addFloatArg(joint6.position.Z/100.0);
-
-        myMessage.addFloatArg(joint7.position.X/100.0);
-        myMessage.addFloatArg(joint7.position.Y/100.0);
-        myMessage.addFloatArg(joint7.position.Z/100.0);
-
-        myMessage.addFloatArg(joint8.position.X/100.0);
-        myMessage.addFloatArg(joint8.position.Y/100.0);
-        myMessage.addFloatArg(joint8.position.Z/100.0);
-
-        myMessage.addFloatArg(joint9.position.X/100.0);
-        myMessage.addFloatArg(joint9.position.Y/100.0);
-        myMessage.addFloatArg(joint9.position.Z/100.0);
-
-        myMessage.addFloatArg(joint10.position.X/100.0);
-        myMessage.addFloatArg(joint10.position.Y/100.0);
-        myMessage.addFloatArg(joint10.position.Z/100.0);
-
-        myMessage.addFloatArg(joint11.position.X/100.0);
-        myMessage.addFloatArg(joint11.position.Y/100.0);
-        myMessage.addFloatArg(joint11.position.Z/100.0);
-
-        myMessage.addFloatArg(joint12.position.X/100.0);
-        myMessage.addFloatArg(joint12.position.Y/100.0);
-        myMessage.addFloatArg(joint12.position.Z/100.0);
-
-        myMessage.addFloatArg(joint13.position.X/100.0);
-        myMessage.addFloatArg(joint13.position.Y/100.0);
-        myMessage.addFloatArg(joint13.position.Z/100.0);
-
-        myMessage.addFloatArg(joint14.position.X/100.0);
-        myMessage.addFloatArg(joint14.position.Y/100.0);
-        myMessage.addFloatArg(joint14.position.Z/100.0);
-
-        myMessage.addFloatArg(joint15.position.X/100.0);
-        myMessage.addFloatArg(joint15.position.Y/100.0);
-        myMessage.addFloatArg(joint15.position.Z/100.0);
-
-*/
         XnSkeletonJointOrientation joint[15];
         int j=0;
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_HEAD, joint[j++]);                    //0
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_NECK, joint[j++]);                    //1
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_HEAD, joint[j++]);                    //0
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_NECK, joint[j++]);                    //1
 
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_LEFT_SHOULDER, joint[j++]);           //2
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_LEFT_ELBOW, joint[j++]);              //3
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_LEFT_HAND, joint[j++]);               //4
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_SHOULDER, joint[j++]);           //2
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_ELBOW, joint[j++]);              //3
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_HAND, joint[j++]);               //4
 
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_RIGHT_SHOULDER, joint[j++]);         //5
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_RIGHT_ELBOW, joint[j++]);              //6
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_RIGHT_HAND, joint[j++]);              //7
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_SHOULDER, joint[j++]);         //5
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_ELBOW, joint[j++]);              //6
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_HAND, joint[j++]);              //7
 
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_TORSO, joint[j++]);                   //8
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_LEFT_HIP, joint[j++]);                //9
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_RIGHT_HIP, joint[j++]);               //10
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_LEFT_KNEE, joint[j++]);               //11
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_LEFT_FOOT, joint[j++]);               //12
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_RIGHT_KNEE, joint[j++]);              //13
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.nPlayer, XN_SKEL_RIGHT_FOOT, joint[j++]);              //14
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_TORSO, joint[j++]);                   //8
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_HIP, joint[j++]);                //9
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_HIP, joint[j++]);               //10
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_KNEE, joint[j++]);               //11
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_FOOT, joint[j++]);               //12
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_KNEE, joint[j++]);              //13
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_FOOT, joint[j++]);              //14
 
         XnSkeletonJointPosition body;
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.nPlayer, XN_SKEL_TORSO, body);
+        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.users[i]->userID, XN_SKEL_TORSO, body);
 
 
 
@@ -587,6 +516,7 @@ void testApp::draw(){
         kinect.drawDepth(0, 0, renderer->screenX, renderer->screenY);
 
     }else{
+
 
         glEnable(GL_LIGHTING);
         renderer->draw();
