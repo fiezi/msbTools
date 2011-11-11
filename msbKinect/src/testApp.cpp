@@ -32,13 +32,18 @@ void testApp::setup(){
     bShareMemory=false;
     bSendSkeleton=false;
 
-    skelNo = 1;
+    cvImage.allocate(640,480);
+
+    thresh= 48;
+
+    skelNo = 0;
     channel=1;
-    ipAddress="127.0.0.1";
+    //ipAddress="192.168.1.100";
+    ipAddress="127.0.1.1";
 
     osc_sender.setup(ipAddress,31840+channel);
 
-	//kinect.bImage=true;
+	kinect.bImage=true;
 
     msbSetup();
 
@@ -215,6 +220,22 @@ void testApp::interfaceSetup(){
     tiBut->bPermanent=true;
     tiBut->setup();
 
+    tiBut= new TextInputButton;
+    tiBut->location.x=200;
+    tiBut->location.y=400;
+    tiBut->scale.x=100;
+    tiBut->scale.y=12;
+    tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+    tiBut->textureID="icon_flat";
+    tiBut->name="CV_Threshhold";
+    tiBut->bDrawName=true;
+    tiBut->setLocation(tiBut->location);
+    tiBut->parent=this;
+    tiBut->buttonProperty="THRESH";
+    renderer->buttonList.push_back(tiBut);
+    tiBut->bPermanent=true;
+    tiBut->setup();
+
 
 }
 
@@ -297,6 +318,7 @@ void testApp::registerProperties(){
    createMemberID("BSETCUTOFFTOZERO",&bSetCutoffToZero,this);
    createMemberID("BSENDSKELETON",&bSendSkeleton,this);
    createMemberID("SKELNO",&skelNo,this);
+   createMemberID("THRESH",&thresh,this);
 }
 
 int testApp::shareMemory(){
@@ -363,13 +385,19 @@ void testApp::update(){
     if (kinect.bImage)
         patchActor->ofTexturePtr=&kinect.getDepthTextureReference();
 
+
+    cvImage.setFromPixels(kinect.depthPixels,640,480);
+    cvImage.threshold(thresh,true);
+    contourFinder.findContours(cvImage, 256, 80000, 10, false);
+
 }
 
 
 void testApp::sendSkeleton(int i){
-
         if (i!=skelNo)
             return;
+
+        cout << "sending!" << endl;
 
         XnSkeletonJointOrientation joint[15];
         int j=0;
@@ -489,9 +517,9 @@ Matrix4f testApp::makeMatrix4(XnSkeletonJointOrientation* joint){
 
     //invert myMat z positions (because they are negative towards sensor...
 
-    myMat4[8]*=-1;
-    myMat4[9]*=-1;
-    myMat4[10]*=-1;
+   // myMat4[8]*=-1;
+   // myMat4[9]*=-1;
+   // myMat4[10]*=-1;
 
    // return ( base.inverse() * myMat4 );
     return ( myMat4 );
@@ -525,7 +553,19 @@ void testApp::draw(){
         ofSetColor(255, 255, 255);
 
         kinect.drawDepth(10, 50, 400, 300);
-        kinect.draw(420, 50, 400, 300);
+        //kinect.draw(420, 50, 400, 300);
+
+        cvImage.draw(420,50,400,300);
+
+        glPushMatrix();
+        glScalef(0.5,0.5,1.0);
+        for (int i = 0; i < contourFinder.nBlobs; i++){
+            contourFinder.blobs[i].draw(840,100);
+        }
+
+
+        glPopMatrix();
+
     }
 
 
