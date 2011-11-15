@@ -7,7 +7,7 @@
 	#include <conio.h>
 	#include <tchar.h>
 
-	TCHAR szName[]=TEXT("Global\\MyFileMappingObject");
+	TCHAR szName[]=TEXT("Global\\KinectSharedMemory");
 #else
 
 	#include <sys/mman.h>
@@ -20,7 +20,7 @@
 #include "assignButton.h"
 #include "msbLight.h"
 
-#define BUF_SIZE 640*480*4*32
+#define BUF_SIZE 640*480*4*sizeof(KINECTSIZE)
 
 
 //--------------------------------------------------------------
@@ -31,6 +31,8 @@ void testApp::setup(){
     bSetCutoffToZero=false;
     bShareMemory=false;
     bSendSkeleton=false;
+
+    bHighZRes=false;
 
     cvImage.allocate(640,480);
 
@@ -307,7 +309,7 @@ void testApp::filemappingSetup(){
 	close(fd);
 
 #endif
-    myPic= new float[640*480*4];
+    myPic= new KINECTSIZE[640*480*4];
 
 }
 
@@ -328,34 +330,46 @@ int testApp::shareMemory(){
     if (kinect.getDepthPixels()){
 
 
+        float divider =1.0;
         //construct full color image
         for (int i=0;i<640*480*4;i+=4){
-            myPic[i]=(float)kinect.getPixels()[640*480 * 3 - (i/4) *3] * 1.0f/255.0f;
-            myPic[i+1]=(float)kinect.getPixels()[640*480 * 3 - (i/4) *3 + 1] * 1.0f/255.0f;
-            myPic[i+2]=(float)kinect.getPixels()[640*480 * 3 - (i/4) *3 + 2] * 1.0f/255.0f;
-            //alpha from here
-            myPic[i+3]=(float)kinect.getDistancePixels()[640*480 - i/4];
-            if (myPic[i+3]>cutOffDepth){
-                if (bSetCutoffToZero)
-                    myPic[i+3]=0.0f;
-                else
-                    myPic[i+3]=1.0f;
-            }else{
-                myPic[i+3]=myPic[i+3]/cutOffDepth;
-                if (myPic[i+3]<=0){
-                    if (bSetCutoffToZero)
-                        myPic[i+3]=0.0f;
-                    else
-                        myPic[i+3]=1.0f;
-                }
+            if (bHighZRes)
+                    divider = 1.0f/255.0f;
+            myPic[i]=(KINECTSIZE)kinect.getPixels()[640*480 * 3 - (i/4) *3] * divider;
+            myPic[i+1]=(KINECTSIZE)kinect.getPixels()[640*480 * 3 - (i/4) *3 + 1] * divider;
+            myPic[i+2]=(KINECTSIZE)kinect.getPixels()[640*480 * 3 - (i/4) *3 + 2] * divider;
 
+            //alpha from here
+
+            if (bHighZRes){
+
+                        myPic[i+3]=(KINECTSIZE)kinect.getDistancePixels()[640*480 - i/4];
+
+                        if (myPic[i+3]>cutOffDepth){
+                            if (bSetCutoffToZero)
+                                myPic[i+3]=0.0f;
+                            else
+                                myPic[i+3]=1.0f;
+                        }else{
+                                myPic[i+3]=myPic[i+3]/cutOffDepth;
+                                if (myPic[i+3]<=0){
+                                    if (bSetCutoffToZero)
+                                        myPic[i+3]=0.0f;
+                                    else
+                                        myPic[i+3]=1.0f;
+                                }
+                        }
+
+            }else{
+                myPic[i+3]=(KINECTSIZE)kinect.getDepthPixels()[640*480 - i/4];
             }
 
         }
 #ifdef TARGET_WIN32
-       CopyMemory((PVOID)pBuf, myPic, (640*480 * 4* sizeof(float)));
+        //memcpy((PVOID)pBuf, myPic, (640*480 * 4* sizeof(KINECTSIZE)));
+       CopyMemory((PVOID)pBuf, myPic, (640*480 * 4* sizeof(KINECTSIZE)));
 #else
-		memcpy(sourcebuffer, myPic, (640*480 * 4* sizeof(float)));
+		memcpy(sourcebuffer, myPic, (640*480 * 4* sizeof(KINECTSIZE)));
 #endif
 	}
    // _getch();
@@ -553,16 +567,17 @@ void testApp::draw(){
         ofSetColor(255, 255, 255);
 
         kinect.drawDepth(10, 50, 400, 300);
-        //kinect.draw(420, 50, 400, 300);
+        kinect.draw(420, 50, 400, 300);
 
-        cvImage.draw(420,50,400,300);
+        //cvImage.draw(420,50,400,300);
 
         glPushMatrix();
         glScalef(0.5,0.5,1.0);
+        /*
         for (int i = 0; i < contourFinder.nBlobs; i++){
             contourFinder.blobs[i].draw(840,100);
         }
-
+        */
 
         glPopMatrix();
 

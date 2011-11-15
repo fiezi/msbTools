@@ -12,6 +12,10 @@
 #include "msbOFCore.h"
 #include "actor.h"
 
+#define KINECTSIZE unsigned char
+//#define KINECTSIZE float
+
+
 struct actorID;
 struct memberID;
 
@@ -76,15 +80,17 @@ class testApp : public ofBaseApp, public Actor
 
         //msbTools specific
 
-        float*          myPic;
+        KINECTSIZE *   myPic;
 
-        Input*          input;
+        bool                bHighZRes;
+
+        Input*              input;
         Renderer*       renderer;
-        Actor*          patchActor;
+        Actor*              patchActor;
 
-        float           cutOffDepth;
+        float               cutOffDepth;
 
-        float           thresh;
+        float               thresh;
 
         ofxCvGrayscaleImage cvImage;
         ofxCvContourFinder 	contourFinder;
