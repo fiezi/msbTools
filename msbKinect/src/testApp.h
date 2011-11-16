@@ -24,6 +24,9 @@ class testApp : public ofBaseApp, public Actor
 
 	public:
 
+        testApp();
+        virtual ~testApp();
+
 		void setup();
 
         void msbSetup();
@@ -54,13 +57,14 @@ class testApp : public ofBaseApp, public Actor
         //msbSpecific
         void registerProperties();
         void trigger(Actor* other);
+        void loadSettings();
+
 #ifdef TARGET_WIN32
         HANDLE hMapFile;
         LPCTSTR pBuf;
 #else
 		void *sharedMemFile;
-		int fd,
-			ret;
+		int fd,ret;
 		void *sourcebuffer;
 
 #endif

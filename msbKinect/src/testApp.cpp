@@ -22,6 +22,21 @@
 
 #define BUF_SIZE 640*480*4*sizeof(KINECTSIZE)
 
+testApp::testApp(){}
+
+testApp::~testApp(){
+
+    TiXmlDocument doc;
+    TiXmlDeclaration * decl = new TiXmlDeclaration( "1.0", "", "" );
+    doc.LinkEndChild( decl );
+    TiXmlElement * root = new TiXmlElement( "MsbKinect" );
+    doc.LinkEndChild( root );
+
+    TiXmlElement* myElement=save(root);
+    root->LinkEndChild(myElement);
+    doc.SaveFile("userConfig.xml");
+
+}
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -43,11 +58,15 @@ void testApp::setup(){
     //ipAddress="192.168.1.100";
     ipAddress="127.0.1.1";
 
+    msbSetup();
+
+    loadSettings();
+
+
     osc_sender.setup(ipAddress,31840+channel);
 
-	kinect.bImage=true;
+	//kinect.bImage=true;
 
-    msbSetup();
 
     //interface setup
     interfaceSetup();
@@ -79,32 +98,11 @@ void testApp::msbSetup(){
 
     registerProperties();
 
-    if (!kinect.bImage)
-        return;
-
-    //Adding MSB content
-    //heightfield based on videoTexture from OF
-    Actor* myActor = new Actor;
-    myActor->setLocation(Vector3f(-0.5,-1.0,-5));
-    myActor->setRotation(Vector3f(0,180,0));
-    myActor->color=Vector4f(1,1,1,1);
-    myActor->drawType=DRAW_POINTPATCH;
-    myActor->particleScale=250;
-    myActor->scale=Vector3f(1,-1,1);
-    myActor->bTextured=true;
-    myActor->textureID="NULL";
-    myActor->sceneShaderID="heightfield";
-    myActor->setup();
-
-    renderer->actorList.push_back(myActor);
-    renderer->layerList[0]->actorList.push_back(myActor);
-
-    patchActor=myActor;
 }
 
 void testApp::interfaceSetup(){
 
-
+/*
     SliderButton *but;
 
     but= new SliderButton;
@@ -123,107 +121,84 @@ void testApp::interfaceSetup(){
     but->bVertical=false;
     but->sliderValue=0.5;
     renderer->buttonList.push_back(but);
+*/
+//this button switches between Image and Skeleton modes!
+    AssignButton* aBut;
+
+    aBut= new AssignButton;
+    aBut->location.x=10;
+    aBut->location.y=500;
+    aBut->scale.x=100;
+    aBut->scale.y=12;
+    aBut->color=Vector4f(1.0,0.25,0.15,1.0);
+    aBut->textureID="icon_flat";
+    if (kinect.bImage)
+        aBut->name="Image";
+    else
+        aBut->name="Skeleton";
+    aBut->bDrawName=true;
+    aBut->setLocation(aBut->location);
+    aBut->parent=this;
+    renderer->buttonList.push_back(aBut);
+    aBut->bPermanent=true;
+    aBut->setup();
+
 
     TextInputButton *tiBut;
 
+     if (kinect.bImage){
+
+        tiBut= new TextInputButton;
+        tiBut->location.x=10;
+        tiBut->location.y=550;
+        tiBut->scale.x=100;
+        tiBut->scale.y=12;
+        tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+        tiBut->textureID="icon_flat";
+        tiBut->name="cutOffDepth";
+        tiBut->bDrawName=true;
+        tiBut->setLocation(tiBut->location);
+        tiBut->parent=this;
+        tiBut->buttonProperty="CUTOFFDEPTH";
+        renderer->buttonList.push_back(tiBut);
+        tiBut->bPermanent=true;
+        tiBut->setup();
+
+        tiBut= new TextInputButton;
+        tiBut->location.x=10;
+        tiBut->location.y=600;
+        tiBut->scale.x=100;
+        tiBut->scale.y=12;
+        tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+        tiBut->textureID="icon_flat";
+        tiBut->name="setCutoffZero";
+        tiBut->bDrawName=true;
+        tiBut->setLocation(tiBut->location);
+        tiBut->parent=this;
+        tiBut->buttonProperty="BSETCUTOFFTOZERO";
+        renderer->buttonList.push_back(tiBut);
+        tiBut->bPermanent=true;
+        tiBut->setup();
+
+        tiBut= new TextInputButton;
+        tiBut->location.x=10;
+        tiBut->location.y=620;
+        tiBut->scale.x=100;
+        tiBut->scale.y=12;
+        tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+        tiBut->textureID="icon_flat";
+        tiBut->name="send Points";
+        tiBut->bDrawName=true;
+        tiBut->setLocation(tiBut->location);
+        tiBut->parent=this;
+        tiBut->buttonProperty="BSHAREMEMORY";
+        renderer->buttonList.push_back(tiBut);
+        tiBut->bPermanent=true;
+        tiBut->setup();
+
+/*
     tiBut= new TextInputButton;
     tiBut->location.x=10;
-    tiBut->location.y=550;
-    tiBut->scale.x=100;
-    tiBut->scale.y=12;
-    tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
-    tiBut->textureID="icon_flat";
-    tiBut->name="cutOffDepth";
-    tiBut->bDrawName=true;
-    tiBut->setLocation(tiBut->location);
-    tiBut->parent=this;
-    tiBut->buttonProperty="CUTOFFDEPTH";
-    renderer->buttonList.push_back(tiBut);
-    tiBut->bPermanent=true;
-    tiBut->setup();
-
-    tiBut= new TextInputButton;
-    tiBut->location.x=10;
-    tiBut->location.y=570;
-    tiBut->scale.x=100;
-    tiBut->scale.y=12;
-    tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
-    tiBut->textureID="icon_flat";
-    tiBut->name="previewRes";
-    tiBut->bDrawName=true;
-    tiBut->setLocation(tiBut->location);
-    tiBut->parent=patchActor;
-    tiBut->buttonProperty="PARTICLESCALE";
-    renderer->buttonList.push_back(tiBut);
-    tiBut->bPermanent=true;
-    tiBut->setup();
-
-    tiBut= new TextInputButton;
-    tiBut->location.x=10;
-    tiBut->location.y=600;
-    tiBut->scale.x=100;
-    tiBut->scale.y=12;
-    tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
-    tiBut->textureID="icon_flat";
-    tiBut->name="setCutoffZero";
-    tiBut->bDrawName=true;
-    tiBut->setLocation(tiBut->location);
-    tiBut->parent=this;
-    tiBut->buttonProperty="BSETCUTOFFTOZERO";
-    renderer->buttonList.push_back(tiBut);
-    tiBut->bPermanent=true;
-    tiBut->setup();
-
-    tiBut= new TextInputButton;
-    tiBut->location.x=10;
-    tiBut->location.y=620;
-    tiBut->scale.x=100;
-    tiBut->scale.y=12;
-    tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
-    tiBut->textureID="icon_flat";
-    tiBut->name="send to MSB";
-    tiBut->bDrawName=true;
-    tiBut->setLocation(tiBut->location);
-    tiBut->parent=this;
-    tiBut->buttonProperty="BSHAREMEMORY";
-    renderer->buttonList.push_back(tiBut);
-    tiBut->bPermanent=true;
-    tiBut->setup();
-
-    tiBut= new TextInputButton;
-    tiBut->location.x=10;
-    tiBut->location.y=640;
-    tiBut->scale.x=100;
-    tiBut->scale.y=12;
-    tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
-    tiBut->textureID="icon_flat";
-    tiBut->name="send Skeleton";
-    tiBut->bDrawName=true;
-    tiBut->setLocation(tiBut->location);
-    tiBut->parent=this;
-    tiBut->buttonProperty="BSENDSKELETON";
-    renderer->buttonList.push_back(tiBut);
-    tiBut->bPermanent=true;
-    tiBut->setup();
-
-    tiBut= new TextInputButton;
-    tiBut->location.x=10;
-    tiBut->location.y=660;
-    tiBut->scale.x=100;
-    tiBut->scale.y=12;
-    tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
-    tiBut->textureID="icon_flat";
-    tiBut->name="Skel Number";
-    tiBut->bDrawName=true;
-    tiBut->setLocation(tiBut->location);
-    tiBut->parent=this;
-    tiBut->buttonProperty="SKELNO";
-    renderer->buttonList.push_back(tiBut);
-    tiBut->bPermanent=true;
-    tiBut->setup();
-
-    tiBut= new TextInputButton;
-    tiBut->location.x=200;
     tiBut->location.y=400;
     tiBut->scale.x=100;
     tiBut->scale.y=12;
@@ -237,6 +212,75 @@ void testApp::interfaceSetup(){
     renderer->buttonList.push_back(tiBut);
     tiBut->bPermanent=true;
     tiBut->setup();
+*/
+
+    }else{
+
+        tiBut= new TextInputButton;
+        tiBut->location.x=10;
+        tiBut->location.y=530;
+        tiBut->scale.x=100;
+        tiBut->scale.y=12;
+        tiBut->color=Vector4f(0.5,0.8,0.5,1.0);
+        tiBut->textureID="icon_flat";
+        tiBut->name="IP Address";
+        tiBut->bDrawName=true;
+        tiBut->setLocation(tiBut->location);
+        tiBut->parent=this;
+        tiBut->buttonProperty="IPADDRESS";
+        renderer->buttonList.push_back(tiBut);
+        tiBut->bPermanent=true;
+        tiBut->setup();
+
+        tiBut= new TextInputButton;
+        tiBut->location.x=260;
+        tiBut->location.y=530;
+        tiBut->scale.x=100;
+        tiBut->scale.y=12;
+        tiBut->color=Vector4f(0.5,0.8,0.5,1.0);
+        tiBut->textureID="icon_flat";
+        tiBut->name="Channel";
+        tiBut->bDrawName=true;
+        tiBut->setLocation(tiBut->location);
+        tiBut->parent=this;
+        tiBut->buttonProperty="CHANNEL";
+        renderer->buttonList.push_back(tiBut);
+        tiBut->bPermanent=true;
+        tiBut->setup();
+
+        tiBut= new TextInputButton;
+        tiBut->location.x=10;
+        tiBut->location.y=640;
+        tiBut->scale.x=100;
+        tiBut->scale.y=12;
+        tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+        tiBut->textureID="icon_flat";
+        tiBut->name="send Skeleton";
+        tiBut->bDrawName=true;
+        tiBut->setLocation(tiBut->location);
+        tiBut->parent=this;
+        tiBut->buttonProperty="BSENDSKELETON";
+        renderer->buttonList.push_back(tiBut);
+        tiBut->bPermanent=true;
+        tiBut->setup();
+
+        tiBut= new TextInputButton;
+        tiBut->location.x=10;
+        tiBut->location.y=660;
+        tiBut->scale.x=100;
+        tiBut->scale.y=12;
+        tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+        tiBut->textureID="icon_flat";
+        tiBut->name="Skel Number";
+        tiBut->bDrawName=true;
+        tiBut->setLocation(tiBut->location);
+        tiBut->parent=this;
+        tiBut->buttonProperty="SKELNO";
+        renderer->buttonList.push_back(tiBut);
+        tiBut->bPermanent=true;
+        tiBut->setup();
+
+    }//end if not kinect image
 
 
 }
@@ -315,6 +359,8 @@ void testApp::filemappingSetup(){
 
 void testApp::registerProperties(){
 
+   createMemberID("IPADDRESS",&ipAddress,this);
+   createMemberID("CHANNEL",&channel,this);
    createMemberID("BSHAREMEMORY",&bShareMemory,this);
    createMemberID("CUTOFFDEPTH",&cutOffDepth,this);
    createMemberID("BSETCUTOFFTOZERO",&bSetCutoffToZero,this);
@@ -396,14 +442,14 @@ void testApp::update(){
 
     renderer->update();
 
-    if (kinect.bImage)
-        patchActor->ofTexturePtr=&kinect.getDepthTextureReference();
+//    if (kinect.bImage)
+ //       patchActor->ofTexturePtr=&kinect.getDepthTextureReference();
 
-
+/*
     cvImage.setFromPixels(kinect.depthPixels,640,480);
     cvImage.threshold(thresh,true);
     contourFinder.findContours(cvImage, 256, 80000, 10, false);
-
+*/
 }
 
 
@@ -411,7 +457,7 @@ void testApp::sendSkeleton(int i){
         if (i!=skelNo)
             return;
 
-        cout << "sending!" << endl;
+        //cout << "sending!" << endl;
 
         XnSkeletonJointOrientation joint[15];
         int j=0;
@@ -427,10 +473,13 @@ void testApp::sendSkeleton(int i){
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_HAND, joint[j++]);              //7
 
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_TORSO, joint[j++]);                   //8
+
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_HIP, joint[j++]);                //9
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_HIP, joint[j++]);               //10
+
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_KNEE, joint[j++]);               //11
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_FOOT, joint[j++]);               //12
+
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_KNEE, joint[j++]);              //13
         kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_FOOT, joint[j++]);              //14
 
@@ -448,7 +497,7 @@ void testApp::sendSkeleton(int i){
 
         ofxOscMessage myMessage;
 
-        string oscAddress = "/pilot";
+        string oscAddress = "/pilot/kinectSkeleton";
 
 
             //torso as root
@@ -649,12 +698,69 @@ void testApp::windowResized(int w, int h)
 {}
 
 void testApp::trigger(Actor* other){
-
+/*
     if (other->name=="RotateViewX"){
         float slValue= 0.0f;
         slValue= ((SliderButton*)other)->sliderValue;
         patchActor->setRotation(Vector3f(0,slValue * 360.0,0));
     }
+*/
+
     if (other->name=="cutOffDepth")
         kinect.cutOffFar=cutOffDepth;
+
+     if  (other->name=="IP Address"){
+            osc_sender.setup(ipAddress,31840+channel);
+     }
+
+     if  (other->name=="Channel"){
+            osc_sender.setup(ipAddress,31840+channel);
+     }
+
+    if (other->name=="Image"){
+        renderer->buttonList.clear();
+        kinect.close();
+        kinect.bImage=false;
+        kinect.init();
+        kinect.setVerbose(false);
+        kinect.open();
+        interfaceSetup();
+    }
+
+    if (other->name=="Skeleton"){
+        renderer->buttonList.clear();
+        kinect.close();
+        kinect.bImage=true;
+        kinect.init();
+        kinect.setVerbose(false);
+        kinect.open();
+        interfaceSetup();
+    }
+
+}
+
+
+void testApp::loadSettings(){
+
+    //load settings
+    TiXmlDocument doc( "userConfig.xml" );
+    if (!doc.LoadFile()) return;
+    TiXmlHandle hDoc(&doc);
+    TiXmlElement * element;
+    TiXmlHandle hRoot(0);
+    element=hDoc.FirstChildElement().Element();
+    if (!element) return;
+
+    hRoot=TiXmlHandle(element);
+    element=hRoot.FirstChild( "Actor" ).Element();
+    int listPos=0;
+    string myType;
+
+      for( ; element!=NULL; element=element->NextSiblingElement("Actor"))
+        {
+        myType=element->GetText();
+        cout << "Loading property type: " << myType << endl;
+        load(element);
+        listPos++;
+        }
 }
