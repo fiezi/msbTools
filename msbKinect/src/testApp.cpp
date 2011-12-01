@@ -49,8 +49,6 @@ void testApp::setup(){
 
     bHighZRes=false;
 
-    cvImage.allocate(640,480);
-
     thresh= 48;
 
     skelNo = 0;

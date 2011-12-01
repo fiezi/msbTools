@@ -8,7 +8,6 @@
 
 #include "ofxKinect.h"
 #include "ofxOsc.h"
-#include "ofxOpenCv.h"
 #include "msbOFCore.h"
 #include "actor.h"
 
@@ -95,9 +94,6 @@ class testApp : public ofBaseApp, public Actor
         float               cutOffDepth;
 
         float               thresh;
-
-        ofxCvGrayscaleImage cvImage;
-        ofxCvContourFinder 	contourFinder;
 
 
 };
