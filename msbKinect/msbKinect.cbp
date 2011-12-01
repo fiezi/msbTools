@@ -143,7 +143,7 @@
 			<Add library="wsock32" />
 			<Add library="ws2_32" />
 			<Add library="..\..\..\addons\ofxKinectOpenNI\openNI\Lib\Win32\openNI.lib" />
-			<Add library="..\..\..\addons\ofxKinectOpenNI\NITE\Lib\XnVCNITE_1_4_1.lib" />
+			<Add library="..\..\..\addons\ofxKinectOpenNI\NITE\Lib\Win32\XnVCNITE_1_5_0.lib" />
 		</Linker>
 		<Unit filename="..\..\..\addons\msbOFCore\actor.cpp" />
 		<Unit filename="..\..\..\addons\msbOFCore\actor.h" />
@@ -205,6 +205,9 @@
 		<Unit filename="..\..\..\addons\ofxKinectOpenNI\ofxKinect.cpp" />
 		<Unit filename="..\..\..\addons\ofxKinectOpenNI\ofxKinect.h" />
 		<Unit filename="..\..\..\addons\ofxKinectOpenNI\openNI\Include\IXnNodeAllocator.h" />
+		<Unit filename="..\..\..\addons\ofxKinectOpenNI\openNI\Include\Win32\XnOSWin32.h" />
+		<Unit filename="..\..\..\addons\ofxKinectOpenNI\openNI\Include\Win32\XnPlatformWin32.h" />
+		<Unit filename="..\..\..\addons\ofxKinectOpenNI\openNI\Include\Win32\usb100.h" />
 		<Unit filename="..\..\..\addons\ofxKinectOpenNI\openNI\Include\XnBaseNode.h" />
 		<Unit filename="..\..\..\addons\ofxKinectOpenNI\openNI\Include\XnCallback.h" />
 		<Unit filename="..\..\..\addons\ofxKinectOpenNI\openNI\Include\XnCodecIDs.h" />
