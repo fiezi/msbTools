@@ -104,7 +104,7 @@ void testApp::update(){
 
 
     renderer->update();
-    vidGrabber.grabFrame();
+    vidGrabber.update();
 
     patchActor->ofTexturePtr=&vidGrabber.getTextureReference();
 

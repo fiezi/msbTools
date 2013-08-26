@@ -1,0 +1,2 @@
+This project is deprecated 
+it used to compile with OF 0.05 and has been abandoned ever since.

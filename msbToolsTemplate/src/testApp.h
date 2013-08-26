@@ -4,10 +4,7 @@
 
 #include "ofMain.h"
 #include "ofxOpenCv.h"
-#include "ofxDirList.h"
 #include "ofxOsc.h"
-#include "ofxThread.h"
-#include "ofx3DModelLoader.h"
 #include "msbOFCore.h"
 
 
@@ -32,10 +29,7 @@ class testApp : public ofBaseApp{
         // all work in the same place :)
 
         ofxCvGrayscaleImage cvGray;
-        ofxDirList dirList;
         ofxOscSender osc_sender;
-        ofxThread thread;
-        ofx3DModelLoader modelLoader;
 
 		ofVideoGrabber 		vidGrabber;
 

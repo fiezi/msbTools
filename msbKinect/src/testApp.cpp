@@ -60,7 +60,7 @@ void testApp::setup(){
 
     loadSettings();
 
-    ofSetFrameRate(30);
+    //ofSetFrameRate(30);
 
     osc_sender.setup(ipAddress,31840+channel);
 

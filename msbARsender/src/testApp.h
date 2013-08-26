@@ -1,21 +1,17 @@
 #ifndef _TEST_APP
 #define _TEST_APP
 
+#include "ofxOpenCv.h"
+#include "ofxARToolkitPlus.h"
 
 #include "ofMain.h"
-#include "ofxOpenCv.h"
-#include "ofxOsc.h"
-#include "ofxThread.h"
-#include "ofxXmlSettings.h"
 
-#include "ar.h"
-#include "arTKPMultiTracker.h"
+// Uncomment this to use a camera instead of a video file
+#define CAMERA_CONNECTED
 
 class testApp : public ofBaseApp{
 
 	public:
-
-		testApp();
 		void setup();
 		void update();
 		void draw();
@@ -26,34 +22,31 @@ class testApp : public ofBaseApp{
 		void mouseDragged(int x, int y, int button);
 		void mousePressed(int x, int y, int button);
 		void mouseReleased(int x, int y, int button);
-		void resized(int w, int h);
+		void windowResized(int w, int h);
 
-        void loadConfig(string filename);
-        void sendMessages();
+		/* Size of the image */
+		int width, height;
 
-        // need video input
-        ofBaseVideo *		videoSource;
-		bool                bUseVideoFiles;
-		string              videoFile;
-		int                 cameraId;
-		int                 camW,camH;
-		ofxCvColorImage     colorPixels;
-		ofxCvGrayscaleImage grayPixels;
+		/* Use either camera or a video file */
+		#ifdef CAMERA_CONNECTED
+		ofVideoGrabber vidGrabber;
+		#else
+		ofVideoPlayer vidPlayer;
+		#endif
 
+		/* ARToolKitPlus class */
+		ofxARToolkitPlus artk;
+		int threshold;
 
-        // ar toolkit stuff
-        //unsigned char *cameraBuffer;
-		arTKPMultiTracker arTracker;
-		bool useBCH;
+		/* OpenCV images */
+		ofxCvColorImage colorImage;
+		ofxCvGrayscaleImage grayImage;
+		ofxCvGrayscaleImage	grayThres;
 
-
-        // osc output
-        ofxOscSender        sender;
-        string              host;
-        int                 port;
-        bool                bSending;
-
-
+		/* Image to distort on to the marker */
+		ofImage displayImage;
+		/* The four corners of the image */
+		vector<ofPoint> displayImageCorners;
 
 };
 

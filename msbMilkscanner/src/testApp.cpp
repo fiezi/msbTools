@@ -97,7 +97,7 @@ void testApp::msbSetup(){
     but->tooltip="start scanning";
     but->setLocation(but->location);
     but->textureID="icon_flat";
-    but->color=COLOR_WHITE;
+    but->color=Vector4f(0.7,0.7,0.7,1.0);
     but->setup();
     but->parent=this;
     renderer->buttonList.push_back(but);
@@ -113,7 +113,7 @@ void testApp::msbSetup(){
     but->tooltip="reset scan buffers";
     but->setLocation(but->location);
     but->textureID="icon_flat";
-    but->color=COLOR_WHITE;
+    but->color=Vector4f(0.7,0.7,0.7,1.0);
     but->setup();
     but->parent=this;
     renderer->buttonList.push_back(but);
@@ -279,7 +279,7 @@ void testApp::registerProperties(){
 //--------------------------------------------------------------
 void testApp::update(){
 
-	vidGrabber.grabFrame();
+	vidGrabber.update();
 
 	//if (vidGrabber.isFrameNew()){
 
@@ -611,7 +611,7 @@ void testApp::mousePressed(int x, int y, int button){
 }
 
 //--------------------------------------------------------------
-void testApp::mouseReleased(){
+void testApp::mouseReleased(int x, int y, int button){
 
     input->pressedMouse(mouseButton,MOUSEBTNRELEASED,mouseX,mouseY);
 }

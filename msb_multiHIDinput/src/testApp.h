@@ -3,11 +3,7 @@
 
 
 #include "ofMain.h"
-#include "ofxOpenCv.h"
-#include "ofxDirList.h"
 #include "ofxOsc.h"
-#include "ofxThread.h"
-#include "ofx3DModelLoader.h"
 #include "msbOFCore.h"
 
 #ifdef TARGET_WIN32
@@ -58,7 +54,7 @@ class testApp : public ofBaseApp, public Actor{
         // just checking to see if they
         // all work in the same place :)
         ofxOscSender osc_sender;
-        ofxThread thread;
+        ofThread thread;
 
         Input*      input;
         Renderer*   renderer;

@@ -5,8 +5,6 @@
 #include "ofMain.h"
 
 #include "ofxOsc.h"
-#include "ofxThread.h"
-#include "ofx3DModelLoader.h"
 #include "msbOFCore.h"
 #include "actor.h"
 
