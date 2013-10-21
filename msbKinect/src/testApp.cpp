@@ -51,31 +51,54 @@ void testApp::setup(){
 
     thresh= 48;
 
+    dilate=0;
+    erode=0;
+    blur=0;
+
+    dilateMask=0;
+    erodeMask=0;
+    blurMask=0;
+
     skelNo = 0;
     channel=1;
     //ipAddress="192.168.1.100";
     ipAddress="127.0.1.1";
 
-    msbSetup();
+    cvImage.allocate(640,480);
+    cvFinal.allocate(640,480);
+    cvMaskBase.allocate(640,480);
+    cvMask.allocate(640,480);
 
-    loadSettings();
+    pixelBufferOne= new unsigned char[640*480];
+    pixelBufferTwo= new unsigned char[640*480];
+    pixelBufferThree= new unsigned char[640*480];
+
+    for (int i=0;i<640*480;i++){
+        pixelBufferOne=0;
+        pixelBufferTwo=0;
+    }
+
+    msbSetup();
 
     //ofSetFrameRate(30);
 
-    osc_sender.setup(ipAddress,31840+channel);
 
 	kinect.bImage=true;
 
 
     //interface setup
-    interfaceSetup();
 
     //OF_STUFF
+
+    loadSettings();
+    osc_sender.setup(ipAddress,31840+channel);
 
 	//kinect.init(true);  //shows infrared image
 	kinect.init();
 	kinect.setVerbose(true);
 	kinect.open();
+
+    interfaceSetup();
 
     filemappingSetup();
 
@@ -146,6 +169,120 @@ void testApp::interfaceSetup(){
     TextInputButton *tiBut;
 
      if (kinect.bImage){
+
+
+        aBut= new AssignButton;
+        aBut->location.x=300;
+        aBut->location.y=500;
+        aBut->scale.x=100;
+        aBut->scale.y=12;
+        aBut->color=Vector4f(1.0,0.25,0.15,1.0);
+        aBut->textureID="icon_flat";
+        aBut->name="MakeMask";
+        aBut->bDrawName=true;
+        aBut->setLocation(aBut->location);
+        aBut->parent=this;
+        renderer->buttonList.push_back(aBut);
+        aBut->bPermanent=true;
+        aBut->setup();
+
+
+        tiBut= new TextInputButton;
+        tiBut->location.x=10;
+        tiBut->location.y=370;
+        tiBut->scale.x=100;
+        tiBut->scale.y=12;
+        tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+        tiBut->textureID="icon_flat";
+        tiBut->name="dilate";
+        tiBut->bDrawName=true;
+        tiBut->setLocation(tiBut->location);
+        tiBut->parent=this;
+        tiBut->buttonProperty="DILATE";
+        renderer->buttonList.push_back(tiBut);
+        tiBut->bPermanent=true;
+        tiBut->setup();
+
+        tiBut= new TextInputButton;
+        tiBut->location.x=10;
+        tiBut->location.y=400;
+        tiBut->scale.x=100;
+        tiBut->scale.y=12;
+        tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+        tiBut->textureID="icon_flat";
+        tiBut->name="erode";
+        tiBut->bDrawName=true;
+        tiBut->setLocation(tiBut->location);
+        tiBut->parent=this;
+        tiBut->buttonProperty="ERODE";
+        renderer->buttonList.push_back(tiBut);
+        tiBut->bPermanent=true;
+        tiBut->setup();
+
+        tiBut= new TextInputButton;
+        tiBut->location.x=10;
+        tiBut->location.y=430;
+        tiBut->scale.x=100;
+        tiBut->scale.y=12;
+        tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+        tiBut->textureID="icon_flat";
+        tiBut->name="blur";
+        tiBut->bDrawName=true;
+        tiBut->setLocation(tiBut->location);
+        tiBut->parent=this;
+        tiBut->buttonProperty="BLUR";
+        renderer->buttonList.push_back(tiBut);
+        tiBut->bPermanent=true;
+        tiBut->setup();
+
+        tiBut= new TextInputButton;
+        tiBut->location.x=300;
+        tiBut->location.y=370;
+        tiBut->scale.x=100;
+        tiBut->scale.y=12;
+        tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+        tiBut->textureID="icon_flat";
+        tiBut->name="dilate";
+        tiBut->bDrawName=true;
+        tiBut->setLocation(tiBut->location);
+        tiBut->parent=this;
+        tiBut->buttonProperty="DILATEMASK";
+        renderer->buttonList.push_back(tiBut);
+        tiBut->bPermanent=true;
+        tiBut->setup();
+
+        tiBut= new TextInputButton;
+        tiBut->location.x=300;
+        tiBut->location.y=400;
+        tiBut->scale.x=100;
+        tiBut->scale.y=12;
+        tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+        tiBut->textureID="icon_flat";
+        tiBut->name="erode";
+        tiBut->bDrawName=true;
+        tiBut->setLocation(tiBut->location);
+        tiBut->parent=this;
+        tiBut->buttonProperty="ERODEMASK";
+        renderer->buttonList.push_back(tiBut);
+        tiBut->bPermanent=true;
+        tiBut->setup();
+
+        tiBut= new TextInputButton;
+        tiBut->location.x=300;
+        tiBut->location.y=430;
+        tiBut->scale.x=100;
+        tiBut->scale.y=12;
+        tiBut->color=Vector4f(0.5,0.5,0.5,1.0);
+        tiBut->textureID="icon_flat";
+        tiBut->name="blur";
+        tiBut->bDrawName=true;
+        tiBut->setLocation(tiBut->location);
+        tiBut->parent=this;
+        tiBut->buttonProperty="BLURMASK";
+        renderer->buttonList.push_back(tiBut);
+        tiBut->bPermanent=true;
+        tiBut->setup();
+
 
         tiBut= new TextInputButton;
         tiBut->location.x=10;
@@ -366,6 +503,14 @@ void testApp::registerProperties(){
    createMemberID("BSENDSKELETON",&bSendSkeleton,this);
    createMemberID("SKELNO",&skelNo,this);
    createMemberID("THRESH",&thresh,this);
+
+   createMemberID("DILATE",&dilate,this);
+   createMemberID("ERODE",&erode,this);
+   createMemberID("BLUR",&blur,this);
+
+   createMemberID("DILATEMASK",&dilateMask,this);
+   createMemberID("ERODEMASK",&erodeMask,this);
+   createMemberID("BLURMASK",&blurMask,this);
 }
 
 int testApp::shareMemory(){
@@ -406,7 +551,8 @@ int testApp::shareMemory(){
                         }
 
             }else{
-                myPic[i+3]=(KINECTSIZE)kinect.getDepthPixels()[640*480 - i/4];
+                //myPic[i+3]=(KINECTSIZE)kinect.getDepthPixels()[640*480 - i/4];
+                myPic[i+3]=(KINECTSIZE)cvFinal.getPixels()[640*480 - i/4];
             }
 
         }
@@ -444,8 +590,45 @@ void testApp::update(){
 //    if (kinect.bImage)
  //       patchActor->ofTexturePtr=&kinect.getDepthTextureReference();
 
-/*
+
     cvImage.setFromPixels(kinect.depthPixels,640,480);
+    for (int i=0;i<dilate;i++)
+        cvImage.dilate();
+
+    for (int i=0;i<erode;i++)
+        cvImage.erode();
+
+    if (blur>0)
+        cvImage.blurGaussian(blur);
+
+    cvMask.setFromPixels(cvMaskBase.getPixels(),640,480);
+
+    for (int i=0;i<dilateMask;i++)
+        cvMask.dilate();
+
+    for (int i=0;i<erodeMask;i++)
+        cvMask.erode();
+
+    if (blurMask>0)
+        cvMask.blurGaussian(blurMask);
+
+    pixelBufferOne=cvImage.getPixels();
+    pixelBufferTwo=cvMask.getPixels();
+
+    for (int i=0;i<640*480;i++){
+        if (pixelBufferOne[i]-pixelBufferTwo[i]<0)
+            pixelBufferThree[i]=pixelBufferOne[i];
+        else{
+            if (bSetCutoffToZero)
+                pixelBufferThree[i]=0;
+            else
+                pixelBufferThree[i]=255;
+        }
+    }
+
+    cvFinal.setFromPixels(pixelBufferThree,640,480);
+
+/*
     cvImage.threshold(thresh,true);
     contourFinder.findContours(cvImage, 256, 80000, 10, false);
 */
@@ -603,7 +786,8 @@ void testApp::draw(){
 
     if (bFullscreen){
 
-        kinect.drawDepth(0, 0, renderer->screenX, renderer->screenY);
+        //kinect.drawDepth(0, 0, renderer->screenX, renderer->screenY);
+        cvImage.draw(0, 0, renderer->screenX, renderer->screenY);
 
     }else{
 
@@ -614,8 +798,12 @@ void testApp::draw(){
 
         ofSetColor(255, 255, 255);
 
-        kinect.drawDepth(10, 50, 400, 300);
-        kinect.draw(420, 50, 400, 300);
+        cvImage.draw(10, 50, 400, 300);
+        cvMask.draw(420, 50, 400, 300);
+        //kinect.drawDepth(10, 50, 400, 300);
+        cvFinal.draw(830,370,400,300);
+        kinect.draw(830, 50, 400, 300);
+
 
         //cvImage.draw(420,50,400,300);
 
@@ -715,6 +903,12 @@ void testApp::trigger(Actor* other){
      if  (other->name=="Channel"){
             osc_sender.setup(ipAddress,31840+channel);
      }
+
+    if (other->name=="MakeMask"){
+
+        cvMaskBase.setFromPixels(cvImage.getPixels(),640,480);
+
+    }
 
     if (other->name=="Image"){
         renderer->buttonList.clear();

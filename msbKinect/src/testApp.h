@@ -8,6 +8,7 @@
 
 #include "ofxKinect.h"
 #include "ofxOsc.h"
+#include "ofxOpenCV.h"
 #include "msbOFCore.h"
 #include "actor.h"
 
@@ -18,8 +19,7 @@
 struct actorID;
 struct memberID;
 
-class testApp : public ofBaseApp, public Actor
-{
+class testApp : public ofBaseApp, public Actor{
 
 	public:
 
@@ -83,18 +83,34 @@ class testApp : public ofBaseApp, public Actor
 
         //msbTools specific
 
-        KINECTSIZE *   myPic;
+        KINECTSIZE *        myPic;
 
         bool                bHighZRes;
 
         Input*              input;
-        Renderer*       renderer;
+        Renderer*           renderer;
         Actor*              patchActor;
 
         float               cutOffDepth;
 
         float               thresh;
 
+        int                 dilate;
+        int                 erode;
+        int                 blur;
+
+        int                 dilateMask;
+        int                 erodeMask;
+        int                 blurMask;
+
+        ofxCvGrayscaleImage          cvImage;
+        ofxCvGrayscaleImage          cvFinal;
+        ofxCvGrayscaleImage          cvMaskBase;
+        ofxCvGrayscaleImage          cvMask;
+
+        unsigned char*               pixelBufferOne;
+        unsigned char*               pixelBufferTwo;
+        unsigned char*               pixelBufferThree;
 
 };
 
