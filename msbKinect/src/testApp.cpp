@@ -79,11 +79,7 @@ void testApp::setup(){
     }
 
     msbSetup();
-
-    //ofSetFrameRate(30);
-
-
-	kinect.bImage=true;
+	kinect.bImage=false;
 
 
     //interface setup
@@ -93,7 +89,6 @@ void testApp::setup(){
     loadSettings();
     osc_sender.setup(ipAddress,31840+channel);
 
-	//kinect.init(true);  //shows infrared image
 	kinect.init();
 	kinect.setVerbose(true);
 	kinect.open();
@@ -579,8 +574,8 @@ void testApp::update(){
         shareMemory();
 
     if (bSendSkeleton){
-        for (int i=0;i<kinect.users.size();i++){
-            if (kinect.users[i]->bCalibrated)
+        for (int i=0;i<kinect.sensors[0].users.size();i++){
+            if (kinect.sensors[0].users[i]->bCalibrated)
                 sendSkeleton(i);
         }
     }
@@ -591,7 +586,9 @@ void testApp::update(){
  //       patchActor->ofTexturePtr=&kinect.getDepthTextureReference();
 
 
-    cvImage.setFromPixels(kinect.depthPixels,640,480);
+    cvImage.setFromPixels(kinect.getDepthPixels(),640,480);
+
+
     for (int i=0;i<dilate;i++)
         cvImage.dilate();
 
@@ -643,30 +640,30 @@ void testApp::sendSkeleton(int i){
 
         XnSkeletonJointOrientation joint[15];
         int j=0;
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_HEAD, joint[j++]);                    //0
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_NECK, joint[j++]);                    //1
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_HEAD, joint[j++]);                    //0
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_NECK, joint[j++]);                    //1
 
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_SHOULDER, joint[j++]);           //2
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_ELBOW, joint[j++]);              //3
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_HAND, joint[j++]);               //4
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_LEFT_SHOULDER, joint[j++]);           //2
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_LEFT_ELBOW, joint[j++]);              //3
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_LEFT_HAND, joint[j++]);               //4
 
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_SHOULDER, joint[j++]);         //5
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_ELBOW, joint[j++]);              //6
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_HAND, joint[j++]);              //7
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_RIGHT_SHOULDER, joint[j++]);         //5
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_RIGHT_ELBOW, joint[j++]);              //6
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_RIGHT_HAND, joint[j++]);              //7
 
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_TORSO, joint[j++]);                   //8
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_TORSO, joint[j++]);                   //8
 
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_HIP, joint[j++]);                //9
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_HIP, joint[j++]);               //10
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_LEFT_HIP, joint[j++]);                //9
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_RIGHT_HIP, joint[j++]);               //10
 
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_KNEE, joint[j++]);               //11
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_LEFT_FOOT, joint[j++]);               //12
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_LEFT_KNEE, joint[j++]);               //11
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_LEFT_FOOT, joint[j++]);               //12
 
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_KNEE, joint[j++]);              //13
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.users[i]->userID, XN_SKEL_RIGHT_FOOT, joint[j++]);              //14
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_RIGHT_KNEE, joint[j++]);              //13
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointOrientation(kinect.sensors[0].users[i]->userID, XN_SKEL_RIGHT_FOOT, joint[j++]);              //14
 
         XnSkeletonJointPosition body;
-        kinect.userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.users[i]->userID, XN_SKEL_TORSO, body);
+        kinect.sensors[0].userGenerator.GetSkeletonCap().GetSkeletonJointPosition(kinect.sensors[0].users[i]->userID, XN_SKEL_TORSO, body);
 
 
 
@@ -784,10 +781,12 @@ string testApp::makeMatrixMessage( ofxOscMessage* myMessage, Matrix4f myMat4 ){
 //--------------------------------------------------------------
 void testApp::draw(){
 
+
+
     if (bFullscreen){
 
-        //kinect.drawDepth(0, 0, renderer->screenX, renderer->screenY);
-        cvImage.draw(0, 0, renderer->screenX, renderer->screenY);
+        kinect.drawDepth(0, 0, renderer->screenX, renderer->screenY);
+        //cvImage.draw(0, 0, renderer->screenX, renderer->screenY);
 
     }else{
 
@@ -799,10 +798,13 @@ void testApp::draw(){
         ofSetColor(255, 255, 255);
 
         cvImage.draw(10, 50, 400, 300);
+        kinect.drawDepth(10, 400, 400, 300,1);
+
         cvMask.draw(420, 50, 400, 300);
         //kinect.drawDepth(10, 50, 400, 300);
         cvFinal.draw(830,370,400,300);
-        kinect.draw(830, 50, 400, 300);
+        if (kinect.bImage)
+            kinect.draw(830, 50, 400, 300);
 
 
         //cvImage.draw(420,50,400,300);
