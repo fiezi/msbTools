@@ -33,6 +33,10 @@ void testApp::setup(){
     renderer->camActor->setLocation(Vector3f(0,0,-5));
     renderer->camActor->postLoad();
 
+    axisOne=0.0;
+    axisTwo=0.0;
+
+    bAdditive=true;
 
     //OF stuff
     ofBackground(128, 128, 128);
@@ -154,11 +158,15 @@ void testApp::update(){
 
         //figure out if gametrak...
         string str="Game-Trak";
-        if (jName.find(str)!=string::npos)
+        if (jName.find(str)!=string::npos){
             sendGameTrak();
         str="Razer Hydra";
-        if (jName.find(str)!=string::npos)
+        }else if (jName.find(str)!=string::npos){
             sendHydra();
+        }else
+            sendGamePad();
+
+
     }
 }
 
@@ -226,6 +234,31 @@ void testApp::trigger(Actor* other){
 
 }
 
+void testApp::sendGamePad(){
+
+        int myInt;
+        float myAxis[10];
+        joy->read(&myInt, &myAxis[0]);
+        float xAxis=myAxis[0];
+        float yAxis=myAxis[1];
+        float zAxis=myAxis[2];
+
+        if (bAdditive){
+            axisOne+=xAxis * -0.02;
+            axisTwo+=yAxis * 0.02;
+
+        }
+
+        ofxOscMessage myMessage;
+        myMessage.addFloatArg(axisOne);
+        myMessage.addFloatArg(zAxis * 0.0);
+        myMessage.addFloatArg(axisTwo);
+
+        myMessage.setAddress("/pilot/vector3f");
+        osc_sender.sendMessage(myMessage);
+
+        cout << "sending... gp" << endl;
+}
 
 void testApp::sendHydra(){
 

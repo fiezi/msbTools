@@ -40,6 +40,7 @@ class testApp : public ofBaseApp, public Actor{
         void trigger(Actor* other);
 
         void sendGameTrak();
+        void sendGamePad();
         void sendHydra();
 
 		void keyPressed  (int key);
@@ -69,6 +70,11 @@ class testApp : public ofBaseApp, public Actor{
         int     channel;
 
         bool    bSending;
+
+        bool    bAdditive;
+
+        float   axisOne;
+        float   axisTwo;
 
 };
 
