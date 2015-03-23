@@ -1,7 +1,7 @@
 #ifndef _TEST_APP
 #define _TEST_APP
 
-
+#define TARGET_WIN32
 
 
 #include "ofMain.h"

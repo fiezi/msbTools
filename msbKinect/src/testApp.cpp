@@ -95,7 +95,8 @@ void testApp::setup(){
 
     interfaceSetup();
 
-    filemappingSetup();
+    if (bShareMemory)
+        filemappingSetup();
 
 }
 
@@ -119,7 +120,7 @@ void testApp::msbSetup(){
 
 void testApp::interfaceSetup(){
 
-/*
+
     SliderButton *but;
 
     but= new SliderButton;
@@ -138,7 +139,7 @@ void testApp::interfaceSetup(){
     but->bVertical=false;
     but->sliderValue=0.5;
     renderer->buttonList.push_back(but);
-*/
+
 //this button switches between Image and Skeleton modes!
     AssignButton* aBut;
 
@@ -798,14 +799,15 @@ void testApp::draw(){
         ofSetColor(255, 255, 255);
 
         cvImage.draw(10, 50, 400, 300);
-        kinect.drawDepth(10, 400, 400, 300,1);
+        //kinect.drawDepth(10, 400, 400, 300,1);
 
         cvMask.draw(420, 50, 400, 300);
         //kinect.drawDepth(10, 50, 400, 300);
         cvFinal.draw(830,370,400,300);
+        /*
         if (kinect.bImage)
             kinect.draw(830, 50, 400, 300);
-
+        */
 
         //cvImage.draw(420,50,400,300);
 
